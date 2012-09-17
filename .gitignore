@@ -11,5 +11,5 @@
 *.la
 *.a
 
-Genius_test
+Genius_tests
 objs/*
