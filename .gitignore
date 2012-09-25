@@ -11,5 +11,5 @@
 *.la
 *.a
 
-Genius_tests
-objs/*
+./Debug
+./Release
