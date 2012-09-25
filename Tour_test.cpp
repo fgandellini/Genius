@@ -29,7 +29,7 @@ TEST(Tour, IsEmptyWhenCreated) {
 }
 
 TEST(Tour, CanAddAnArc) {
-	tour->add(new Arc(0, 2));
+	tour->add(new Arc((int)0, (int)2));
 	CHECK(tour->Length() == 2);
 }
 

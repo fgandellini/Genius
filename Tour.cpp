@@ -26,7 +26,7 @@ int Tour::Length() const {
 bool Tour::add(pArc arc) {
 //	this->nodes->push_back(arc->getStart());
 //	this->nodes->push_back(arc->getEnd());
-
+//
 //	this->arcs->push_back(arc);
 
 	return true;
