@@ -11,5 +11,5 @@
 *.la
 *.a
 
-Debug/
-Release/
+./Debug
+./Release
