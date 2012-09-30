@@ -2,6 +2,8 @@
 
 namespace Genius {
 
+MemoryPool<Node, 100> Node::Pool;
+
 Node::Node() {
 	this->init();
 }

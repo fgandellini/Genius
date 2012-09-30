@@ -14,7 +14,18 @@ private:
 
 	void init();
 
+
+
 public:
+	static MemoryPool<Node, 100> Pool;
+
+//    void *operator new(size_t uiSize) {
+//        return (void*)Node::Pool.New();
+//    }
+//    void  operator delete(void *p) {
+//    	Node::Pool.Delete((Node*)p);
+//    }
+
 	Node();
 	Node(int id);
 	virtual ~Node();

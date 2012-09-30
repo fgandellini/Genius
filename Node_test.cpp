@@ -43,4 +43,23 @@ TEST(Node, CanSetAnId) {
 	CHECK(node7->getId() == 7);
 }
 
+TEST(Node, NodePool) {
+
+	time_t start = time(NULL);
+	for (long int i=0; i<100000000; ++i) {
+		pNode myNode = new Node();
+		delete myNode;
+	}
+	time_t standardAllocationTime = time(NULL) - start;
+
+	start = time(NULL);
+	for (long int i=0; i<100000000; ++i) {
+		pNode myNode = Node::Pool.New();
+		Node::Pool.Delete(myNode);
+	}
+	time_t poolAllocationTime = time(NULL) - start;
+
+	CHECK(poolAllocationTime < standardAllocationTime);
+}
+
 } /* namespace Genius */
