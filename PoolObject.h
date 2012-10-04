@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace Genius {
+
 /*
 class PoolObject {
 private:
@@ -31,6 +32,13 @@ public:
 };
 */
 
+class IPoolable
+{
+public:
+	virtual void Init(void) = 0;
+};
+typedef IPoolable* pIPoolable;
+
 template <class T, int N>
 class MemoryPool {
 private:
@@ -38,24 +46,25 @@ private:
 	std::vector<T*> freeObjs;
 
 public:
-	MemoryPool() {
+	MemoryPool(void) {
 		for(int i=0; i<N; ++i) {
 			pool[i] = new T();
 			freeObjs.push_back(pool[i]);
 		}
 	}
 
-	T* New() {
+	T* New(void) {
 		T* obj = freeObjs.back();
 		freeObjs.pop_back();
 		return obj;
 	}
 
 	void Delete(T* object) {
-		memset(object, 0, sizeof(object));
+		dynamic_cast<pIPoolable>(object)->Init();
 		freeObjs.push_back(object);
 	}
 };
+
 /*
 class PoolObject
 {

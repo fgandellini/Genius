@@ -5,14 +5,13 @@
 
 namespace Genius {
 
-class Node {
+class Node : public PoolObject {
 private:
 	int id;
 
 //	Node* previous;
 	Node* next;
 
-	void init();
 
 
 

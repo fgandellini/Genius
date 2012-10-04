@@ -5,19 +5,19 @@ namespace Genius {
 MemoryPool<Node, 100> Node::Pool;
 
 Node::Node() {
-	this->init();
+	//this->init();
 }
 
 Node::Node(int id) {
-	this->init();
+	//this->init();
 	this->id = id;
 }
 
-void Node::init() {
-	this->id = ID_UNKNOWN;
-//	this->previous = NULL;
-	this->next = NULL;
-}
+//void Node::init() {
+//	this->id = ID_UNKNOWN;
+////	this->previous = NULL;
+//	this->next = NULL;
+//}
 
 Node::~Node() {
 }
