@@ -2,8 +2,9 @@
 #include <cstring>
 #include <string>
 #include <cstdlib>
+#include <exception>
 
-#include "PoolObject.h"
+#include "MemoryPool.h"
 
 using namespace std;
 

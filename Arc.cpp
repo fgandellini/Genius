@@ -12,7 +12,7 @@ Arc::Arc(pNode from, pNode to) {
 
 Arc::Arc(int fromId, int toId) {
 	if (fromId >= 0 && toId >= 0) {
-		this->init(new Node(fromId), new Node(toId));
+		this->init(Node::Pool.New()->setId(fromId), Node::Pool.New()->setId(toId));
 	} else {
 		throw "InvalidArgument";
 	}

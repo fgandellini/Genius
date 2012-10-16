@@ -5,7 +5,7 @@
 
 namespace Genius {
 
-class Node : public PoolObject {
+class Node : public IPoolable {
 private:
 	int id;
 
@@ -16,6 +16,7 @@ private:
 
 
 public:
+	virtual void Init(void);
 	static MemoryPool<Node, 100> Pool;
 
 //    void *operator new(size_t uiSize) {
@@ -26,11 +27,10 @@ public:
 //    }
 
 	Node();
-	Node(int id);
 	virtual ~Node();
 
 	int getId() const;
-	void setId(int id);
+	Node* setId(int id);
 
 //	Node* getPrevious();
 //	void setPrevious(Node* node);

@@ -15,8 +15,10 @@ pNode node7;
 
 TEST_GROUP(Node) {
 	void setup() {
-		unknownNode = new Node();
-		node7 = new Node(7);
+//		unknownNode = new Node();
+//		node7 = new Node(7);
+		unknownNode = Node::Pool.New();
+		node7 = Node::Pool.New()->setId(7);
 	}
 
 	void teardown() {
@@ -42,7 +44,7 @@ TEST(Node, CanSetAnId) {
 
 	CHECK(node7->getId() == 7);
 }
-
+/*
 TEST(Node, NodePool) {
 
 	time_t start = time(NULL);
@@ -61,5 +63,6 @@ TEST(Node, NodePool) {
 
 	CHECK(poolAllocationTime < standardAllocationTime);
 }
+*/
 
 } /* namespace Genius */
