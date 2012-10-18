@@ -1,28 +1,29 @@
 #ifndef TOUR_H_
 #define TOUR_H_
 
-#include "Arc.h"
+#include "CommonIncludes.h"
+#include <boost/circular_buffer.hpp>
 
 namespace Genius {
 
 class Tour {
 
 private:
-	static int internalToursCounter;
 	int id;
-
-	pNodes nodes;
-	pArcs arcs;
+	boost::circular_buffer<int> nodes;
 
 public:
+
 	Tour();
 	virtual ~Tour();
 
-	int getId() const;
 	int Length() const;
+	Tour* Append(int node);
 
-	bool add(pArc arc);
-	bool remove(pArc arc);
+	//int getId() const;
+
+	//bool add(pArc arc);
+	//bool remove(pArc arc);
 
 
 };

@@ -2,18 +2,21 @@
 
 namespace Genius {
 
-MemoryPool<Node, 100> Node::Pool;
-
 Node::Node() {
+	this->Init(ID_UNKNOWN);
 }
 
-void Node::Init(void) {
-	this->setId(ID_UNKNOWN);
-//	this->previous = NULL;
-	this->setNext(NULL);
+Node::Node(int id) {
+	this->Init(id);
 }
 
 Node::~Node() {
+}
+
+void Node::Init(int id) {
+	this->setPrevious(NULL);
+	this->setNext(NULL);
+	this->setId(id);
 }
 
 int Node::getId() const {
@@ -25,13 +28,13 @@ pNode Node::setId(int id) {
 	return this;
 }
 
-//pNode Node::getPrevious() {
-//	return this->previous;
-//}
-//
-//void Node::setPrevious(pNode node) {
-//	this->previous = node;
-//}
+pNode Node::getPrevious() {
+	return this->previous;
+}
+
+void Node::setPrevious(pNode node) {
+	this->previous = node;
+}
 
 pNode Node::getNext() {
 	return this->next;

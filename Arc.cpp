@@ -4,7 +4,7 @@ namespace Genius {
 
 Arc::Arc(pNode from, pNode to) {
 	if (from != NULL && to != NULL) {
-		this->init(from, to);
+		this->Init(from, to);
 	} else {
 		throw "InvalidArgument";
 	}
@@ -12,13 +12,13 @@ Arc::Arc(pNode from, pNode to) {
 
 Arc::Arc(int fromId, int toId) {
 	if (fromId >= 0 && toId >= 0) {
-		this->init(Node::Pool.New()->setId(fromId), Node::Pool.New()->setId(toId));
+		this->Init(new Node(fromId), new Node(toId));
 	} else {
 		throw "InvalidArgument";
 	}
 }
 
-void Arc::init(pNode from, pNode to) {
+void Arc::Init(pNode from, pNode to) {
 	this->start = from;
 	this->end = to;
 	this->start->setNext(this->end);

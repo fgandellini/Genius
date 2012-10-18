@@ -5,35 +5,25 @@
 
 namespace Genius {
 
-class Node : public IPoolable {
+class Node {
 private:
 	int id;
 
-//	Node* previous;
+	Node* previous;
 	Node* next;
 
-
-
+	void Init(int id);
 
 public:
-	virtual void Init(void);
-	static MemoryPool<Node, 100> Pool;
-
-//    void *operator new(size_t uiSize) {
-//        return (void*)Node::Pool.New();
-//    }
-//    void  operator delete(void *p) {
-//    	Node::Pool.Delete((Node*)p);
-//    }
-
 	Node();
+	Node(int id);
 	virtual ~Node();
 
 	int getId() const;
 	Node* setId(int id);
 
-//	Node* getPrevious();
-//	void setPrevious(Node* node);
+	Node* getPrevious();
+	void setPrevious(Node* node);
 
 	Node* getNext();
 	void setNext(Node* node);

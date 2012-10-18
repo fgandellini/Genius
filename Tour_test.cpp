@@ -15,20 +15,34 @@ TEST_GROUP(Tour) {
 	}
 };
 
-TEST(Tour, HasAnIncrementalIdWhenCreated) {
+TEST(Tour, WhenCreatedTourIsEmpty) {
+	CHECK(tour->Length() == 0);
+}
+
+TEST(Tour, CanAppendNodes) {
+	CHECK(tour->Append(1));
+	CHECK(tour->Length() == 1);
+}
+
+
+TEST(Tour, ReferencesAreCircular) {
+}
+
+
+IGNORE_TEST(Tour, HasAnIncrementalIdWhenCreated) {
 	pTour firstTour = new Tour();
 	pTour secondTour = new Tour();
-	int expectedSecondTourId = firstTour->getId() + 1;
-	CHECK(secondTour->getId() == expectedSecondTourId);
+//	int expectedSecondTourId = firstTour->getId() + 1;
+//	CHECK(secondTour->getId() == expectedSecondTourId);
 	SAFE_DELETE(firstTour);
 	SAFE_DELETE(secondTour);
 }
 
-TEST(Tour, IsEmptyWhenCreated) {
-	CHECK(tour->Length() == 0);
+IGNORE_TEST(Tour, IsEmptyWhenCreated) {
+//	CHECK(tour->Length() == 0);
 }
 
-TEST(Tour, CanAddAnArc) {
+IGNORE_TEST(Tour, CanAddAnArc) {
 	//tour->add(new Arc((int)0, (int)2));
 	//CHECK(tour->Length() == 2);
 }

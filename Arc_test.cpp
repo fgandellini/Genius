@@ -7,8 +7,7 @@ pArc arc02;
 
 TEST_GROUP(Arc) {
 	void setup() {
-		//arc02 = new Arc(new Node(0), new Node(2));
-		arc02 = new Arc(Node::Pool.New()->setId(0), Node::Pool.New()->setId(2));
+		arc02 = new Arc((new Node())->setId(0), (new Node())->setId(2));
 	}
 
 	void teardown() {
@@ -17,6 +16,7 @@ TEST_GROUP(Arc) {
 };
 
 TEST(Arc, HasTwoNodesWhenCreated) {
+
 	CHECK(arc02->getStart() != NULL);
 	CHECK(arc02->getEnd() != NULL);
 	CHECK(arc02->getStart()->getId() == 0);

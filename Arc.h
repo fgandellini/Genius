@@ -10,7 +10,7 @@ private:
 	pNode start;
 	pNode end;
 
-	void init(pNode from, pNode to);
+	void Init(pNode from, pNode to);
 
 public:
 	Arc(pNode from, pNode to);
