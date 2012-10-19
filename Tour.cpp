@@ -2,18 +2,16 @@
 
 namespace Genius {
 
-Tour::Tour() : nodes(10) {
+Tour::Tour() {
 }
 
 Tour::~Tour() {
 }
 
 int Tour::Length() const {
-	return this->nodes.size();
 }
 
 Tour* Tour::Append(int node) {
-	this->nodes.push_back(node);
 }
 
 

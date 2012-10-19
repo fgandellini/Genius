@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <exception>
 #include <iostream>
+#include <assert.h>
+#include "clist/clist.hpp"
 
 using namespace std;
 

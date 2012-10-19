@@ -2,7 +2,6 @@
 #define TOUR_H_
 
 #include "CommonIncludes.h"
-#include <boost/circular_buffer.hpp>
 
 namespace Genius {
 
@@ -10,7 +9,6 @@ class Tour {
 
 private:
 	int id;
-	boost::circular_buffer<int> nodes;
 
 public:
 

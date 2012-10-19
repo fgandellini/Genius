@@ -15,17 +15,17 @@ TEST_GROUP(Tour) {
 	}
 };
 
-TEST(Tour, WhenCreatedTourIsEmpty) {
+IGNORE_TEST(Tour, WhenCreatedTourIsEmpty) {
 	CHECK(tour->Length() == 0);
 }
 
-TEST(Tour, CanAppendNodes) {
+IGNORE_TEST(Tour, CanAppendNodes) {
 	CHECK(tour->Append(1));
 	CHECK(tour->Length() == 1);
 }
 
 
-TEST(Tour, ReferencesAreCircular) {
+IGNORE_TEST(Tour, ReferencesAreCircular) {
 }
 
 

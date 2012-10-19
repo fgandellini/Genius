@@ -1,4 +1,4 @@
-//#define RUN_TESTS
+#define RUN_TESTS
 #ifndef RUN_TESTS
 
 #include "CommonIncludes.h"
