@@ -25,6 +25,21 @@ TEST_GROUP(Genius) {
 	}
 };
 
+TEST(Genius, GetNextTest) {
+	my_tour->tour.add_element("1");
+	my_tour->tour.add_element("2");
+	my_tour->tour.add_element("3");
+	my_tour->tour.add_element("4");
+	my_tour->tour.add_element("5");
+	my_tour->tour.add_element("6");
+	my_tour->tour.add_element("7");
+	my_tour->tour.add_element("8");
+	my_tour->tour.add_element("9");
+	my_tour->tour.add_element("10");
+
+	STRCMP_EQUAL("3", my_tour->GetNext("2").c_str());
+
+}
 
 TEST(Genius, GoToTest) {
 	my_tour->tour.add_element("1");
@@ -40,14 +55,48 @@ TEST(Genius, GoToTest) {
 
 	my_tour->GoTo("7");
 	STRCMP_EQUAL("7", my_tour->tour.current_element().c_str());
-	STRCMP_EQUAL("8", my_tour->tour.next_element().c_str());
+	STRCMP_EQUAL("7", my_tour->tour.next_element().c_str());
+	STRCMP_EQUAL("7", my_tour->tour.previous_element().c_str());
+	STRCMP_EQUAL("7", my_tour->tour.next_element().c_str());
 	STRCMP_EQUAL("7", my_tour->tour.previous_element().c_str());
 	STRCMP_EQUAL("6", my_tour->tour.previous_element().c_str());
 
 	my_tour->GoTo("4");
 	STRCMP_EQUAL("3", my_tour->tour.previous_element().c_str());
+	STRCMP_EQUAL("3", my_tour->tour.next_element().c_str());
 	STRCMP_EQUAL("4", my_tour->tour.next_element().c_str());
-	STRCMP_EQUAL("5", my_tour->tour.next_element().c_str());
+
+	my_tour->GoTo("8");
+	STRCMP_EQUAL("8", my_tour->tour.next_element().c_str());
+	STRCMP_EQUAL("8", my_tour->tour.previous_element().c_str());
+	STRCMP_EQUAL("7", my_tour->tour.previous_element().c_str());
+}
+
+TEST(Genius, GetSubtourTest) {
+	my_tour->tour.add_element("1");
+	my_tour->tour.add_element("2");
+	my_tour->tour.add_element("3");
+	my_tour->tour.add_element("4");
+	my_tour->tour.add_element("5");
+	my_tour->tour.add_element("6");
+	my_tour->tour.add_element("7");
+	my_tour->tour.add_element("8");
+	my_tour->tour.add_element("9");
+	my_tour->tour.add_element("10");
+
+	data::clist<string> subtour =
+		my_tour->GetSubtour("3", "8");
+
+	STRCMP_EQUAL(
+		"3 => 4 => 5 => 6 => 7 => 8 => 3",
+		my_tour->TourToString(subtour).c_str());
+
+	data::clist<string> rev_subtour =
+			my_tour->GetReversedSubtour("3", "8");
+
+	STRCMP_EQUAL(
+		"8 => 7 => 6 => 5 => 4 => 3 => 8",
+		my_tour->TourToString(rev_subtour).c_str());
 }
 
 TEST(Genius, ShouldInsertNodeInMyTour) {
@@ -150,7 +199,59 @@ TEST(Genius, TestReverse) {
 
 }
 
-IGNORE_TEST(Genius, ShouldInsertNodeInPaperTour) {
+TEST(Genius, ReverseTour) {
+	my_tour->tour.add_element("primo");
+	my_tour->tour.add_element("secondo");
+	my_tour->tour.add_element("terzo");
+	my_tour->tour.add_element("quarto");
+	my_tour->tour.add_element("quinto");
+	my_tour->tour.add_element("sesto");
+
+	STRCMP_EQUAL(
+		"primo => secondo => terzo => quarto => quinto => sesto => primo",
+		my_tour->TourToString().c_str());
+
+	int size = (int)my_tour->tour.size();
+	my_tour->tour.reverse_order(0, size);
+
+	STRCMP_EQUAL(
+		"sesto => quinto => quarto => terzo => secondo => primo => sesto",
+		my_tour->TourToString().c_str());
+
+}
+
+TEST(Genius, ReverseTour2) {
+	my_tour->tour.add_element("1"); // i
+	my_tour->tour.add_element("2");
+	my_tour->tour.add_element("3");
+	my_tour->tour.add_element("4");
+	my_tour->tour.add_element("5");
+	my_tour->tour.add_element("6"); // j
+	my_tour->tour.add_element("7");
+	my_tour->tour.add_element("8");
+	my_tour->tour.add_element("9");
+	my_tour->tour.add_element("10");
+	my_tour->tour.add_element("11"); // k
+	my_tour->tour.add_element("12");
+	my_tour->tour.add_element("13");
+	my_tour->tour.add_element("14");
+	my_tour->tour.add_element("15");
+	my_tour->tour.add_element("16");
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1",
+		my_tour->TourToString().c_str());
+
+	// reverse from j to k
+	my_tour->tour.reverse_order(5, 11); // elemento 5 compreso, 11 escluso
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 11 => 10 => 9 => 8 => 7 => 6 => 12 => 13 => 14 => 15 => 16 => 1",
+		my_tour->TourToString().c_str());
+
+}
+
+TEST(Genius, ShouldInsertNodeInPaperTour) {
 	my_tour->tour.add_element("1"); // i
 	my_tour->tour.add_element("2"); // k
 	my_tour->tour.add_element("3"); // j

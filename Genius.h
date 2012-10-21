@@ -18,11 +18,15 @@ public:
 	void InsertTypeI_old(string v, string vi, string vj, string vk);
 
 	string TourToString();
+	string TourToString(data::clist<string> &tourToPrint);
 
 	void GoTo(string s);
 	string GetNext(string previous);
-	void AddSubtour(data::clist<string> &result, string from, string to);
-	void AddReversedSubtour(data::clist<string> &result, string from, string to);
+
+	data::clist<string> GetSubtour(string from, string to);
+	data::clist<string> GetReversedSubtour(string from, string to);
+	void AddSubtour(data::clist<string> &result, data::clist<string> subtour);
+
 
 	void InsertTypeI(string v, string vi, string vj, string vk);
 

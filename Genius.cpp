@@ -78,51 +78,82 @@ void Genius::GoTo(string s) {
 
 string Genius::GetNext(string previous) {
 	this->GoTo(previous);
+	tour.next_element();
 	string next = tour.next_element();
 	tour.index.set_to_begin();
 	return next;
 }
 
-void Genius::AddSubtour(data::clist<string> &result, string from, string to) {
+data::clist<string> Genius::GetSubtour(string from, string to) {
+	data::clist<string> subtour;
+
 	this->GoTo(from);
+	tour.next_element();
 	string current = from;
 	while (current.compare(to) != 0) {
-		result.add_element(current);
+		subtour.add_element(current);
 		current = tour.next_element();
 	}
-	result.add_element(tour.next_element());
+	subtour.add_element(current);
 	tour.index.set_to_begin();
+
+	return subtour;
 }
 
-void Genius::AddReversedSubtour(data::clist<string> &result, string from, string to) {
-	this->GoTo(from);
-	string current = from;
-	while (current.compare(to) != 0) {
-		result.add_element(current);
+data::clist<string> Genius::GetReversedSubtour(string from, string to) {
+	data::clist<string> subtour;
+
+	this->GoTo(to);
+	string current = to;
+	while (current.compare(from) != 0) {
+		subtour.add_element(current);
 		current = tour.previous_element();
 	}
-	result.add_element(tour.previous_element());
+	subtour.add_element(current);
 	tour.index.set_to_begin();
+
+	return subtour;
+}
+
+void Genius::AddSubtour(data::clist<string> &result, data::clist<string> subtour) {
+	int subtourSize = (int)subtour.size();
+	for (int i=0; i<subtourSize; i++) {
+		result.add_element(subtour[i]);
+	}
 }
 
 void Genius::InsertTypeI(string v, string vi, string vj, string vk) {
 	data::clist<string> result;
 	string current = "";
-	if (this->IsBetween(vk, vj, vi)) {
 
-		string viplus1 = this->GetNext(vi);
-		string vjplus1 = this->GetNext(vj);
-		string vkplus1 = this->GetNext(vk);
-
-		result.add_element(v);
-
-		this->AddReversedSubtour(result, viplus1, vj);
-		this->AddReversedSubtour(result, vjplus1, vk);
-		this->AddSubtour(result, vkplus1, vi);
-
-		tour = result;
+	if (!this->IsBetween(vk, vj, vi)) {
+		int size = (int)tour.size();
+		tour.reverse_order(0, size);
 	}
+
+	string viplus1 = this->GetNext(vi);
+	string vjplus1 = this->GetNext(vj);
+	string vkplus1 = this->GetNext(vk);
+
+	result.add_element(v);
+
+	data::clist<string> subtour_viplus1_vj =
+		this->GetReversedSubtour(viplus1, vj);
+	this->AddSubtour(result, subtour_viplus1_vj);
+
+	data::clist<string> subtour_vjplus1_vk =
+		this->GetReversedSubtour(vjplus1, vk);
+	this->AddSubtour(result, subtour_vjplus1_vk);
+
+	data::clist<string> subtour_vkplus1_vi =
+		this->GetSubtour(vkplus1, vi);
+	this->AddSubtour(result, subtour_vkplus1_vi);
+
+	tour = result;
 }
+
+
+
 
 void Genius::InsertTypeI(string v, int i, int j, int k) {
 	data::clist<string> result;
@@ -245,6 +276,19 @@ string Genius::TourToString() {
 			result.append(tour[i] + " => ");
 		}
 		result.append(tour[0]);
+	}
+	return result;
+}
+
+string Genius::TourToString(data::clist<string> &tourToPrint) {
+	string result = "empty tour!";
+	int size = tourToPrint.size();
+	if (size > 0) {
+		result = "";
+		for (int i=0; i<size; i++) {
+			result.append(tourToPrint[i] + " => ");
+		}
+		result.append(tourToPrint[0]);
 	}
 	return result;
 }
