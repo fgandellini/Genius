@@ -84,6 +84,13 @@ string Genius::GetNext(string previous) {
 	return next;
 }
 
+string Genius::GetPrev(string previous) {
+	this->GoTo(previous);
+	string prev = tour.previous_element();
+	tour.index.set_to_begin();
+	return prev;
+}
+
 data::clist<string> Genius::GetSubtour(string from, string to) {
 	data::clist<string> subtour;
 
@@ -126,6 +133,9 @@ void Genius::InsertTypeI(string v, string vi, string vj, string vk) {
 	data::clist<string> result;
 	string current = "";
 
+	assert(vk.compare(vi) != 0);
+	assert(vk.compare(vj) != 0);
+
 	if (!this->IsBetween(vk, vj, vi)) {
 		int size = (int)tour.size();
 		tour.reverse_order(0, size);
@@ -152,8 +162,46 @@ void Genius::InsertTypeI(string v, string vi, string vj, string vk) {
 	tour = result;
 }
 
+void Genius::InsertTypeII(string v, string vi, string vj, string vk, string vl) {
+	data::clist<string> result;
+	string current = "";
 
+	string viplus1 = this->GetNext(vi);
+	string vjplus1 = this->GetNext(vj);
+	string vkminus1 = this->GetPrev(vk);
+	string vlminus1 = this->GetPrev(vl);
 
+	assert(vk.compare(vj) != 0);
+	assert(vk.compare(vjplus1) != 0);
+	assert(vl.compare(vi) != 0);
+	assert(vl.compare(viplus1) != 0);
+
+	if (!this->IsBetween(vk, vj, vi) ||
+		!this->IsBetween(vl, vi, vj)) {
+		int size = (int)tour.size();
+		tour.reverse_order(0, size);
+	}
+
+	result.add_element(v);
+
+	data::clist<string> subtour_vl_vj =
+		this->GetReversedSubtour(vl, vj);
+	this->AddSubtour(result, subtour_vl_vj);
+
+	data::clist<string> subtour_vjplus1_vkminus1 =
+		this->GetSubtour(vjplus1, vkminus1);
+	this->AddSubtour(result, subtour_vjplus1_vkminus1);
+
+	data::clist<string> subtour_viplus1_vlminus1 =
+		this->GetReversedSubtour(viplus1, vlminus1);
+	this->AddSubtour(result, subtour_viplus1_vlminus1);
+
+	data::clist<string> subtour_vk_vi =
+		this->GetSubtour(vk, vi);
+	this->AddSubtour(result, subtour_vk_vi);
+
+	tour = result;
+}
 
 void Genius::InsertTypeI(string v, int i, int j, int k) {
 	data::clist<string> result;
@@ -243,28 +291,8 @@ bool Genius::IsBetween(string x, string from, string to) {
     	current = tour.next_element();
     }
 
-
     tour.index.set_to_begin();
     return false;
-}
-
-void Genius::InsertTypeI_old(string v, string vi, string vj, string vk) {
-
-	//bool reversed = false;
-	//data::clist<string> result;
-
-	int i = this->FindIndex(vi);
-	int j = this->FindIndex(vj);
-	int k = this->FindIndex(vk);
-
-	assert(k != i);
-	assert(k != j);
-
-	if (this->IsBetween(vk, vj, vi)) {
-		this->InsertTypeI(v, i, j, k);
-	} else {
-		this->InsertTypeIReversed(v, i, j, k);
-	}
 }
 
 string Genius::TourToString() {

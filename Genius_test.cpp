@@ -37,8 +37,28 @@ TEST(Genius, GetNextTest) {
 	my_tour->tour.add_element("9");
 	my_tour->tour.add_element("10");
 
+	STRCMP_EQUAL("2", my_tour->GetNext("1").c_str());
 	STRCMP_EQUAL("3", my_tour->GetNext("2").c_str());
+	STRCMP_EQUAL("1", my_tour->GetNext("10").c_str());
+	STRCMP_EQUAL("7", my_tour->GetNext("6").c_str());
+}
 
+TEST(Genius, GetPrevTest) {
+	my_tour->tour.add_element("1");
+	my_tour->tour.add_element("2");
+	my_tour->tour.add_element("3");
+	my_tour->tour.add_element("4");
+	my_tour->tour.add_element("5");
+	my_tour->tour.add_element("6");
+	my_tour->tour.add_element("7");
+	my_tour->tour.add_element("8");
+	my_tour->tour.add_element("9");
+	my_tour->tour.add_element("10");
+
+	STRCMP_EQUAL("10", my_tour->GetPrev("1").c_str());
+	STRCMP_EQUAL("1", my_tour->GetPrev("2").c_str());
+	STRCMP_EQUAL("9", my_tour->GetPrev("10").c_str());
+	STRCMP_EQUAL("5", my_tour->GetPrev("6").c_str());
 }
 
 TEST(Genius, GoToTest) {
@@ -251,6 +271,39 @@ TEST(Genius, ReverseTour2) {
 
 }
 
+TEST(Genius, TestInsertIIOnMyTour) {
+	my_tour->tour.add_element("1"); // i
+	my_tour->tour.add_element("2");
+	my_tour->tour.add_element("3");
+	my_tour->tour.add_element("4");
+	my_tour->tour.add_element("5");
+	my_tour->tour.add_element("6"); // l
+	my_tour->tour.add_element("7");
+	my_tour->tour.add_element("8");
+	my_tour->tour.add_element("9");
+	my_tour->tour.add_element("10"); // j
+	my_tour->tour.add_element("11");
+	my_tour->tour.add_element("12");
+	my_tour->tour.add_element("13");
+	my_tour->tour.add_element("14");
+	my_tour->tour.add_element("15");
+	my_tour->tour.add_element("16");
+	my_tour->tour.add_element("17"); // k
+	my_tour->tour.add_element("18");
+	my_tour->tour.add_element("19");
+	my_tour->tour.add_element("20");
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
+		my_tour->TourToString().c_str());
+
+	my_tour->InsertTypeII("100", "1", "10", "17", "6");
+
+	STRCMP_EQUAL(
+		"100 => 10 => 9 => 8 => 7 => 6 => 11 => 12 => 13 => 14 => 15 => 16 => 5 => 4 => 3 => 2 => 17 => 18 => 19 => 20 => 1 => 100",
+		my_tour->TourToString().c_str());
+}
+
 TEST(Genius, ShouldInsertNodeInPaperTour) {
 	my_tour->tour.add_element("1"); // i
 	my_tour->tour.add_element("2"); // k
@@ -270,6 +323,24 @@ TEST(Genius, ShouldInsertNodeInPaperTour) {
 
 	STRCMP_EQUAL(
 		"5 => 2 => 3 => 4 => 1 => 5",
+		my_tour->TourToString().c_str());
+
+	my_tour->InsertTypeI("6", "2", "4", "3");
+
+	STRCMP_EQUAL(
+		"6 => 4 => 1 => 5 => 3 => 2 => 6",
+		my_tour->TourToString().c_str());
+
+	my_tour->InsertTypeII("7", "1", "2", "4", "2");
+
+	STRCMP_EQUAL(
+		"7 => 2 => 6 => 3 => 5 => 4 => 1 => 7",
+		my_tour->TourToString().c_str());
+
+	my_tour->InsertTypeII("8", "2", "5", "2", "3");
+
+	STRCMP_EQUAL(
+		"8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
 		my_tour->TourToString().c_str());
 }
 
