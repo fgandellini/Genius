@@ -16,61 +16,6 @@ Genius::Genius() : tour() {
 Genius::~Genius() {
 }
 
-void Genius::InsertTypeIReversed(string v, int i, int j, int k) {
-	data::clist<string> result;
-	tour.h_first_element();
-
-	tour.h_get_element(i);
-	tour.previous_element();
-	string iplus1 = tour.previous_element();
-	tour.h_first_element();
-
-	tour.h_get_element(j);
-	tour.previous_element();
-	string jplus1 = tour.previous_element();
-	tour.h_first_element();
-
-	tour.h_get_element(k);
-	tour.previous_element();
-	string kplus1 = tour.previous_element();
-	tour.h_first_element();
-
-	// v
-	result.add_element(v);
-
-	// j => i+1
-	string current = tour.h_get_element(j);
-	while(current.compare(iplus1) != 0) {
-		result.add_element(current);
-		current = tour.next_element();
-	}
-	result.add_element(iplus1);
-	tour.h_first_element();
-
-	// k => j+1
-	current = tour.h_get_element(k);
-	while(current.compare(jplus1) != 0) {
-		result.add_element(current);
-		current = tour.next_element();
-	}
-	result.add_element(jplus1);
-	tour.h_first_element();
-
-	// k+1 => i
-	string element_i = tour.get_element(i);
-	tour.h_get_element(k);
-	tour.previous_element();
-	current = tour.previous_element();
-	while(current.compare(element_i) != 0) {
-		result.add_element(current);
-		current = tour.previous_element();
-	}
-	result.add_element(element_i);
-	tour.h_first_element();
-
-	tour = result;
-}
-
 void Genius::GoTo(string s) {
 	tour.index.set_to_begin();
 	tour.h_get_element(tour.find(s));
@@ -199,61 +144,6 @@ void Genius::InsertTypeII(string v, string vi, string vj, string vk, string vl) 
 	data::clist<string> subtour_vk_vi =
 		this->GetSubtour(vk, vi);
 	this->AddSubtour(result, subtour_vk_vi);
-
-	tour = result;
-}
-
-void Genius::InsertTypeI(string v, int i, int j, int k) {
-	data::clist<string> result;
-	tour.h_first_element();
-
-	tour.h_get_element(i);
-	tour.next_element();
-	string iplus1 = tour.next_element();
-	tour.h_first_element();
-
-	tour.h_get_element(j);
-	tour.next_element();
-	string jplus1 = tour.next_element();
-	tour.h_first_element();
-
-	tour.h_get_element(k);
-	tour.next_element();
-	string kplus1 = tour.next_element();
-	tour.h_first_element();
-
-	// v
-	result.add_element(v);
-
-	// j => i+1
-	string current = tour.h_get_element(j);
-	while(current.compare(iplus1) != 0) {
-		result.add_element(current);
-		current = tour.previous_element();
-	}
-	result.add_element(iplus1);
-	tour.h_first_element();
-
-	// k => j+1
-	current = tour.h_get_element(k);
-	while(current.compare(jplus1) != 0) {
-		result.add_element(current);
-		current = tour.previous_element();
-	}
-	result.add_element(jplus1);
-	tour.h_first_element();
-
-	// k+1 => i
-	string element_i = tour.get_element(i);
-	tour.h_get_element(k);
-	tour.next_element();
-	current = tour.next_element();
-	while(current.compare(element_i) != 0) {
-		result.add_element(current);
-		current = tour.next_element();
-	}
-	result.add_element(element_i);
-	tour.h_first_element();
 
 	tour = result;
 }

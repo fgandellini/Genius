@@ -12,9 +12,6 @@ public:
 	Genius();
 	virtual ~Genius();
 
-	void InsertTypeI(string v, int i, int j, int k);
-	void InsertTypeIReversed(string v, int i, int j, int k);
-
 	string TourToString();
 	string TourToString(data::clist<string> &tourToPrint);
 
