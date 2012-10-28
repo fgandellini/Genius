@@ -1,10 +1,3 @@
-/*
- * Genius_test.cpp
- *
- *  Created on: 19/ott/2012
- *      Author: fede
- */
-
 #include "Genius.h"
 #include <CppUTest/TestHarness.h>
 

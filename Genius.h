@@ -26,6 +26,8 @@ public:
 	void InsertTypeI(string v, string vi, string vj, string vk);
 	void InsertTypeII(string v, string vi, string vj, string vk, string vl);
 
+	void Geni(vector<string> &nodesToVisit);
+
 	int FindIndex(string s);
 	bool IsBetween(string x, string from, string to);
 };

@@ -1,10 +1,3 @@
-/*
- * Genius.cpp
- *
- *  Created on: 19/ott/2012
- *      Author: fede
- */
-
 #include "Genius.h"
 
 namespace Genius {
@@ -146,6 +139,11 @@ void Genius::InsertTypeII(string v, string vi, string vj, string vk, string vl) 
 	this->AddSubtour(result, subtour_vk_vi);
 
 	tour = result;
+}
+
+void Genius::Geni(vector<string> &nodesToVisit) {
+
+
 }
 
 int Genius::FindIndex(string s) {

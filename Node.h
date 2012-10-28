@@ -6,33 +6,25 @@
 namespace Genius {
 
 class Node {
-private:
-	int id;
 
-	Node* previous;
-	Node* next;
-
-	void Init(int id);
+//	friend bool operator==(const Node &first, const Node &second);
+//	friend bool operator!=(const Node &first, const Node &second);
 
 public:
-	Node();
-	Node(int id);
+	int Id;
+	double X;
+	double Y;
+
+	Node(int id, double x, double y);
 	virtual ~Node();
 
-	int getId() const;
-	Node* setId(int id);
+	string ToString();
 
-	Node* getPrevious();
-	void setPrevious(Node* node);
+	operator int();
 
-	Node* getNext();
-	void setNext(Node* node);
-
-	static const int ID_UNKNOWN = -1;
+	int Compare(Node* node) const;
 };
 typedef Node* pNode;
-typedef vector<pNode> Nodes;
-typedef Nodes* pNodes;
 
 } /* namespace Genius */
 #endif /* NODE_H_ */

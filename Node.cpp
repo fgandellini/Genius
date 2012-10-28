@@ -2,46 +2,32 @@
 
 namespace Genius {
 
-Node::Node() {
-	this->Init(ID_UNKNOWN);
-}
+//bool operator==(const Node &first, const Node &second) {
+//	return first.Id == second.Id;
+//}
+//
+//bool operator!=(const Node &first, const Node &second) {
+//	return first.Id != second.Id;
+//}
 
-Node::Node(int id) {
-	this->Init(id);
+Node::Node(int id, double x, double y) {
+	this->Id = id;
+	this->X = x;
+	this->Y = y;
 }
 
 Node::~Node() {
+
 }
 
-void Node::Init(int id) {
-	this->setPrevious(NULL);
-	this->setNext(NULL);
-	this->setId(id);
+string Node::ToString() {
+	ostringstream convert;
+	convert << this->Id;
+	return convert.str();
 }
 
-int Node::getId() const {
-	return this->id;
-}
-
-pNode Node::setId(int id) {
-	this->id = id;
-	return this;
-}
-
-pNode Node::getPrevious() {
-	return this->previous;
-}
-
-void Node::setPrevious(pNode node) {
-	this->previous = node;
-}
-
-pNode Node::getNext() {
-	return this->next;
-}
-
-void Node::setNext(pNode node) {
-	this->next = node;
+int Node::Compare(Node* node) const {
+	return (this->Id == node->Id) ? 0 : ((this->Id > node->Id) ? 1 : -1);
 }
 
 } /* namespace Genius */
