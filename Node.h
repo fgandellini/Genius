@@ -20,11 +20,15 @@ public:
 
 	string ToString();
 
-	operator int();
+	//operator int();
 
 	int Compare(Node* node) const;
+	double DistanceFrom(Node* node);
 };
 typedef Node* pNode;
+
+typedef vector<pNode> Instance;
+typedef Instance* pInstance;
 
 } /* namespace Genius */
 #endif /* NODE_H_ */

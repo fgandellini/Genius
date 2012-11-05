@@ -32,6 +32,10 @@ void Tour::Append(pNode node) {
 	this->nodes.add_element(node);
 }
 
+void Tour::ResetIterator() {
+	this->nodes.index.set_to_begin();
+}
+
 pNode Tour::Current() {
 	return this->nodes.current_element();
 }
@@ -110,6 +114,10 @@ bool Tour::IsBetween(pNode x, pNode from, pNode to) {
     return false;
 }
 
+void Tour::Reverse() {
+	this->nodes.reverse_order();
+}
+
 data::clist<pNode> Tour::GetSubtour(pNode from, pNode to) {
 	data::clist<pNode> subtour;
 
@@ -150,6 +158,182 @@ void Tour::AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result) {
 	}
 }
 
+double Tour::CalcSubtourDistance(pNode from, pNode to) {
+	double subtourDistance = 0;
+	double dist;
+
+	cout << "subtour ("<< from->Id << "=>" << to->Id << "): ";
+
+	if (from->Id != to->Id)
+	{
+		this->GoTo(from);
+		pNode current = this->Current();
+		this->Next();
+		pNode next = this->Next();
+
+		while (next->Id != to->Id) {
+			dist = current->DistanceFrom(next);
+			subtourDistance += dist;
+			cout << current->Id << " ==[" << dist << "]==> ";
+			current = next;
+			next = this->Next();
+		}
+		dist = current->DistanceFrom(next);
+		subtourDistance += dist;
+		cout << current->Id << " ==[" << dist << "]==> " << next->Id << " ";
+		this->ResetIterator();
+	}
+
+	cout << "= +" << subtourDistance << endl;
+	return subtourDistance;
+}
+
+double Tour::CalcReversedSubtourDistance(pNode from, pNode to) {
+	double subtourDistance = 0;
+	double dist;
+
+	cout << "rev subtour ("<< from->Id << "=>" << to->Id << "): ";
+
+	if (from->Id != to->Id)
+	{
+		this->GoTo(from);
+		pNode current = this->Current();
+		pNode previous = this->Previous();
+
+		while (previous->Id != to->Id) {
+			dist = current->DistanceFrom(previous);
+			subtourDistance += dist;
+			cout << current->Id << " ==[" << dist << "]==> ";
+			current = previous;
+			previous = this->Previous();
+		}
+		dist = current->DistanceFrom(previous);
+		subtourDistance += dist;
+		cout << current->Id << " ==[" << dist << "]==> " << previous->Id << " ";
+		this->ResetIterator();
+	}
+
+	cout << "= +" << subtourDistance << endl;
+	return subtourDistance;
+}
+
+double Tour::EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
+	double tourDistance = 0;
+	double dist = 0;
+	bool tourHasBeenReversed = false;
+	cout << endl;
+
+	assert(vk->Id != vi->Id);
+	assert(vk->Id != vj->Id);
+
+	if (!this->IsBetween(vk, vj, vi)) {
+		cout << "tour reversed!" << endl;
+		this->Reverse();
+		tourHasBeenReversed = true;
+	}
+
+	pNode viplus1 = this->Next(vi);
+	pNode vjplus1 = this->Next(vj);
+	pNode vkplus1 = this->Next(vk);
+
+	dist = v->DistanceFrom(vj);
+	tourDistance += dist;
+	cout << v->Id << "->" << vj->Id << " = +" << dist << endl;
+
+	dist = this->CalcSubtourDistance(vj, viplus1);
+	tourDistance += dist;
+//	cout << vj->Id << "->...->" << viplus1->Id << " = +" << dist << endl;
+
+	dist = viplus1->DistanceFrom(vk);
+	tourDistance += dist;
+	cout << viplus1->Id << "->" << vk->Id << " = +" << dist << endl;
+
+	dist = this->CalcSubtourDistance(vk, vjplus1);
+	tourDistance += dist;
+//	cout << vk->Id << "->...->" << vjplus1->Id << " = +" << dist << endl;
+
+	dist = vjplus1->DistanceFrom(vkplus1);
+	tourDistance += dist;
+	cout << vjplus1->Id << "->" << vkplus1->Id << " = +" << dist << endl;
+
+	dist = this->CalcSubtourDistance(vkplus1, vi);
+	tourDistance += dist;
+//	cout << vkplus1->Id << "->...->" << vi->Id << " = +" << dist << endl;
+
+	dist = vi->DistanceFrom(v);
+	tourDistance += dist;
+	cout << vi->Id << "->" << v->Id << " = +" << dist << endl;
+
+	cout << "TOTAL = " << tourDistance << endl;
+
+	if (tourHasBeenReversed) {
+		this->Reverse();
+	}
+	this->ResetIterator();
+
+	return tourDistance;
+}
+
+double Tour::EvaluateReversedInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
+	double tourDistance = 0;
+	double dist = 0;
+	bool tourHasBeenReversed = false;
+	cout << endl;
+
+	assert(vk->Id != vi->Id);
+	assert(vk->Id != vj->Id);
+
+	if (!this->IsBetween(vk, vj, vi)) {
+		cout << "tour reversed!" << endl;
+		this->Reverse();
+		tourHasBeenReversed = true;
+	}
+
+	pNode viplus1 = this->Next(vi);
+	pNode vjplus1 = this->Next(vj);
+	pNode vkplus1 = this->Next(vk);
+
+	dist = v->DistanceFrom(vj);
+	tourDistance += dist;
+	cout << v->Id << "->" << vj->Id << " = +" << dist << endl;
+
+	dist = this->CalcReversedSubtourDistance(vj, viplus1);
+	tourDistance += dist;
+//	cout << vj->Id << "->...->" << viplus1->Id << " = +" << dist << endl;
+
+	dist = viplus1->DistanceFrom(vk);
+	tourDistance += dist;
+	cout << viplus1->Id << "->" << vk->Id << " = +" << dist << endl;
+
+	dist = this->CalcReversedSubtourDistance(vk, vjplus1);
+	tourDistance += dist;
+//	cout << vk->Id << "->...->" << vjplus1->Id << " = +" << dist << endl;
+
+	dist = vjplus1->DistanceFrom(vkplus1);
+	tourDistance += dist;
+	cout << vjplus1->Id << "->" << vkplus1->Id << " = +" << dist << endl;
+
+	dist = this->CalcReversedSubtourDistance(vkplus1, vi);
+	tourDistance += dist;
+//	cout << vkplus1->Id << "->...->" << vi->Id << " = +" << dist << endl;
+
+	dist = vi->DistanceFrom(v);
+	tourDistance += dist;
+	cout << vi->Id << "->" << v->Id << " = +" << dist << endl;
+
+	cout << "TOTAL = " << tourDistance << endl;
+
+	if (tourHasBeenReversed) {
+		this->Reverse();
+	}
+	this->ResetIterator();
+
+	return tourDistance;
+}
+
+
+//double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+
 void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	data::clist<pNode> result;
 
@@ -157,7 +341,7 @@ void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	assert(vk->Id != vj->Id);
 
 	if (!this->IsBetween(vk, vj, vi)) {
-		this->nodes.reverse_order();
+		this->Reverse();
 	}
 
 	pNode viplus1 = this->Next(vi);
@@ -220,19 +404,6 @@ void Tour::InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl) {
 	this->nodes = result;
 }
 
-double Tour::CalcDistance(pNode first, pNode second) {
-	double xi = first->X;
-	double yi = first->Y;
-	double xj = second->X;
-	double yj = second->Y;
-
-	double xx = ( (xi - xj) * (xi - xj) );
-	double yy = ( (yi - yj) * (yi - yj) );
-	double d = sqrt(xx + yy);
-
-	return d;
-}
-
 double Tour::TotalDistance() {
 	double totalDistance = 0.0;
 	int tourLen = this->Length();
@@ -241,11 +412,11 @@ double Tour::TotalDistance() {
 		pNode second;
 		for (int i=1; i<tourLen; i++) {
 			second = this->nodes[i];
-			totalDistance += this->CalcDistance(first, second);
+			totalDistance += first->DistanceFrom(second);
 			first = second;
 		}
 		second = this->nodes[0];
-		totalDistance += this->CalcDistance(first, second);
+		totalDistance += first->DistanceFrom(second);
 	}
 	return totalDistance;
 }
@@ -257,8 +428,6 @@ list<pNode> Tour::GetNodesByDistanceFrom(pNode referenceNode) {
 }
 
 void Tour::BuildNeighborhoods(int size) {
-
-
 }
 
 string Tour::ToString() {

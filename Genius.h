@@ -2,6 +2,7 @@
 #define GENIUS_H_
 
 #include "CommonIncludes.h"
+#include "Tour.h"
 
 namespace Genius {
 
@@ -10,8 +11,12 @@ public:
 	Genius();
 	virtual ~Genius();
 
-	void Geni(vector<string> &nodesToVisit);
+	void Geni(pInstance nodesToVisit);
+
+	void Add(pNode node, pTour tour);
 };
+typedef Genius* pGenius;
+
 
 } /* namespace Genius */
 #endif /* GENIUS_H_ */

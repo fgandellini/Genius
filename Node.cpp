@@ -30,4 +30,17 @@ int Node::Compare(Node* node) const {
 	return (this->Id == node->Id) ? 0 : ((this->Id > node->Id) ? 1 : -1);
 }
 
+double Node::DistanceFrom(Node* node) {
+	double xi = this->X;
+	double yi = this->Y;
+	double xj = node->X;
+	double yj = node->Y;
+
+	double xx = ( (xi - xj) * (xi - xj) );
+	double yy = ( (yi - yj) * (yi - yj) );
+	double d = sqrt(xx + yy);
+
+	return d;
+}
+
 } /* namespace Genius */

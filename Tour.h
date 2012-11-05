@@ -21,7 +21,7 @@ public:
 	void Append(pNode node);
 	void GoTo(pNode node);
 
-
+	void ResetIterator();
 	pNode Current();
 	pNode Next();
 	pNode Next(pNode node);
@@ -34,17 +34,23 @@ public:
 	int GetIndex(pNode node);
 	bool IsBetween(pNode x, pNode from, pNode to);
 
+	void Reverse();
+
+	double CalcSubtourDistance(pNode from, pNode to);
+	double CalcReversedSubtourDistance(pNode from, pNode to);
+
+	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
+	double EvaluateReversedInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
+	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+	double EvaluateReversedInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+
 	data::clist<pNode> GetSubtour(pNode from, pNode to);
 	data::clist<pNode> GetReversedSubtour(pNode from, pNode to);
 	void AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result);
 
-	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
-	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
-
 	void InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 	void InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
 
-	double CalcDistance(pNode first, pNode second);
 	double TotalDistance();
 
 	list<pNode> GetNodesByDistanceFrom(pNode referenceNode);
