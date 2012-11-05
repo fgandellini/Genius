@@ -21,12 +21,14 @@ public:
 	void Append(pNode node);
 	void GoTo(pNode node);
 
+
 	pNode Current();
 	pNode Next();
 	pNode Next(pNode node);
 	pNode Previous();
 	pNode Previous(pNode node);
 
+	pNode Get(int position);
 	void DeleteAt(int position);
 
 	int GetIndex(pNode node);

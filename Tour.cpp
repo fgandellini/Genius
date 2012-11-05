@@ -64,6 +64,10 @@ pNode Tour::Previous(pNode node) {
 	return prev;
 }
 
+pNode Tour::Get(int position) {
+	return this->nodes.get_element(position);
+}
+
 void Tour::DeleteAt(int position) {
 	pNode nodeToDelete = this->nodes.get_element(position);
 	SAFE_DELETE(nodeToDelete);

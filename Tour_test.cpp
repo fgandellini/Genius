@@ -3,7 +3,7 @@
 
 namespace Genius {
 
-pTour paper_tourz;
+pTour paper_tour;
 pTour ten_nodes_tour;
 pTour long_tour;
 pTour long_long_tour;
@@ -14,15 +14,15 @@ pNode x;
 
 TEST_GROUP(Tour) {
 	void setup() {
-		paper_tourz = new Tour();
-		paper_tourz->Append(new Node(1, 21.8, 72.8));
-		paper_tourz->Append(new Node(2, 31.5, 10.8));
-		paper_tourz->Append(new Node(3, 16.3, 13.7));
-		paper_tourz->Append(new Node(4,  3.7, 54.8));
-		paper_tourz->Append(new Node(5, 21.0, 21.7));
-		paper_tourz->Append(new Node(6, 69.3,  1.3));
-		paper_tourz->Append(new Node(7, 40.8, 60.1));
-		paper_tourz->Append(new Node(8, 27.8, 26.2));
+		paper_tour = new Tour();
+		paper_tour->Append(new Node(1, 21.8, 72.8));
+		paper_tour->Append(new Node(2, 31.5, 10.8));
+		paper_tour->Append(new Node(3, 16.3, 13.7));
+		paper_tour->Append(new Node(4,  3.7, 54.8));
+		paper_tour->Append(new Node(5, 21.0, 21.7));
+		paper_tour->Append(new Node(6, 69.3,  1.3));
+		paper_tour->Append(new Node(7, 40.8, 60.1));
+		paper_tour->Append(new Node(8, 27.8, 26.2));
 
 		ten_nodes_tour = new Tour();
 		ten_nodes_tour->Append(new Node(1,  0, 0));
@@ -83,10 +83,10 @@ TEST_GROUP(Tour) {
 	}
 
 	void teardown() {
-		for (int i=0; i<paper_tourz->Length(); i++) {
-			paper_tourz->DeleteAt(i);
+		for (int i=0; i<paper_tour->Length(); i++) {
+			paper_tour->DeleteAt(i);
 		}
-		SAFE_DELETE(paper_tourz);
+		SAFE_DELETE(paper_tour);
 
 		for (int i=0; i<ten_nodes_tour->Length(); i++) {
 			ten_nodes_tour->DeleteAt(i);
@@ -112,25 +112,25 @@ TEST_GROUP(Tour) {
 
 TEST(Tour, GoToNodeTest) {
 	reference->Id = 7;
-	paper_tourz->GoTo(reference);
-	CHECK(paper_tourz->nodes.current_element()->Id == 7);
-	CHECK(paper_tourz->nodes.next_element()->Id == 7);
-	CHECK(paper_tourz->nodes.previous_element()->Id == 7);
-	CHECK(paper_tourz->nodes.next_element()->Id == 7);
-	CHECK(paper_tourz->nodes.previous_element()->Id == 7);
-	CHECK(paper_tourz->nodes.previous_element()->Id == 6);
+	paper_tour->GoTo(reference);
+	CHECK(paper_tour->nodes.current_element()->Id == 7);
+	CHECK(paper_tour->nodes.next_element()->Id == 7);
+	CHECK(paper_tour->nodes.previous_element()->Id == 7);
+	CHECK(paper_tour->nodes.next_element()->Id == 7);
+	CHECK(paper_tour->nodes.previous_element()->Id == 7);
+	CHECK(paper_tour->nodes.previous_element()->Id == 6);
 
 	reference->Id = 4;
-	paper_tourz->GoTo(reference);
-	CHECK(paper_tourz->nodes.previous_element()->Id == 3);
-	CHECK(paper_tourz->nodes.next_element()->Id == 3);
-	CHECK(paper_tourz->nodes.next_element()->Id == 4);
+	paper_tour->GoTo(reference);
+	CHECK(paper_tour->nodes.previous_element()->Id == 3);
+	CHECK(paper_tour->nodes.next_element()->Id == 3);
+	CHECK(paper_tour->nodes.next_element()->Id == 4);
 
 	reference->Id = 8;
-	paper_tourz->GoTo(reference);
-	CHECK(paper_tourz->nodes.next_element()->Id == 8);
-	CHECK(paper_tourz->nodes.previous_element()->Id == 8);
-	CHECK(paper_tourz->nodes.previous_element()->Id == 7);
+	paper_tour->GoTo(reference);
+	CHECK(paper_tour->nodes.next_element()->Id == 8);
+	CHECK(paper_tour->nodes.previous_element()->Id == 8);
+	CHECK(paper_tour->nodes.previous_element()->Id == 7);
 }
 
 TEST(Tour, GetNextTest) {
@@ -303,6 +303,63 @@ TEST(Tour, InsertTypeIITest_LongTour) {
 	SAFE_DELETE(vk);
 	SAFE_DELETE(vl);
 }
+
+TEST(Tour, SolvePaperTourTest) {
+	pNode v, vi, vj, vk, vl;
+
+	pTour paperTour = new Tour();
+	paperTour->Append(paper_tour->Get(0)); // nodo "1" (i)
+	paperTour->Append(paper_tour->Get(1)); // nodo "2" (j)
+	paperTour->Append(paper_tour->Get(2)); // nodo "3" (k)
+
+	STRCMP_EQUAL("1 => 2 => 3 => 1",
+		paperTour->ToString().c_str());
+
+	v  = paper_tour->Get(3); // nodo "4"
+	vi = paperTour->Get(0); // nodo "1"
+	vj = paperTour->Get(2); // nodo "3"
+	vk = paperTour->Get(1); // nodo "2"
+	paperTour->InsertTypeI(v, vi, vj, vk);
+	STRCMP_EQUAL("4 => 3 => 2 => 1 => 4",
+		paperTour->ToString().c_str());
+
+	v  = paper_tour->Get(4); // nodo "5"
+	vi = paperTour->Get(3); // nodo "1"
+	vj = paperTour->Get(2); // nodo "2"
+	vk = paperTour->Get(1); // nodo "3"
+	paperTour->InsertTypeI(v, vi, vj, vk);
+	STRCMP_EQUAL("5 => 2 => 3 => 4 => 1 => 5",
+		paperTour->ToString().c_str());
+
+	v  = paper_tour->Get(5); // nodo "6"
+	vi = paperTour->Get(1); // nodo "2"
+	vj = paperTour->Get(3); // nodo "4"
+	vk = paperTour->Get(2); // nodo "3"
+	paperTour->InsertTypeI(v, vi, vj, vk);
+	STRCMP_EQUAL("6 => 4 => 1 => 5 => 3 => 2 => 6",
+		paperTour->ToString().c_str());
+
+	v  = paper_tour->Get(6); // nodo "7"
+	vi = paperTour->Get(2); // nodo "1"
+	vj = paperTour->Get(5); // nodo "2"
+	vk = paperTour->Get(1); // nodo "4"
+	vl = paperTour->Get(5); // nodo "2"
+	paperTour->InsertTypeII(v, vi, vj, vk, vl);
+	STRCMP_EQUAL("7 => 2 => 6 => 3 => 5 => 4 => 1 => 7",
+		paperTour->ToString().c_str());
+
+	v  = paper_tour->Get(7); // nodo "8"
+	vi = paperTour->Get(1); // nodo "2"
+	vj = paperTour->Get(4); // nodo "5"
+	vk = paperTour->Get(1); // nodo "2"
+	vl = paperTour->Get(3); // nodo "3"
+	paperTour->InsertTypeII(v, vi, vj, vk, vl);
+	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
+		paperTour->ToString().c_str());
+
+	SAFE_DELETE(paperTour);
+}
+
 
 
 TEST(Tour, TotalDistanceTest) {
