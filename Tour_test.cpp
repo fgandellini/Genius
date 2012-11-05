@@ -6,6 +6,7 @@ namespace Genius {
 pTour paper_tourz;
 pTour ten_nodes_tour;
 pTour long_tour;
+pTour long_long_tour;
 pNode reference;
 pNode from;
 pNode to;
@@ -53,6 +54,28 @@ TEST_GROUP(Tour) {
 		long_tour->Append(new Node(15, 0, 0));
 		long_tour->Append(new Node(16, 0, 0));
 
+		long_long_tour = new Tour();
+		long_long_tour->Append(new Node(1,  0, 0));
+		long_long_tour->Append(new Node(2,  0, 0));
+		long_long_tour->Append(new Node(3,  0, 0));
+		long_long_tour->Append(new Node(4,  0, 0));
+		long_long_tour->Append(new Node(5,  0, 0));
+		long_long_tour->Append(new Node(6,  0, 0));
+		long_long_tour->Append(new Node(7,  0, 0));
+		long_long_tour->Append(new Node(8,  0, 0));
+		long_long_tour->Append(new Node(9,  0, 0));
+		long_long_tour->Append(new Node(10, 0, 0));
+		long_long_tour->Append(new Node(11, 0, 0));
+		long_long_tour->Append(new Node(12, 0, 0));
+		long_long_tour->Append(new Node(13, 0, 0));
+		long_long_tour->Append(new Node(14, 0, 0));
+		long_long_tour->Append(new Node(15, 0, 0));
+		long_long_tour->Append(new Node(16, 0, 0));
+		long_long_tour->Append(new Node(17, 0, 0));
+		long_long_tour->Append(new Node(18, 0, 0));
+		long_long_tour->Append(new Node(19, 0, 0));
+		long_long_tour->Append(new Node(20, 0, 0));
+
 		reference = new Node(0, 0, 0);
 		from = new Node(0, 0, 0);
 		to = new Node(0, 0, 0);
@@ -74,6 +97,11 @@ TEST_GROUP(Tour) {
 			long_tour->DeleteAt(i);
 		}
 		SAFE_DELETE(long_tour);
+
+		for (int i=0; i<long_long_tour->Length(); i++) {
+			long_long_tour->DeleteAt(i);
+		}
+		SAFE_DELETE(long_long_tour);
 
 		SAFE_DELETE(reference);
 		SAFE_DELETE(from);
@@ -249,6 +277,33 @@ TEST(Tour, InsertTypeITest_LongTour) {
 	SAFE_DELETE(vj);
 	SAFE_DELETE(vk);
 }
+
+TEST(Tour, InsertTypeIITest_LongTour) {
+	pNode v  = new Node(0, 0, 0);
+	pNode vi = new Node(0, 0, 0);
+	pNode vj = new Node(0, 0, 0);
+	pNode vk = new Node(0, 0, 0);
+	pNode vl = new Node(0, 0, 0);
+
+	STRCMP_EQUAL("1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
+		long_long_tour->ToString().c_str());
+
+	v->Id = 100;
+	vi->Id = 1;
+	vj->Id = 10;
+	vk->Id = 17;
+	vl->Id = 6;
+	long_long_tour->InsertTypeII(v, vi, vj, vk, vl);
+
+	STRCMP_EQUAL("100 => 10 => 9 => 8 => 7 => 6 => 11 => 12 => 13 => 14 => 15 => 16 => 5 => 4 => 3 => 2 => 17 => 18 => 19 => 20 => 1 => 100",
+		long_long_tour->ToString().c_str());
+
+	SAFE_DELETE(vi);
+	SAFE_DELETE(vj);
+	SAFE_DELETE(vk);
+	SAFE_DELETE(vl);
+}
+
 
 TEST(Tour, TotalDistanceTest) {
 	pTour smal_ltour = new Tour();

@@ -40,7 +40,7 @@ public:
 	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
 
 	void InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
-//	void InsertTypeII(string v, string vi, string vj, string vk, string vl);
+	void InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
 
 	double CalcDistance(pNode first, pNode second);
 	double TotalDistance();

@@ -110,9 +110,6 @@ data::clist<pNode> Tour::GetSubtour(pNode from, pNode to) {
 	data::clist<pNode> subtour;
 
 	this->GoTo(from);
-	//this->nodes.next_element();
-	//pNode current = from;
-
 	pNode current = this->Current();
 	this->nodes.next_element();
 
@@ -130,8 +127,6 @@ data::clist<pNode> Tour::GetReversedSubtour(pNode from, pNode to) {
 	data::clist<pNode> subtour;
 
 	this->GoTo(to);
-	//pNode current = to;
-
 	pNode current = this->Current();
 
 	while (current->Id != from->Id) {
@@ -179,52 +174,47 @@ void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 		this->GetSubtour(vkplus1, vi);
 	this->AddSubtour(subtour_vkplus1_vi, result);
 
-
 	this->nodes = result;
 }
 
+void Tour::InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl) {
+	data::clist<pNode> result;
 
+	pNode viplus1 = this->Next(vi);
+	pNode vjplus1 = this->Next(vj);
+	pNode vkminus1 = this->Previous(vk);
+	pNode vlminus1 = this->Previous(vl);
 
-//void Genius::InsertTypeII(string v, string vi, string vj, string vk, string vl) {
-//	data::clist<string> result;
-//	string current = "";
-//
-//	string viplus1 = this->GetNext(vi);
-//	string vjplus1 = this->GetNext(vj);
-//	string vkminus1 = this->GetPrev(vk);
-//	string vlminus1 = this->GetPrev(vl);
-//
-//	assert(vk.compare(vj) != 0);
-//	assert(vk.compare(vjplus1) != 0);
-//	assert(vl.compare(vi) != 0);
-//	assert(vl.compare(viplus1) != 0);
-//
-//	if (!this->IsBetween(vk, vj, vi) ||
-//		!this->IsBetween(vl, vi, vj)) {
-//		int size = (int)tour.size();
-//		tour.reverse_order(0, size);
-//	}
-//
-//	result.add_element(v);
-//
-//	data::clist<string> subtour_vl_vj =
-//		this->GetReversedSubtour(vl, vj);
-//	this->AddSubtour(result, subtour_vl_vj);
-//
-//	data::clist<string> subtour_vjplus1_vkminus1 =
-//		this->GetSubtour(vjplus1, vkminus1);
-//	this->AddSubtour(result, subtour_vjplus1_vkminus1);
-//
-//	data::clist<string> subtour_viplus1_vlminus1 =
-//		this->GetReversedSubtour(viplus1, vlminus1);
-//	this->AddSubtour(result, subtour_viplus1_vlminus1);
-//
-//	data::clist<string> subtour_vk_vi =
-//		this->GetSubtour(vk, vi);
-//	this->AddSubtour(result, subtour_vk_vi);
-//
-//	tour = result;
-//}
+	assert(vk->Id != vj->Id);
+	assert(vk->Id != vjplus1->Id);
+	assert(vl->Id != vi->Id);
+	assert(vl->Id != viplus1->Id);
+
+	if (!this->IsBetween(vk, vj, vi) ||
+		!this->IsBetween(vl, vi, vj)) {
+		this->nodes.reverse_order();
+	}
+
+	result.add_element(v);
+
+	data::clist<pNode> subtour_vl_vj =
+		this->GetReversedSubtour(vl, vj);
+	this->AddSubtour(subtour_vl_vj, result);
+
+	data::clist<pNode> subtour_vjplus1_vkminus1 =
+		this->GetSubtour(vjplus1, vkminus1);
+	this->AddSubtour(subtour_vjplus1_vkminus1, result);
+
+	data::clist<pNode> subtour_viplus1_vlminus1 =
+		this->GetReversedSubtour(viplus1, vlminus1);
+	this->AddSubtour(subtour_viplus1_vlminus1, result);
+
+	data::clist<pNode> subtour_vk_vi =
+		this->GetSubtour(vk, vi);
+	this->AddSubtour(subtour_vk_vi, result);
+
+	this->nodes = result;
+}
 
 double Tour::CalcDistance(pNode first, pNode second) {
 	double xi = first->X;
