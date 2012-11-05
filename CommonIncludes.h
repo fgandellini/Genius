@@ -1,4 +1,5 @@
 #include <vector>
+#include <list>
 #include <cstring>
 #include <string>
 #include <sstream>
@@ -6,6 +7,7 @@
 #include <exception>
 #include <iostream>
 #include <assert.h>
+#include <math.h>
 #include "clist/clist.hpp"
 
 using namespace std;

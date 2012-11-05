@@ -6,16 +6,22 @@ static bool CompareNodes(const pNode first, const int second) {
 	return first->Id == second;
 }
 
+//pNode referenceNode;
+//bool CompareNodesByDistance (const pNode first, const int second) {
+//	if (referenceNode )
+//
+//}
+
 Tour::Tour() : nodes() {
 	this->Id = 0;
 }
 
 Tour::~Tour() {
-	int length = this->Length();
-	for (int i=0; i<length; i++) {
-		SAFE_DELETE(this->nodes[i]);
-	}
-	this->nodes.clear_all();
+//	int length = this->Length();
+//	for (int i=0; i<length; i++) {
+//		SAFE_DELETE(this->nodes[i]);
+//	}
+//	this->nodes.clear_all();
 }
 
 int Tour::Length() const {
@@ -56,6 +62,11 @@ pNode Tour::Previous(pNode node) {
 	pNode prev = this->nodes.previous_element();
 	this->nodes.index.set_to_begin();
 	return prev;
+}
+
+void Tour::DeleteAt(int position) {
+	pNode nodeToDelete = this->nodes.get_element(position);
+	SAFE_DELETE(nodeToDelete);
 }
 
 int Tour::GetIndex(pNode node) {
@@ -99,8 +110,12 @@ data::clist<pNode> Tour::GetSubtour(pNode from, pNode to) {
 	data::clist<pNode> subtour;
 
 	this->GoTo(from);
+	//this->nodes.next_element();
+	//pNode current = from;
+
+	pNode current = this->Current();
 	this->nodes.next_element();
-	pNode current = from;
+
 	while (current->Id != to->Id) {
 		subtour.add_element(current);
 		current = this->nodes.next_element();
@@ -115,7 +130,10 @@ data::clist<pNode> Tour::GetReversedSubtour(pNode from, pNode to) {
 	data::clist<pNode> subtour;
 
 	this->GoTo(to);
-	pNode current = to;
+	//pNode current = to;
+
+	pNode current = this->Current();
+
 	while (current->Id != from->Id) {
 		subtour.add_element(current);
 		current = this->nodes.previous_element();
@@ -161,8 +179,11 @@ void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 		this->GetSubtour(vkplus1, vi);
 	this->AddSubtour(subtour_vkplus1_vi, result);
 
+
 	this->nodes = result;
 }
+
+
 
 //void Genius::InsertTypeII(string v, string vi, string vj, string vk, string vl) {
 //	data::clist<string> result;
@@ -204,6 +225,47 @@ void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 //
 //	tour = result;
 //}
+
+double Tour::CalcDistance(pNode first, pNode second) {
+	double xi = first->X;
+	double yi = first->Y;
+	double xj = second->X;
+	double yj = second->Y;
+
+	double xx = ( (xi - xj) * (xi - xj) );
+	double yy = ( (yi - yj) * (yi - yj) );
+	double d = sqrt(xx + yy);
+
+	return d;
+}
+
+double Tour::TotalDistance() {
+	double totalDistance = 0.0;
+	int tourLen = this->Length();
+	if (tourLen >= 2) {
+		pNode first = this->nodes[0];
+		pNode second;
+		for (int i=1; i<tourLen; i++) {
+			second = this->nodes[i];
+			totalDistance += this->CalcDistance(first, second);
+			first = second;
+		}
+		second = this->nodes[0];
+		totalDistance += this->CalcDistance(first, second);
+	}
+	return totalDistance;
+}
+
+list<pNode> Tour::GetNodesByDistanceFrom(pNode referenceNode) {
+	list<pNode> orderedNodes;
+
+	return orderedNodes;
+}
+
+void Tour::BuildNeighborhoods(int size) {
+
+
+}
 
 string Tour::ToString() {
 	string result = "empty tour!";

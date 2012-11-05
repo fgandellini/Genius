@@ -27,6 +27,8 @@ public:
 	pNode Previous();
 	pNode Previous(pNode node);
 
+	void DeleteAt(int position);
+
 	int GetIndex(pNode node);
 	bool IsBetween(pNode x, pNode from, pNode to);
 
@@ -34,8 +36,17 @@ public:
 	data::clist<pNode> GetReversedSubtour(pNode from, pNode to);
 	void AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result);
 
+	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
+	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+
 	void InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 //	void InsertTypeII(string v, string vi, string vj, string vk, string vl);
+
+	double CalcDistance(pNode first, pNode second);
+	double TotalDistance();
+
+	list<pNode> GetNodesByDistanceFrom(pNode referenceNode);
+	void BuildNeighborhoods(int size);
 
 	string ToString();
 	string TourToString(data::clist<pNode> &tourToPrint);

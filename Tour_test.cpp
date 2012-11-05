@@ -54,17 +54,27 @@ TEST_GROUP(Tour) {
 		long_tour->Append(new Node(16, 0, 0));
 
 		reference = new Node(0, 0, 0);
-
 		from = new Node(0, 0, 0);
 		to = new Node(0, 0, 0);
-
 		x = new Node(0, 0, 0);
 	}
 
 	void teardown() {
+		for (int i=0; i<paper_tourz->Length(); i++) {
+			paper_tourz->DeleteAt(i);
+		}
 		SAFE_DELETE(paper_tourz);
+
+		for (int i=0; i<ten_nodes_tour->Length(); i++) {
+			ten_nodes_tour->DeleteAt(i);
+		}
 		SAFE_DELETE(ten_nodes_tour);
+
+		for (int i=0; i<long_tour->Length(); i++) {
+			long_tour->DeleteAt(i);
+		}
 		SAFE_DELETE(long_tour);
+
 		SAFE_DELETE(reference);
 		SAFE_DELETE(from);
 		SAFE_DELETE(to);
@@ -124,21 +134,31 @@ TEST(Tour, GetPrevTest) {
 }
 
 TEST(Tour, GetSubtourTest) {
+	data::clist<pNode> subtour;
 
 	from->Id = 3; to->Id = 8;
-	data::clist<pNode> subtour =
-		ten_nodes_tour->GetSubtour(from, to);
+	subtour = ten_nodes_tour->GetSubtour(from, to);
 
-	STRCMP_EQUAL(
-		"3 => 4 => 5 => 6 => 7 => 8 => 3",
+	STRCMP_EQUAL("3 => 4 => 5 => 6 => 7 => 8 => 3",
 		ten_nodes_tour->TourToString(subtour).c_str());
 
-	data::clist<pNode> rev_subtour =
-		ten_nodes_tour->GetReversedSubtour(from, to);
+	from->Id = 3; to->Id = 3;
+	subtour = ten_nodes_tour->GetSubtour(from, to);
 
-	STRCMP_EQUAL(
-		"8 => 7 => 6 => 5 => 4 => 3 => 8",
-		ten_nodes_tour->TourToString(rev_subtour).c_str());
+	STRCMP_EQUAL("3 => 3",
+		ten_nodes_tour->TourToString(subtour).c_str());
+
+	from->Id = 3; to->Id = 8;
+	subtour = ten_nodes_tour->GetReversedSubtour(from, to);
+
+	STRCMP_EQUAL("8 => 7 => 6 => 5 => 4 => 3 => 8",
+		ten_nodes_tour->TourToString(subtour).c_str());
+
+	from->Id = 3; to->Id = 3;
+	subtour = ten_nodes_tour->GetReversedSubtour(from, to);
+
+	STRCMP_EQUAL("3 => 3",
+		ten_nodes_tour->TourToString(subtour).c_str());
 }
 
 TEST(Tour, GetIndexTest) {
@@ -228,6 +248,24 @@ TEST(Tour, InsertTypeITest_LongTour) {
 	SAFE_DELETE(vi);
 	SAFE_DELETE(vj);
 	SAFE_DELETE(vk);
+}
+
+TEST(Tour, TotalDistanceTest) {
+	pTour smal_ltour = new Tour();
+	smal_ltour->Append(new Node(1, 21.8, 72.8));
+	smal_ltour->Append(new Node(2, 31.5, 10.8));
+	smal_ltour->Append(new Node(3, 16.3, 13.7));
+
+	CHECK_EQUAL_C_REAL(137.6, smal_ltour->TotalDistance(), 0.1);
+
+	for (int i=0; i<smal_ltour->Length(); i++) {
+		smal_ltour->DeleteAt(i);
+	}
+	SAFE_DELETE(smal_ltour);
+}
+
+TEST(Tour, BuildNeighborhoodsTest) {
+
 }
 
 } /* namespace Genius */
