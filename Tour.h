@@ -14,6 +14,15 @@ typedef struct {
 	double distance;
 } InsertTypeIParams;
 
+typedef struct {
+	pNode vi;
+	pNode vj;
+	pNode vk;
+	pNode vl;
+	bool tourMustBeReversed;
+	double distance;
+} InsertTypeIIParams;
+
 class Tour {
 private:
 	int Id;
@@ -50,6 +59,7 @@ public:
 //	double CalcReversedSubtourDistance(pNode from, pNode to);
 
 	bool CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk);
+	bool CheckInsertTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl);
 
 	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 //	double EvaluateReversedInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);

@@ -13,6 +13,8 @@ public:
 	virtual ~Genius();
 
 	InsertTypeIParams EvaluateBestInsertionPoint(pTour tour, pNode v);
+	InsertTypeIParams EvaluateBestInsertTypeIParams(pTour tour, pNode v);
+	InsertTypeIIParams EvaluateBestInsertTypeIIParams(pTour tour, pNode v);
 
 	void Geni(pTour initialTour, pInstance nodesToVisit);
 

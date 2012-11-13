@@ -9,8 +9,8 @@ pTour paperTourStep1;
 pTour paperTourStep2;
 pTour paperTourStep3;
 pTour paperTourStep4;
-pTour paperTourStep5;
-pTour paperTourStep6;
+//pTour paperTourStep5;
+//pTour paperTourStep6;
 
 TEST_GROUP(Genius) {
 	void setup() {
@@ -43,6 +43,14 @@ TEST_GROUP(Genius) {
 		paperTourStep3->Append(new Node(3, 16.3, 13.7));
 		paperTourStep3->Append(new Node(4,  3.7, 54.8));
 		paperTourStep3->Append(new Node(1, 21.8, 72.8));
+
+		paperTourStep4 = new Tour();
+		paperTourStep4->Append(new Node(6, 69.3,  1.3));
+		paperTourStep4->Append(new Node(2, 31.5, 10.8));
+		paperTourStep4->Append(new Node(3, 16.3, 13.7));
+		paperTourStep4->Append(new Node(5, 21.0, 21.7));
+		paperTourStep4->Append(new Node(1, 21.8, 72.8));
+		paperTourStep4->Append(new Node(4,  3.7, 54.8));
 	}
 
 	void teardown() {
@@ -62,6 +70,11 @@ TEST_GROUP(Genius) {
 			paperTourStep3->DeleteAt(i);
 		}
 		SAFE_DELETE(paperTourStep3);
+
+		for (int i=0; i<paperTourStep4->Length(); i++) {
+			paperTourStep4->DeleteAt(i);
+		}
+		SAFE_DELETE(paperTourStep4);
 
 		SAFE_DELETE(genius);
 	}
@@ -108,7 +121,7 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
 
 	pNode v = new Node(4,  3.7, 54.8);
 	InsertTypeIParams params =
-		genius->EvaluateBestInsertionPoint(paperTourStep1, v);
+		genius->EvaluateBestInsertTypeIParams(paperTourStep1, v);
 
 	CHECK(v->Id  == 4);
 	CHECK(params.vi->Id == 3);
@@ -124,7 +137,7 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep2) {
 
 	pNode v = new Node(5, 21.0, 21.7);
 	InsertTypeIParams params =
-		genius->EvaluateBestInsertionPoint(paperTourStep2, v);
+		genius->EvaluateBestInsertTypeIParams(paperTourStep2, v);
 
 	CHECK(v->Id  == 5);
 	CHECK(params.vi->Id == 1);
@@ -140,14 +153,36 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep3) {
 
 	pNode v = new Node(6, 69.3,  1.3);
 	InsertTypeIParams params =
-		genius->EvaluateBestInsertionPoint(paperTourStep3, v);
+		genius->EvaluateBestInsertTypeIParams(paperTourStep3, v);
 
 	CHECK(v->Id  == 6);
 	CHECK(params.vi->Id == 1);
 	CHECK(params.vj->Id == 2);
 	CHECK(params.vk->Id == 3);
 	CHECK(params.tourMustBeReversed == false);
+
+	// dovrebbe essere così
 	CHECK_EQUAL_C_REAL(225.0, params.distance, 0.1);
+
+	// me è così
+	CHECK_EQUAL_C_REAL(217.7, params.distance, 0.1);
+
+	SAFE_DELETE(v);
+}
+
+TEST(Genius, EvaluateInsertionParamsForPaperTourStep4) {
+
+	pNode v = new Node(7, 40.8, 60.1);
+	InsertTypeIIParams params =
+		genius->EvaluateBestInsertTypeIIParams(paperTourStep4, v);
+
+	CHECK(v->Id  == 7);
+	CHECK(params.vi->Id == 1);
+	CHECK(params.vj->Id == 2);
+	CHECK(params.vk->Id == 4);
+	CHECK(params.vl->Id == 2);
+	CHECK(params.tourMustBeReversed == false);
+	CHECK_EQUAL_C_REAL(238.6, params.distance, 0.1);
 
 	SAFE_DELETE(v);
 }

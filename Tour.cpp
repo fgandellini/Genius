@@ -220,85 +220,60 @@ void Tour::AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result) {
 bool Tour::CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk) {
 	if ((vk->Id != vi->Id) &&
 		(vk->Id != vj->Id) &&
-		this->IsBetween(vk, vj, vi)) {
+		this->IsBetween(vk, vj, vi) ) {
+		return true;
+	}
+	return false;
+}
+
+bool Tour::CheckInsertTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl) {
+	pNode viplus1 = this->Next(vi);
+	pNode vjplus1 = this->Next(vj);
+	pNode vkminus1 = this->Previous(vk);
+	pNode vlminus1 = this->Previous(vl);
+
+	if ((vk->Id != vj->Id) &&
+		(vk->Id != vjplus1->Id) &&
+		(vl->Id != vi->Id) &&
+		(vl->Id != viplus1->Id) &&
+		this->IsBetween(vk, vj, vi) &&
+		this->IsBetween(vl, vi, vj) ) {
 		return true;
 	}
 	return false;
 }
 
 double Tour::EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
-	double tourDistance = 0;
-	double dist = 0;
-//	bool tourHasBeenReversed = false;
-//	cout << endl;
-
 	assert(vk->Id != vi->Id);
 	assert(vk->Id != vj->Id);
 
-	if (!this->IsBetween(vk, vj, vi)) {
-		//cout << "tour reversed!" << endl;
-		//this->Reverse();
-		//tourHasBeenReversed = true;
+	if (this->IsBetween(vk, vj, vi)) {
 
-		return INF_DISTANCE;
+		pNode viplus1 = this->Next(vi);
+		pNode vjplus1 = this->Next(vj);
+		pNode vkplus1 = this->Next(vk);
+
+		// Il costo di inserimento è
+		// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
+		double tourDistance = this->TotalDistance();
+
+		// costo degli archi da rimuovere
+		tourDistance -= vi->DistanceFrom(viplus1);
+		tourDistance -= vj->DistanceFrom(vjplus1);
+		tourDistance -= vk->DistanceFrom(vkplus1);
+
+		// costo degli archi da aggiungere
+		tourDistance += vi->DistanceFrom(v);
+		tourDistance += v->DistanceFrom(vj);
+		tourDistance += viplus1->DistanceFrom(vk);
+		tourDistance += vjplus1->DistanceFrom(vkplus1);;
+
+		return tourDistance;
 	}
-
-	pNode viplus1 = this->Next(vi);
-	pNode vjplus1 = this->Next(vj);
-	pNode vkplus1 = this->Next(vk);
-
-	// Il costo di inserimento è
-	// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
-
-	dist = this->TotalDistance();
-	tourDistance += dist;
-//	cout << "(typeI) current tour distance: +" << dist << endl;
-
-	// da rimuovere
-	dist = vi->DistanceFrom(viplus1);
-	tourDistance -= dist;
-//	cout << vi->Id << "->" << viplus1->Id << " = -" << dist << endl;
-
-	dist = vj->DistanceFrom(vjplus1);
-	tourDistance -= dist;
-//	cout << vj->Id << "->" << vjplus1->Id << " = -" << dist << endl;
-
-	dist = vk->DistanceFrom(vkplus1);
-	tourDistance -= dist;
-//	cout << vk->Id << "->" << vkplus1->Id << " = -" << dist << endl;
-
-	// da aggiungere
-	dist = vi->DistanceFrom(v);
-	tourDistance += dist;
-//	cout << vi->Id << "->" << v->Id << " = +" << dist << endl;
-
-	dist = v->DistanceFrom(vj);
-	tourDistance += dist;
-//	cout << v->Id << "->" << vj->Id << " = +" << dist << endl;
-
-	dist = viplus1->DistanceFrom(vk);
-	tourDistance += dist;
-//	cout << viplus1->Id << "->" << vk->Id << " = +" << dist << endl;
-
-	dist = vjplus1->DistanceFrom(vkplus1);
-	tourDistance += dist;
-//	cout << vjplus1->Id << "->" << vkplus1->Id << " = +" << dist << endl;
-
-//	cout << "TOT  =  " << tourDistance << endl;
-
-//	if (tourHasBeenReversed) {
-//		this->Reverse();
-//	}
-//	this->ResetIterator();
-
-	return tourDistance;
+	return INF_DISTANCE;
 }
 
 double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl) {
-	double tourDistance = 0;
-	double dist = 0;
-//	cout << endl;
-
 	pNode viplus1 = this->Next(vi);
 	pNode vjplus1 = this->Next(vj);
 	pNode vkminus1 = this->Previous(vk);
@@ -308,60 +283,29 @@ double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode v
 	assert(vk->Id != vjplus1->Id);
 	assert(vl->Id != vi->Id);
 	assert(vl->Id != viplus1->Id);
+	if (this->IsBetween(vk, vj, vi) &&
+		this->IsBetween(vl, vi, vj)) {
 
-	if (!this->IsBetween(vk, vj, vi) ||
-		!this->IsBetween(vl, vi, vj)) {
-		return INF_DISTANCE;
+		// Il costo di inserimento è
+		// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
+		double tourDistance = this->TotalDistance();
+
+		// costo degli archi da rimuovere
+		tourDistance -= vi->DistanceFrom(viplus1);
+		tourDistance -= vlminus1->DistanceFrom(vl);
+		tourDistance -= vj->DistanceFrom(vjplus1);
+		tourDistance -= vkminus1->DistanceFrom(vk);
+
+		// costo degli archi da aggiungere
+		tourDistance += vi->DistanceFrom(v);
+		tourDistance += v->DistanceFrom(vj);
+		tourDistance += vl->DistanceFrom(vjplus1);
+		tourDistance += vkminus1->DistanceFrom(vlminus1);
+		tourDistance += viplus1->DistanceFrom(vk);
+
+		return tourDistance;
 	}
-
-	// Il costo di inserimento è
-	// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
-
-	dist = this->TotalDistance();
-	tourDistance += dist;
-//	cout << "(typeII) current tour distance: +" << dist << endl;
-
-	// da rimuovere
-	dist = vi->DistanceFrom(viplus1);
-	tourDistance -= dist;
-//	cout << vi->Id << "->" << viplus1->Id << " = -" << dist << endl;
-
-	dist = vlminus1->DistanceFrom(vl);
-	tourDistance -= dist;
-//	cout << vlminus1->Id << "->" << vl->Id << " = -" << dist << endl;
-
-	dist = vj->DistanceFrom(vjplus1);
-	tourDistance -= dist;
-//	cout << vj->Id << "->" << vjplus1->Id << " = -" << dist << endl;
-
-	dist = vkminus1->DistanceFrom(vk);
-	tourDistance -= dist;
-//	cout << vkminus1->Id << "->" << vk->Id << " = -" << dist << endl;
-
-	// da aggiungere
-	dist = vi->DistanceFrom(v);
-	tourDistance += dist;
-//	cout << vi->Id << "->" << v->Id << " = +" << dist << endl;
-
-	dist = v->DistanceFrom(vj);
-	tourDistance += dist;
-//	cout << v->Id << "->" << vj->Id << " = +" << dist << endl;
-
-	dist = vl->DistanceFrom(vjplus1);
-	tourDistance += dist;
-//	cout << vl->Id << "->" << vjplus1->Id << " = +" << dist << endl;
-
-	dist = vkminus1->DistanceFrom(vlminus1);
-	tourDistance += dist;
-//	cout << vkminus1->Id << "->" << vlminus1->Id << " = +" << dist << endl;
-
-	dist = viplus1->DistanceFrom(vk);
-	tourDistance += dist;
-//	cout << viplus1->Id << "->" << vk->Id << " = +" << dist << endl;
-
-//	cout << "TOT  =  " << tourDistance << endl;
-
-	return tourDistance;
+	return INF_DISTANCE;
 }
 
 

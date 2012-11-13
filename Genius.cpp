@@ -8,9 +8,9 @@ Genius::Genius() {
 Genius::~Genius() {
 }
 
-InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
+InsertTypeIParams Genius::EvaluateBestInsertTypeIParams(pTour tour, pNode v) {
+
 	double currentTourDistance = 0;
-	pNode minVi, minVj, minVk;
 	bool tourHasBeenReversed = false;
 
 	InsertTypeIParams bestParams;
@@ -20,11 +20,11 @@ InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
 	bestParams.distance = INF_DISTANCE;
 	bestParams.tourMustBeReversed = false;
 
-	cout << endl << "evaluating insert (typeI) of " << v->Id
-		 << " in tour " << tour->ToString()
-		 << " (distance: " << tour->TotalDistance() << ")" << endl
-		 << "v  vi vj vk distance" << endl
-		 << "-- -- -- -- -------------" << endl;
+//	cout << endl << "evaluating insert (typeI) of " << v->Id
+//		 << " in tour " << tour->ToString()
+//		 << " (distance: " << tour->TotalDistance() << ")" << endl
+//		 << "v  vi vj vk distance" << endl
+//		 << "-- -- -- -- -------------" << endl;
 
 	int tourLen = tour->Length();
 	for (int i=0; i<tourLen; i++) {
@@ -36,19 +36,18 @@ InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
 			for (int k=0; k<tourLen; k++) {
 				pNode vk = tour->Get(k);
 
-
 				if (tour->CheckInsertTypeIConditions(vi, vj, vk)) {
-					cout << v->Id << "  " << vi->Id << "  " << vj->Id << "  " << vk->Id << "  ";
+//					cout << v->Id << "  " << vi->Id << "  " << vj->Id << "  " << vk->Id << "  ";
 
 					tourHasBeenReversed = false;
 					currentTourDistance = tour->EvaluateInsertTypeI(v, vi, vj, vk);
-					cout << currentTourDistance;
+//					cout << currentTourDistance;
 
 					if ( currentTourDistance >= (INF_DISTANCE-1) ) {
 						tour->Reverse();
 						tourHasBeenReversed = true;
 						currentTourDistance = tour->EvaluateInsertTypeI(v, vi, vj, vk);
-						cout << " (rev = " << currentTourDistance << ")";
+//						cout << " (rev = " << currentTourDistance << ")";
 						tour->Reverse();
 					}
 
@@ -60,20 +59,99 @@ InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
 						bestParams.tourMustBeReversed = tourHasBeenReversed;
 					}
 
-					cout << endl;
+//					cout << endl;
 				}
 			}
 		}
 	}
 
-	cout << ">  "
-		 << bestParams.vi->Id << "  "
-		 << bestParams.vj->Id << "  "
-		 << bestParams.vk->Id << "  "
-		 << bestParams.distance
-		 << bestParams.tourMustBeReversed ? "(rev)" : "";
+//	cout << ">  "
+//		 << bestParams.vi->Id << "  "
+//		 << bestParams.vj->Id << "  "
+//		 << bestParams.vk->Id << "  "
+//		 << bestParams.distance
+//		 << bestParams.tourMustBeReversed ? "(rev)" : "";
 
 	return bestParams;
+}
+
+InsertTypeIIParams Genius::EvaluateBestInsertTypeIIParams(pTour tour, pNode v) {
+
+	double currentTourDistance = 0;
+	bool tourHasBeenReversed = false;
+
+	InsertTypeIIParams bestParams;
+	bestParams.vi = NULL;
+	bestParams.vj = NULL;
+	bestParams.vk = NULL;
+	bestParams.vl = NULL;
+	bestParams.distance = INF_DISTANCE;
+	bestParams.tourMustBeReversed = false;
+
+//	cout << endl << "evaluating insert (typeI) of " << v->Id
+//		 << " in tour " << tour->ToString()
+//		 << " (distance: " << tour->TotalDistance() << ")" << endl
+//		 << "v  vi vj vk distance" << endl
+//		 << "-- -- -- -- -------------" << endl;
+
+	int tourLen = tour->Length();
+	for (int i=0; i<tourLen; i++) {
+		pNode vi = tour->Get(i);
+
+		for (int j=0; j<tourLen; j++) {
+			pNode vj = tour->Get(j);
+
+			for (int k=0; k<tourLen; k++) {
+				pNode vk = tour->Get(k);
+
+				for (int l=0; l<tourLen; l++) {
+					pNode vl = tour->Get(l);
+
+					if (tour->CheckInsertTypeIIConditions(vi, vj, vk, vl)) {
+	//					cout << v->Id << "  " << vi->Id << "  " << vj->Id << "  " << vk->Id << "  ";
+
+						tourHasBeenReversed = false;
+						currentTourDistance = tour->EvaluateInsertTypeII(v, vi, vj, vk, vl);
+	//					cout << currentTourDistance;
+
+						if ( currentTourDistance >= (INF_DISTANCE-1) ) {
+							tour->Reverse();
+							tourHasBeenReversed = true;
+							currentTourDistance = tour->EvaluateInsertTypeII(v, vi, vj, vk, vl);
+	//						cout << " (rev = " << currentTourDistance << ")";
+							tour->Reverse();
+						}
+
+						if (currentTourDistance <= bestParams.distance) {
+							bestParams.distance = currentTourDistance;
+							bestParams.vi = vi;
+							bestParams.vj = vj;
+							bestParams.vk = vk;
+							bestParams.vl = vl;
+							bestParams.tourMustBeReversed = tourHasBeenReversed;
+						}
+
+	//					cout << endl;
+					}
+				}
+			}
+		}
+	}
+
+//	cout << ">  "
+//		 << bestParams.vi->Id << "  "
+//		 << bestParams.vj->Id << "  "
+//		 << bestParams.vk->Id << "  "
+//		 << bestParams.distance
+//		 << bestParams.tourMustBeReversed ? "(rev)" : "";
+
+	return bestParams;
+}
+
+
+InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
+	return this->EvaluateBestInsertTypeIParams(tour, v);
+
 }
 
 void Genius::Geni(pTour initialTour, pInstance nodesToVisit) {
