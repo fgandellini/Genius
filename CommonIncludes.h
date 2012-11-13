@@ -16,6 +16,8 @@ using namespace std;
 	#define NULL 0
 #endif
 
+#define INF_DISTANCE 10000.0
+
 #define SAFE_DELETE(x) if (x != NULL) { delete x; x = NULL; }
 #define SAFE_DELETE_VECTOR(v) if (v != NULL) { for (unsigned int SAFE_DELETE_VECTOR_i=0; SAFE_DELETE_VECTOR_i<v->size(); ++SAFE_DELETE_VECTOR_i) { SAFE_DELETE(v->at(SAFE_DELETE_VECTOR_i)); } SAFE_DELETE(v); }
 

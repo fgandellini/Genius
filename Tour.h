@@ -6,6 +6,14 @@
 
 namespace Genius {
 
+typedef struct {
+	pNode vi;
+	pNode vj;
+	pNode vk;
+	bool tourMustBeReversed;
+	double distance;
+} InsertTypeIParams;
+
 class Tour {
 private:
 	int Id;
@@ -36,13 +44,17 @@ public:
 
 	void Reverse();
 
-	double CalcSubtourDistance(pNode from, pNode to);
-	double CalcReversedSubtourDistance(pNode from, pNode to);
+
+
+//	double CalcSubtourDistance(pNode from, pNode to);
+//	double CalcReversedSubtourDistance(pNode from, pNode to);
+
+	bool CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk);
 
 	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
-	double EvaluateReversedInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
+//	double EvaluateReversedInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
-	double EvaluateReversedInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+//	double EvaluateReversedInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
 
 	data::clist<pNode> GetSubtour(pNode from, pNode to);
 	data::clist<pNode> GetReversedSubtour(pNode from, pNode to);

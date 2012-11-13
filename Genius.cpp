@@ -8,7 +8,91 @@ Genius::Genius() {
 Genius::~Genius() {
 }
 
-void Genius::Geni(pInstance nodesToVisit) {
+InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
+	double currentTourDistance = 0;
+	pNode minVi, minVj, minVk;
+	bool tourHasBeenReversed = false;
+
+	InsertTypeIParams bestParams;
+	bestParams.vi = NULL;
+	bestParams.vj = NULL;
+	bestParams.vk = NULL;
+	bestParams.distance = INF_DISTANCE;
+	bestParams.tourMustBeReversed = false;
+
+	cout << endl << "evaluating insert (typeI) of " << v->Id
+		 << " in tour " << tour->ToString()
+		 << " (distance: " << tour->TotalDistance() << ")" << endl
+		 << "v  vi vj vk distance" << endl
+		 << "-- -- -- -- -------------" << endl;
+
+	int tourLen = tour->Length();
+	for (int i=0; i<tourLen; i++) {
+		pNode vi = tour->Get(i);
+
+		for (int j=0; j<tourLen; j++) {
+			pNode vj = tour->Get(j);
+
+			for (int k=0; k<tourLen; k++) {
+				pNode vk = tour->Get(k);
+
+
+				if (tour->CheckInsertTypeIConditions(vi, vj, vk)) {
+					cout << v->Id << "  " << vi->Id << "  " << vj->Id << "  " << vk->Id << "  ";
+
+					tourHasBeenReversed = false;
+					currentTourDistance = tour->EvaluateInsertTypeI(v, vi, vj, vk);
+					cout << currentTourDistance;
+
+					if ( currentTourDistance >= (INF_DISTANCE-1) ) {
+						tour->Reverse();
+						tourHasBeenReversed = true;
+						currentTourDistance = tour->EvaluateInsertTypeI(v, vi, vj, vk);
+						cout << " (rev = " << currentTourDistance << ")";
+						tour->Reverse();
+					}
+
+					if (currentTourDistance <= bestParams.distance) {
+						bestParams.distance = currentTourDistance;
+						bestParams.vi = vi;
+						bestParams.vj = vj;
+						bestParams.vk = vk;
+						bestParams.tourMustBeReversed = tourHasBeenReversed;
+					}
+
+					cout << endl;
+				}
+			}
+		}
+	}
+
+	cout << ">  "
+		 << bestParams.vi->Id << "  "
+		 << bestParams.vj->Id << "  "
+		 << bestParams.vk->Id << "  "
+		 << bestParams.distance
+		 << bestParams.tourMustBeReversed ? "(rev)" : "";
+
+	return bestParams;
+}
+
+void Genius::Geni(pTour initialTour, pInstance nodesToVisit) {
+
+
+
+/*
+
+	pTour tour = initialTour;
+	for (int n=0; n<(int)nodesToVisit->size(); n++) {
+		minDistance = INF_DISTANCE;
+		pNode v = nodesToVisit->at(n);
+
+
+		tour->InsertTypeI(v, minVi, minVj, minVk);
+
+		if (v->Id == 6) return;
+	}
+	*/
 }
 
 void Add(pNode node, pTour tour) {

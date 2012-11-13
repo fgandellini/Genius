@@ -260,47 +260,47 @@ TEST(Tour, CalcSubtourDistanceTest) {
 	//  9 8 7 6 . .
 	//  10. . 5 . .
 	// -1-2-3-4----->
-
-	from->Id = 1; to->Id = 4;
-	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(3, dist, 0.1);
-
-	from->Id = 4; to->Id = 6;
-	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(2, dist, 0.1);
-
-	from->Id = 10; to->Id = 3;
-	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(3, dist, 0.1);
-
-	from->Id = 2; to->Id = 9;
-	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(7, dist, 0.1);
-
-	from->Id = 8; to->Id = 8;
-	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(0, dist, 0.1);
-
-
-	from->Id = 1; to->Id = 4;
-	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(7, dist, 0.1);
-
-	from->Id = 4; to->Id = 6;
-	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(8, dist, 0.1);
-
-	from->Id = 10; to->Id = 3;
-	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(7, dist, 0.1);
-
-	from->Id = 2; to->Id = 9;
-	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(3, dist, 0.1);
-
-	from->Id = 8; to->Id = 8;
-	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
-	CHECK_EQUAL_C_REAL(0, dist, 0.1);
+//
+//	from->Id = 1; to->Id = 4;
+//	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(3, dist, 0.1);
+//
+//	from->Id = 4; to->Id = 6;
+//	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(2, dist, 0.1);
+//
+//	from->Id = 10; to->Id = 3;
+//	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(3, dist, 0.1);
+//
+//	from->Id = 2; to->Id = 9;
+//	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(7, dist, 0.1);
+//
+//	from->Id = 8; to->Id = 8;
+//	dist = ten_nodes_tour->CalcSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(0, dist, 0.1);
+//
+//
+//	from->Id = 1; to->Id = 4;
+//	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(7, dist, 0.1);
+//
+//	from->Id = 4; to->Id = 6;
+//	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(8, dist, 0.1);
+//
+//	from->Id = 10; to->Id = 3;
+//	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(7, dist, 0.1);
+//
+//	from->Id = 2; to->Id = 9;
+//	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(3, dist, 0.1);
+//
+//	from->Id = 8; to->Id = 8;
+//	dist = ten_nodes_tour->CalcReversedSubtourDistance(from, to);
+//	CHECK_EQUAL_C_REAL(0, dist, 0.1);
 }
 
 TEST(Tour, EvaluateInsertTypeITest1) {
@@ -322,12 +322,18 @@ TEST(Tour, EvaluateInsertTypeITest1) {
 	vk = paperTour->Get(1); // nodo "2"
 	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
 
-	CHECK_EQUAL_C_REAL(146.7, newTourDistance, 0.1);
+	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
 
 	STRCMP_EQUAL("1 => 2 => 3 => 1",
 		paperTour->ToString().c_str());
 
+	paperTour->Reverse();
+	newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
 
+	CHECK_EQUAL_C_REAL(146.7, newTourDistance, 0.1);
+
+	STRCMP_EQUAL("3 => 2 => 1 => 3",
+		paperTour->ToString().c_str());
 
 //	paperTour->Append(paper_tour->Get(4)); // nodo "4"
 //
@@ -375,9 +381,17 @@ TEST(Tour, EvaluateInsertTypeITest2) {
 	vk = paperTour->Get(1); // nodo "3"
 	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
 
-	CHECK_EQUAL_C_REAL(150.2, newTourDistance, 0.1);
+	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
 
 	STRCMP_EQUAL("4 => 3 => 2 => 1 => 4",
+		paperTour->ToString().c_str());
+
+	paperTour->Reverse();
+	newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
+
+	CHECK_EQUAL_C_REAL(150.2, newTourDistance, 0.1);
+
+	STRCMP_EQUAL("1 => 2 => 3 => 4 => 1",
 		paperTour->ToString().c_str());
 
 	SAFE_DELETE(paperTour);
@@ -403,13 +417,89 @@ TEST(Tour, EvaluateInsertTypeITest3) {
 	vj = paperTour->Get(3); // nodo "4"
 	vk = paperTour->Get(2); // nodo "3"
 	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
-	double newTourDistanceMin = paperTour->EvaluateReversedInsertTypeI(v, vi, vj, vk);
 
-	CHECK_EQUAL_C_REAL(225.0, newTourDistance, 0.1);
-	CHECK_EQUAL_C_REAL(225.0, newTourDistanceMin, 0.1);
-
+	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
 
 	STRCMP_EQUAL("5 => 2 => 3 => 4 => 1 => 5",
+		paperTour->ToString().c_str());
+
+	paperTour->Reverse();
+	newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
+
+	CHECK_EQUAL_C_REAL(225.0, newTourDistance, 0.1);
+
+	STRCMP_EQUAL("1 => 4 => 3 => 2 => 5 => 1",
+		paperTour->ToString().c_str());
+
+	SAFE_DELETE(paperTour);
+}
+
+TEST(Tour, EvaluateInsertTypeIITest1) {
+	pNode v, vi, vj, vk, vl;
+
+	pTour paperTour = new Tour();
+	paperTour->Append(paper_tour->Get(5)); // nodo "6"
+	paperTour->Append(paper_tour->Get(1)); // nodo "2"
+	paperTour->Append(paper_tour->Get(2)); // nodo "3"
+	paperTour->Append(paper_tour->Get(4)); // nodo "5"
+	paperTour->Append(paper_tour->Get(0)); // nodo "1"
+	paperTour->Append(paper_tour->Get(3)); // nodo "4"
+
+	STRCMP_EQUAL("6 => 2 => 3 => 5 => 1 => 4 => 6",
+		paperTour->ToString().c_str());
+
+	CHECK_EQUAL_C_REAL(225.0, paperTour->TotalDistance(), 0.1);
+
+	v  = paper_tour->Get(6); // nodo "7"
+	vi = paperTour->Get(4); // nodo "1"
+	vj = paperTour->Get(1); // nodo "2"
+	vk = paperTour->Get(5); // nodo "4"
+	vl = paperTour->Get(1); // nodo "2"
+	double newTourDistance = paperTour->EvaluateInsertTypeII(v, vi, vj, vk, vl);
+
+	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
+
+	STRCMP_EQUAL("6 => 2 => 3 => 5 => 1 => 4 => 6",
+		paperTour->ToString().c_str());
+
+	paperTour->Reverse();
+	newTourDistance = paperTour->EvaluateInsertTypeII(v, vi, vj, vk, vl);
+
+	CHECK_EQUAL_C_REAL(238.6, newTourDistance, 0.1);
+
+	STRCMP_EQUAL("4 => 1 => 5 => 3 => 2 => 6 => 4",
+		paperTour->ToString().c_str());
+
+	SAFE_DELETE(paperTour);
+}
+
+TEST(Tour, EvaluateInsertTypeIITest2) {
+	pNode v, vi, vj, vk, vl;
+
+	pTour paperTour = new Tour();
+	paperTour->Append(paper_tour->Get(6)); // nodo "7"
+	paperTour->Append(paper_tour->Get(1)); // nodo "2"
+	paperTour->Append(paper_tour->Get(5)); // nodo "6"
+	paperTour->Append(paper_tour->Get(2)); // nodo "3"
+	paperTour->Append(paper_tour->Get(4)); // nodo "5"
+	paperTour->Append(paper_tour->Get(3)); // nodo "4"
+	paperTour->Append(paper_tour->Get(0)); // nodo "1"
+
+	STRCMP_EQUAL("7 => 2 => 6 => 3 => 5 => 4 => 1 => 7",
+		paperTour->ToString().c_str());
+
+	CHECK_EQUAL_C_REAL(238.6, paperTour->TotalDistance(), 0.1);
+
+	v  = paper_tour->Get(7); // nodo "8"
+	vi = paperTour->Get(1); // nodo "2"
+	vj = paperTour->Get(4); // nodo "5"
+	vk = paperTour->Get(1); // nodo "2"
+	vl = paperTour->Get(3); // nodo "3"
+	double newTourDistance = paperTour->EvaluateInsertTypeII(v, vi, vj, vk, vl);
+
+	CHECK_EQUAL_C_REAL(229.0, newTourDistance, 0.1);
+
+	STRCMP_EQUAL("7 => 2 => 6 => 3 => 5 => 4 => 1 => 7",
 		paperTour->ToString().c_str());
 
 	SAFE_DELETE(paperTour);
@@ -494,6 +584,15 @@ TEST(Tour, SolvePaperTourTest) {
 	STRCMP_EQUAL("5 => 2 => 3 => 4 => 1 => 5",
 		paperTour->ToString().c_str());
 
+//	v  = paper_tour->Get(5); // nodo "6"
+//	vi = paperTour->Get(4); // nodo "1"
+//	vj = paperTour->Get(1); // nodo "2"
+//	vk = paperTour->Get(2); // nodo "3"
+//	paperTour->Reverse();
+//	paperTour->InsertTypeI(v, vi, vj, vk);
+//	cout << paperTour->ToString();
+//	CHECK_EQUAL_C_REAL(225.0, paperTour->TotalDistance(), 0.1);
+
 	v  = paper_tour->Get(5); // nodo "6"
 	vi = paperTour->Get(1); // nodo "2"
 	vj = paperTour->Get(3); // nodo "4"
@@ -501,6 +600,7 @@ TEST(Tour, SolvePaperTourTest) {
 	paperTour->InsertTypeI(v, vi, vj, vk);
 	STRCMP_EQUAL("6 => 4 => 1 => 5 => 3 => 2 => 6",
 		paperTour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(225.0, paperTour->TotalDistance(), 0.1);
 
 	v  = paper_tour->Get(6); // nodo "7"
 	vi = paperTour->Get(2); // nodo "1"

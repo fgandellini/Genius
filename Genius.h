@@ -6,12 +6,17 @@
 
 namespace Genius {
 
+
 class Genius {
 public:
 	Genius();
 	virtual ~Genius();
 
-	void Geni(pInstance nodesToVisit);
+	InsertTypeIParams EvaluateBestInsertionPoint(pTour tour, pNode v);
+
+	void Geni(pTour initialTour, pInstance nodesToVisit);
+
+
 
 	void Add(pNode node, pTour tour);
 };
