@@ -2,6 +2,7 @@
 #define TOUR_H_
 
 #include "CommonIncludes.h"
+#include "Instance.h"
 #include "Node.h"
 
 namespace Genius {
@@ -27,8 +28,12 @@ class Tour {
 private:
 	int Id;
 
+	pNodeVector CalculateNeighborhood(pNode node);
+
 public:
 	data::clist<pNode> nodes;
+	map<pNode, pNodeVector> neighborhoods;
+	int maxNeighborhoodSize;
 
 	Tour();
 	virtual ~Tour();
@@ -37,6 +42,7 @@ public:
 
 	void Append(pNode node);
 	void GoTo(pNode node);
+	bool Contains(pNode node);
 
 	void ResetIterator();
 	pNode Current();
@@ -75,8 +81,15 @@ public:
 
 	double TotalDistance();
 
-	list<pNode> GetNodesByDistanceFrom(pNode referenceNode);
-	void BuildNeighborhoods(int size);
+
+
+	void SetMaxNeighborhoodSize(int size);
+	void BuildNeighborhoods();
+	pNodeVector GetNeighborhood(pNode node);
+
+
+
+
 
 	string ToString();
 	string TourToString(data::clist<pNode> &tourToPrint);

@@ -20,34 +20,51 @@ InsertTypeIParams Genius::EvaluateBestInsertTypeIParams(pTour tour, pNode v) {
 	bestParams.distance = INF_DISTANCE;
 	bestParams.tourMustBeReversed = false;
 
-//	cout << endl << "evaluating insert (typeI) of " << v->Id
-//		 << " in tour " << tour->ToString()
-//		 << " (distance: " << tour->TotalDistance() << ")" << endl
-//		 << "v  vi vj vk distance" << endl
-//		 << "-- -- -- -- -------------" << endl;
+	tour->Reverse();
+
+	cout << endl << "evaluating insert (typeI) of " << v->Id
+		 << " in tour " << tour->ToString()
+		 << " (distance: " << tour->TotalDistance() << ")" << endl
+		 << "v  vi vj vk distance" << endl
+		 << "-- -- -- -- --------" << endl;
+
+	int p = 4;
+	tour->BuildNeighborhoods(p);
+	this->vNeighborhood
+	this->vNeighborhood = tour->GetNeighborhood(v);
+	int vNeighborhoodSize = (int)vNeighborhood->size();
 
 	int tourLen = tour->Length();
-	for (int i=0; i<tourLen; i++) {
-		pNode vi = tour->Get(i);
+	for (int i=0; i<vNeighborhoodSize; i++) {
+		pNode vi = vNeighborhood->at(i);
+		pNode viplus1 = tour->Next(vi);
 
-		for (int j=0; j<tourLen; j++) {
-			pNode vj = tour->Get(j);
+		for (int j=0; j<vNeighborhoodSize; j++) {
+			pNode vj = vNeighborhood->at(j);
 
-			for (int k=0; k<tourLen; k++) {
-				pNode vk = tour->Get(k);
+			pNodeVector viplus1Neighborhood = tour->GetNeighborhood(viplus1);
+			int viplus1NeighborhoodSize = (int)viplus1Neighborhood->size();
 
-				if (tour->CheckInsertTypeIConditions(vi, vj, vk)) {
-//					cout << v->Id << "  " << vi->Id << "  " << vj->Id << "  " << vk->Id << "  ";
+			for (int k=0; k<viplus1NeighborhoodSize; k++) {
+				pNode vk = viplus1Neighborhood->at(k);
 
-					tourHasBeenReversed = false;
-					currentTourDistance = tour->EvaluateInsertTypeI(v, vi, vj, vk);
-//					cout << currentTourDistance;
+				cout << v->Id << "  " << vi->Id << "  " << vj->Id << "  " << vk->Id << "  ";
 
-					if ( currentTourDistance >= (INF_DISTANCE-1) ) {
+				if ( (vi->Id != vj->Id) && (vk->Id != vi->Id) && (vk->Id != vj->Id) ) {
+
+					// Inverte il tour se necessario
+					if ( tour->IsBetween(vk, vj, vi) ) {
+						tourHasBeenReversed = false;
+					} else {
 						tour->Reverse();
 						tourHasBeenReversed = true;
-						currentTourDistance = tour->EvaluateInsertTypeI(v, vi, vj, vk);
-//						cout << " (rev = " << currentTourDistance << ")";
+					}
+
+					currentTourDistance = tour->EvaluateInsertTypeI(v, vi, vj, vk);
+					cout << currentTourDistance;
+
+					if (tourHasBeenReversed) {
+						cout << " (rev)";
 						tour->Reverse();
 					}
 
@@ -59,8 +76,11 @@ InsertTypeIParams Genius::EvaluateBestInsertTypeIParams(pTour tour, pNode v) {
 						bestParams.tourMustBeReversed = tourHasBeenReversed;
 					}
 
-//					cout << endl;
+				} else {
+					cout << "[not feasible] ";
 				}
+
+				cout << endl;
 			}
 		}
 	}

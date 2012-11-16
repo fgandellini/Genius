@@ -1,0 +1,17 @@
+Genius - To Do
+---------------------
+
+- L'istanza va usata coome classe standard, non statica, questo potrebbe facilitare i test e 
+  permettere una maggiore flessibilità in futuro 
+  (= potrei partizionare un VRP in tanti TSP e passarli come istanze a genius)
+
+- Aggiungere una factory che sappia generare i tour e abbia conoscenza dell'istanza caricata.
+  I tour potrebbero così fare controlli di coerenza sull'aggiunta di un nodo 
+  (che deve necessariamente appartenere all'istanza) e potrebbero inizializzare l'array delle neighborhood
+
+- Terminare la gestione delle neighborhood: il problema da gestire è che le neighborhood hanno 
+  senso anche per nodi esterni al tour
+
+- Verificare che le funzioni di evaluate (dopo l'aggiunta delle neighborhood) 
+  restituiscano il valore 225.0 come atteso dal paper
+

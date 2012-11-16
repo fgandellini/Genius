@@ -1,5 +1,6 @@
 #include <vector>
 #include <list>
+#include <map>
 #include <cstring>
 #include <string>
 #include <sstream>
@@ -16,6 +17,7 @@ using namespace std;
 	#define NULL 0
 #endif
 
+#define INF 10000
 #define INF_DISTANCE 10000.0
 
 #define SAFE_DELETE(x) if (x != NULL) { delete x; x = NULL; }

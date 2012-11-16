@@ -6,14 +6,29 @@ static bool CompareNodes(const pNode first, const int second) {
 	return first->Id == second;
 }
 
+pNode referenceNode = NULL;
+struct NodeSorterByDistanceFromReferenceNode
+{
+    inline bool operator() (const pNode& node1, const pNode& node2)
+    {
+    	return (node1->DistanceFrom(referenceNode) < node2->DistanceFrom(referenceNode));
+    }
+};
+
 //pNode referenceNode;
 //bool CompareNodesByDistance (const pNode first, const int second) {
 //	if (referenceNode )
 //
 //}
 
-Tour::Tour() : nodes() {
+Tour::Tour() : nodes(), neighborhoods() {
 	this->Id = 0;
+	this->maxNeighborhoodSize = INF;
+
+	for (int n=0; n<Instance::NodesCount; n++) {
+		pNode node = Instance::Nodes->at(n);
+		this->neighborhoods[node] = NULL;
+	}
 }
 
 Tour::~Tour() {
@@ -22,6 +37,8 @@ Tour::~Tour() {
 //		SAFE_DELETE(this->nodes[i]);
 //	}
 //	this->nodes.clear_all();
+
+
 }
 
 int Tour::Length() const {
@@ -51,6 +68,10 @@ pNode Tour::Previous() {
 void Tour::GoTo(pNode node) {
 	this->nodes.index.set_to_begin();
 	this->nodes.h_get_element(this->nodes.f_find(node->Id, &CompareNodes));
+}
+
+bool Tour::Contains(pNode node) {
+	return ( this->nodes.f_find(node->Id, &CompareNodes) != NULL );
 }
 
 pNode Tour::Next(pNode node) {
@@ -158,6 +179,8 @@ void Tour::AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result) {
 	}
 }
 
+
+
 //double Tour::CalcSubtourDistance(pNode from, pNode to) {
 //	double subtourDistance = 0;
 //	double dist;
@@ -218,9 +241,10 @@ void Tour::AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result) {
 //}
 
 bool Tour::CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk) {
-	if ((vk->Id != vi->Id) &&
+	if ((vi->Id != vj->Id) &&
+		(vk->Id != vi->Id) &&
 		(vk->Id != vj->Id) &&
-		this->IsBetween(vk, vj, vi) ) {
+		this->IsBetween(vk, vj, vi)) {
 		return true;
 	}
 	return false;
@@ -244,6 +268,7 @@ bool Tour::CheckInsertTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl) {
 }
 
 double Tour::EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
+	assert(vi->Id != vj->Id);
 	assert(vk->Id != vi->Id);
 	assert(vk->Id != vj->Id);
 
@@ -266,7 +291,7 @@ double Tour::EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 		tourDistance += vi->DistanceFrom(v);
 		tourDistance += v->DistanceFrom(vj);
 		tourDistance += viplus1->DistanceFrom(vk);
-		tourDistance += vjplus1->DistanceFrom(vkplus1);;
+		tourDistance += vjplus1->DistanceFrom(vkplus1);
 
 		return tourDistance;
 	}
@@ -459,14 +484,44 @@ double Tour::TotalDistance() {
 	return totalDistance;
 }
 
-list<pNode> Tour::GetNodesByDistanceFrom(pNode referenceNode) {
-	list<pNode> orderedNodes;
+void SetMaxNeighborhoodSize(int size) {
 
-	return orderedNodes;
 }
 
-void Tour::BuildNeighborhoods(int size) {
+pNodeVector Tour::GetNeighborhood(pNode node) {
+
+	return
 }
+
+pNodeVector Tour::CalculateNeighborhood(pNode node) {
+	pNodeVector nodes = new NodeVector();
+	for (int n=0; n<this->Length(); n++) {
+		nodes->push_back(this->nodes[n]);
+	}
+	referenceNode = node;
+	sort(nodes->begin(), nodes->end(), NodeSorterByDistanceFromReferenceNode());
+
+	if ((int)nodes->size() > this->maxNeighborhoodSize) {
+		nodes->erase(
+			nodes->begin() + this->maxNeighborhoodSize,
+			nodes->end());
+	}
+
+	return nodes;
+}
+
+void Tour::BuildNeighborhoods() {
+	for (int n=0; n<Instance::NodesCount; n++) {
+		pNode node = Instance::Nodes->at(n);
+		this->neighborhoods[node] = this->CalculateNeighborhood(node);
+	}
+
+}
+
+
+
+
+
 
 string Tour::ToString() {
 	string result = "empty tour!";

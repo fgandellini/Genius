@@ -27,8 +27,8 @@ public:
 };
 typedef Node* pNode;
 
-typedef vector<pNode> Instance;
-typedef Instance* pInstance;
+typedef vector<pNode> NodeVector;
+typedef NodeVector* pNodeVector;
 
 } /* namespace Genius */
 #endif /* NODE_H_ */
