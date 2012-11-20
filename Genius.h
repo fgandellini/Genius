@@ -6,11 +6,13 @@
 
 namespace Genius {
 
-
 class Genius {
 public:
+	int p;
+
 	Genius();
 	virtual ~Genius();
+
 
 	pNodeVector vNeighborhood;
 	pNodeVector viplus1Neighborhood;
@@ -22,9 +24,6 @@ public:
 
 	void Geni(pTour initialTour, pInstance nodesToVisit);
 
-
-
-	void Add(pNode node, pTour tour);
 };
 typedef Genius* pGenius;
 

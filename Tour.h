@@ -24,18 +24,24 @@ typedef struct {
 	double distance;
 } InsertTypeIIParams;
 
+
+typedef map<int, pNodeVector> Neighborhoods;
+typedef Neighborhoods* pNeighborhoods;
+
 class Tour {
 private:
 	int Id;
+	pInstance instance;
 
-	pNodeVector CalculateNeighborhood(pNode node);
+	int NeighborhoodSize;
+	pNeighborhoods neighborhoods;
+	void InitNeighborhoods();
+	void UpdateNeighborhoods();
 
 public:
 	data::clist<pNode> nodes;
-	map<pNode, pNodeVector> neighborhoods;
-	int maxNeighborhoodSize;
 
-	Tour();
+	Tour(pInstance instance);
 	virtual ~Tour();
 
 	int Length() const;
@@ -59,8 +65,6 @@ public:
 
 	void Reverse();
 
-
-
 //	double CalcSubtourDistance(pNode from, pNode to);
 //	double CalcReversedSubtourDistance(pNode from, pNode to);
 
@@ -81,16 +85,10 @@ public:
 
 	double TotalDistance();
 
-
-
-	void SetMaxNeighborhoodSize(int size);
-	void BuildNeighborhoods();
+	//void SetMaxNeighborhoodSize(int size);
 	pNodeVector GetNeighborhood(pNode node);
 
-
-
-
-
+	void PrintNeighborhoods();
 	string ToString();
 	string TourToString(data::clist<pNode> &tourToPrint);
 };

@@ -7,17 +7,25 @@
 namespace Genius {
 
 class Instance {
+private:
+	pNodeVector nodes;
+
 public:
 	Instance();
 	virtual ~Instance();
 
-	static string Name;
-	static string File;
+	//static string Name;
+	//static string File;
 
-	static int NodesCount;
-	static pNodeVector Nodes;
+	//static int NodesCount;
 
-	static void Load(pNodeVector nodes);
+	//static void Load(pNodeVector nodes);
+
+	void Add(pNode node);
+	pNode GetNode(int index);
+	pNode GetNodeById(int id);
+
+	int Size();
 };
 typedef Instance* pInstance;
 

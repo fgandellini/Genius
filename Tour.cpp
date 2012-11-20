@@ -21,14 +21,14 @@ struct NodeSorterByDistanceFromReferenceNode
 //
 //}
 
-Tour::Tour() : nodes(), neighborhoods() {
+Tour::Tour(pInstance instance) : neighborhoods(), nodes() {
 	this->Id = 0;
-	this->maxNeighborhoodSize = INF;
+	this->instance = instance;
+	this->NeighborhoodSize = INF;
 
-	for (int n=0; n<Instance::NodesCount; n++) {
-		pNode node = Instance::Nodes->at(n);
-		this->neighborhoods[node] = NULL;
-	}
+	this->neighborhoods = new Neighborhoods();
+	this->InitNeighborhoods();
+
 }
 
 Tour::~Tour() {
@@ -37,8 +37,6 @@ Tour::~Tour() {
 //		SAFE_DELETE(this->nodes[i]);
 //	}
 //	this->nodes.clear_all();
-
-
 }
 
 int Tour::Length() const {
@@ -178,6 +176,7 @@ void Tour::AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result) {
 		result.add_element(subtour[i]);
 	}
 }
+
 
 
 
@@ -489,39 +488,50 @@ void SetMaxNeighborhoodSize(int size) {
 }
 
 pNodeVector Tour::GetNeighborhood(pNode node) {
-
-	return
+//	return this->neighborhoods->at(node->Id);
+return NULL;
 }
 
-pNodeVector Tour::CalculateNeighborhood(pNode node) {
-	pNodeVector nodes = new NodeVector();
-	for (int n=0; n<this->Length(); n++) {
-		nodes->push_back(this->nodes[n]);
-	}
-	referenceNode = node;
-	sort(nodes->begin(), nodes->end(), NodeSorterByDistanceFromReferenceNode());
-
-	if ((int)nodes->size() > this->maxNeighborhoodSize) {
-		nodes->erase(
-			nodes->begin() + this->maxNeighborhoodSize,
-			nodes->end());
-	}
-
-	return nodes;
+void Tour::UpdateNeighborhoods() {
+//	for (int n=0; n<this->instance->Size(); n++) {
+//
+//		referenceNode =
+//			this->instance->GetNode(n);
+//
+//		pNodeVector allNodes =
+//			this->neighborhoods->at(referenceNode->Id);
+//
+//		sort(allNodes->begin(), allNodes->end(),
+//			NodeSorterByDistanceFromReferenceNode());
+//	}
 }
 
-void Tour::BuildNeighborhoods() {
-	for (int n=0; n<Instance::NodesCount; n++) {
-		pNode node = Instance::Nodes->at(n);
-		this->neighborhoods[node] = this->CalculateNeighborhood(node);
-	}
-
+void Tour::InitNeighborhoods() {
+//	for (int n=0; n<this->instance->Size(); n++) {
+//		int nodeId = this->instance->GetNode(n)->Id;
+//		this->neighborhoods->at(nodeId) = new NodeVector();
+//		for (int nn=0; nn<this->instance->Size(); nn++) {
+//			this->neighborhoods->at(nodeId)->push_back(this->instance->GetNode(nn));
+//		}
+//	}
 }
 
-
-
-
-
+void Tour::PrintNeighborhoods() {
+//	cout << endl;
+//	cout << "Neighborhoods for tour " << this->Id
+//		 << "(p=" << this->NeighborhoodSize << ")" << endl;
+//
+//	for (int n=0; n<this->instance->Size(); n++) {
+//		pNode refNode = this->instance->GetNode(n);
+//		cout << refNode->Id << " ]";
+//		for (int nn=0; nn<this->instance->Size(); nn++) {
+//			pNode neighbNode = this->neighborhoods->at(refNode->Id)->at(nn);
+//			cout << "> " << neighbNode->Id
+//				 << "(" << refNode->DistanceFrom(neighbNode) << ")";
+//		}
+//		cout << endl;
+//	}
+}
 
 string Tour::ToString() {
 	string result = "empty tour!";

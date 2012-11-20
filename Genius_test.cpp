@@ -3,8 +3,10 @@
 
 namespace Genius {
 
+
+pInstance paperInstance;
+
 pGenius genius;
-pInstance paper_instance;
 pTour paperTourStep1;
 pTour paperTourStep2;
 pTour paperTourStep3;
@@ -14,66 +16,52 @@ pTour paperTourStep4;
 
 TEST_GROUP(Genius) {
 	void setup() {
-		paper_instance = new Instance();
-//		paper_instance->push_back(new Node(1, 21.8, 72.8));
-//		paper_instance->push_back(new Node(2, 31.5, 10.8));
-//		paper_instance->push_back(new Node(3, 16.3, 13.7));
-		paper_instance->push_back(new Node(4,  3.7, 54.8));
-		paper_instance->push_back(new Node(5, 21.0, 21.7));
-		paper_instance->push_back(new Node(6, 69.3,  1.3));
-		paper_instance->push_back(new Node(7, 40.8, 60.1));
-		paper_instance->push_back(new Node(8, 27.8, 26.2));
+
+		paperInstance = new Instance();
+		paperInstance->Add(new Node(1, 21.8, 72.8));
+		paperInstance->Add(new Node(2, 31.5, 10.8));
+		paperInstance->Add(new Node(3, 16.3, 13.7));
+		paperInstance->Add(new Node(4,  3.7, 54.8));
+		paperInstance->Add(new Node(5, 21.0, 21.7));
+		paperInstance->Add(new Node(6, 69.3,  1.3));
+		paperInstance->Add(new Node(7, 40.8, 60.1));
+		paperInstance->Add(new Node(8, 27.8, 26.2));
 
 		genius = new Genius();
 
-		paperTourStep1 = new Tour();
-		paperTourStep1->Append(new Node(1, 21.8, 72.8));
-		paperTourStep1->Append(new Node(2, 31.5, 10.8));
-		paperTourStep1->Append(new Node(3, 16.3, 13.7));
+		paperTourStep1 = new Tour(paperInstance);
+		paperTourStep1->Append(paperInstance->GetNode(0));
+		paperTourStep1->Append(paperInstance->GetNode(1));
+		paperTourStep1->Append(paperInstance->GetNode(2));
 
-		paperTourStep2 = new Tour();
-		paperTourStep2->Append(new Node(1, 21.8, 72.8));
-		paperTourStep2->Append(new Node(2, 31.5, 10.8));
-		paperTourStep2->Append(new Node(3, 16.3, 13.7));
-		paperTourStep2->Append(new Node(4,  3.7, 54.8));
+		paperTourStep2 = new Tour(paperInstance);
+		paperTourStep2->Append(paperInstance->GetNode(0));
+		paperTourStep2->Append(paperInstance->GetNode(1));
+		paperTourStep2->Append(paperInstance->GetNode(2));
+		paperTourStep2->Append(paperInstance->GetNode(3));
 
-		paperTourStep3 = new Tour();
-		paperTourStep3->Append(new Node(5, 21.0, 21.7));
-		paperTourStep3->Append(new Node(2, 31.5, 10.8));
-		paperTourStep3->Append(new Node(3, 16.3, 13.7));
-		paperTourStep3->Append(new Node(4,  3.7, 54.8));
-		paperTourStep3->Append(new Node(1, 21.8, 72.8));
+		paperTourStep3 = new Tour(paperInstance);
+		paperTourStep3->Append(paperInstance->GetNode(4));
+		paperTourStep3->Append(paperInstance->GetNode(1));
+		paperTourStep3->Append(paperInstance->GetNode(2));
+		paperTourStep3->Append(paperInstance->GetNode(3));
+		paperTourStep3->Append(paperInstance->GetNode(0));
 
-		paperTourStep4 = new Tour();
-		paperTourStep4->Append(new Node(6, 69.3,  1.3));
-		paperTourStep4->Append(new Node(2, 31.5, 10.8));
-		paperTourStep4->Append(new Node(3, 16.3, 13.7));
-		paperTourStep4->Append(new Node(5, 21.0, 21.7));
-		paperTourStep4->Append(new Node(1, 21.8, 72.8));
-		paperTourStep4->Append(new Node(4,  3.7, 54.8));
+		paperTourStep4 = new Tour(paperInstance);
+		paperTourStep4->Append(paperInstance->GetNode(5));
+		paperTourStep4->Append(paperInstance->GetNode(1));
+		paperTourStep4->Append(paperInstance->GetNode(2));
+		paperTourStep4->Append(paperInstance->GetNode(4));
+		paperTourStep4->Append(paperInstance->GetNode(0));
+		paperTourStep4->Append(paperInstance->GetNode(3));
 	}
 
 	void teardown() {
-		SAFE_DELETE_VECTOR(paper_instance);
+		SAFE_DELETE(paperInstance);
 
-		for (int i=0; i<paperTourStep1->Length(); i++) {
-			paperTourStep1->DeleteAt(i);
-		}
 		SAFE_DELETE(paperTourStep1);
-
-		for (int i=0; i<paperTourStep2->Length(); i++) {
-			paperTourStep2->DeleteAt(i);
-		}
 		SAFE_DELETE(paperTourStep2);
-
-		for (int i=0; i<paperTourStep3->Length(); i++) {
-			paperTourStep3->DeleteAt(i);
-		}
 		SAFE_DELETE(paperTourStep3);
-
-		for (int i=0; i<paperTourStep4->Length(); i++) {
-			paperTourStep4->DeleteAt(i);
-		}
 		SAFE_DELETE(paperTourStep4);
 
 		SAFE_DELETE(genius);
@@ -114,12 +102,12 @@ TEST(Genius, PrintDistancesMatrix) {
 
 TEST(Genius, SimulateConstructionOfPaperTour) {
 
-	genius->Geni(paperTourStep1, paper_instance);
+//	genius->Geni(paperTourStep1, paper_instance);
 }
 
-TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
+IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
 
-	pNode v = new Node(4,  3.7, 54.8);
+	pNode v = paperInstance->GetNode(3);
 	InsertTypeIParams params =
 		genius->EvaluateBestInsertTypeIParams(paperTourStep1, v);
 
@@ -129,8 +117,6 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
 	CHECK(params.vj->Id == 1);
 	CHECK(params.vk->Id == 2);
 	CHECK(params.tourMustBeReversed == true);
-
-	SAFE_DELETE(v);
 }
 
 IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep2) {

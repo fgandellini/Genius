@@ -28,10 +28,11 @@ InsertTypeIParams Genius::EvaluateBestInsertTypeIParams(pTour tour, pNode v) {
 		 << "v  vi vj vk distance" << endl
 		 << "-- -- -- -- --------" << endl;
 
-	int p = 4;
-	tour->BuildNeighborhoods(p);
-	this->vNeighborhood
-	this->vNeighborhood = tour->GetNeighborhood(v);
+//	int p = 4;
+//	tour->BuildNeighborhoods(p);
+//	this->vNeighborhood
+//	this->vNeighborhood = tour->GetNeighborhood(v);
+
 	int vNeighborhoodSize = (int)vNeighborhood->size();
 
 	int tourLen = tour->Length();
@@ -171,8 +172,8 @@ InsertTypeIIParams Genius::EvaluateBestInsertTypeIIParams(pTour tour, pNode v) {
 
 InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
 	return this->EvaluateBestInsertTypeIParams(tour, v);
-
 }
+
 
 void Genius::Geni(pTour initialTour, pInstance nodesToVisit) {
 
@@ -193,8 +194,6 @@ void Genius::Geni(pTour initialTour, pInstance nodesToVisit) {
 	*/
 }
 
-void Add(pNode node, pTour tour) {
 
-}
 
 } /* namespace Genius */
