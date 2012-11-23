@@ -7,36 +7,26 @@ static bool CompareNodes(const pNode first, const int second) {
 }
 
 pNode referenceNode = NULL;
-struct NodeSorterByDistanceFromReferenceNode
-{
-    inline bool operator() (const pNode& node1, const pNode& node2)
-    {
-    	return (node1->DistanceFrom(referenceNode) < node2->DistanceFrom(referenceNode));
+struct NodeSorterByDistanceFromReferenceNode {
+    bool operator ()(pNode const& node1, pNode const& node2) const {
+    	double distanceFromNode1 = referenceNode->DistanceFrom(node1);
+    	double distanceFromNode2 = referenceNode->DistanceFrom(node2);
+    	return (distanceFromNode1 < distanceFromNode2);
     }
 };
 
-//pNode referenceNode;
-//bool CompareNodesByDistance (const pNode first, const int second) {
-//	if (referenceNode )
-//
-//}
-
-Tour::Tour(pInstance instance) : neighborhoods(), nodes() {
+Tour::Tour(pInstance instance) : nodes() {
 	this->Id = 0;
 	this->instance = instance;
 	this->NeighborhoodSize = INF;
 
 	this->neighborhoods = new Neighborhoods();
 	this->InitNeighborhoods();
-
+	this->UpdateNeighborhoods();
 }
 
 Tour::~Tour() {
-//	int length = this->Length();
-//	for (int i=0; i<length; i++) {
-//		SAFE_DELETE(this->nodes[i]);
-//	}
-//	this->nodes.clear_all();
+	this->DeleteNeighborhoods();
 }
 
 int Tour::Length() const {
@@ -487,50 +477,60 @@ void SetMaxNeighborhoodSize(int size) {
 
 }
 
-pNodeVector Tour::GetNeighborhood(pNode node) {
-//	return this->neighborhoods->at(node->Id);
-return NULL;
+void Tour::InitNeighborhoods() {
+	int nodesCount = this->instance->Size();
+	for (int n=0; n<nodesCount; n++) {
+		this->neighborhoods->push_back( new NodeVector() );
+		pNodeVector vector = this->neighborhoods->at(n);
+		for (int nn=0; nn<nodesCount; nn++) {
+			if (n != nn) {
+				pNode node = this->instance->GetNode(nn);
+				vector->push_back( node );
+			}
+		}
+	}
 }
 
 void Tour::UpdateNeighborhoods() {
-//	for (int n=0; n<this->instance->Size(); n++) {
-//
-//		referenceNode =
-//			this->instance->GetNode(n);
-//
-//		pNodeVector allNodes =
-//			this->neighborhoods->at(referenceNode->Id);
-//
-//		sort(allNodes->begin(), allNodes->end(),
-//			NodeSorterByDistanceFromReferenceNode());
-//	}
+	for (int n=0; n<this->instance->Size(); n++) {
+
+		referenceNode = this->instance->GetNode(n);
+		pNodeVector neighbors = this->neighborhoods->at(n);
+
+		sort(neighbors->begin(), neighbors->end(),
+			NodeSorterByDistanceFromReferenceNode());
+	}
 }
 
-void Tour::InitNeighborhoods() {
-//	for (int n=0; n<this->instance->Size(); n++) {
-//		int nodeId = this->instance->GetNode(n)->Id;
-//		this->neighborhoods->at(nodeId) = new NodeVector();
-//		for (int nn=0; nn<this->instance->Size(); nn++) {
-//			this->neighborhoods->at(nodeId)->push_back(this->instance->GetNode(nn));
-//		}
-//	}
+pNodeVector Tour::GetNeighborhood(pNode node) {
+	int index = this->instance->GetIndex(node);
+	return this->neighborhoods->at(index);
 }
 
 void Tour::PrintNeighborhoods() {
-//	cout << endl;
-//	cout << "Neighborhoods for tour " << this->Id
-//		 << "(p=" << this->NeighborhoodSize << ")" << endl;
-//
-//	for (int n=0; n<this->instance->Size(); n++) {
-//		pNode refNode = this->instance->GetNode(n);
-//		cout << refNode->Id << " ]";
-//		for (int nn=0; nn<this->instance->Size(); nn++) {
-//			pNode neighbNode = this->neighborhoods->at(refNode->Id)->at(nn);
-//			cout << "> " << neighbNode->Id
-//				 << "(" << refNode->DistanceFrom(neighbNode) << ")";
-//		}
-//		cout << endl;
-//	}
+	cout << endl;
+	cout << "Neighborhoods for tour " << this->Id
+		 << " (p=" << this->NeighborhoodSize << ")" << endl;
+
+	for (int n=0; n<this->instance->Size(); n++) {
+		pNode refNode = this->instance->GetNode(n);
+		cout << refNode->Id << " ]";
+		pNodeVector vector = this->GetNeighborhood(refNode);
+		for (int nn=0; nn<(int)vector->size(); nn++) {
+			pNode neighbor = vector->at(nn);
+			cout << "=> " << neighbor->Id
+				 << "(" << refNode->DistanceFrom(neighbor) << ") ";
+		}
+		cout << endl;
+	}
+}
+
+void Tour::DeleteNeighborhoods() {
+	for (int n=0; n<(int)this->neighborhoods->size(); n++) {
+		pNodeVector vector = this->neighborhoods->at(n);
+		SAFE_DELETE( vector );
+	}
+	SAFE_DELETE(this->neighborhoods);
 }
 
 string Tour::ToString() {

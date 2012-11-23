@@ -24,8 +24,7 @@ typedef struct {
 	double distance;
 } InsertTypeIIParams;
 
-
-typedef map<int, pNodeVector> Neighborhoods;
+typedef vector<pNodeVector> Neighborhoods;
 typedef Neighborhoods* pNeighborhoods;
 
 class Tour {
@@ -37,6 +36,7 @@ private:
 	pNeighborhoods neighborhoods;
 	void InitNeighborhoods();
 	void UpdateNeighborhoods();
+	void DeleteNeighborhoods();
 
 public:
 	data::clist<pNode> nodes;

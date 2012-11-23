@@ -1,7 +1,7 @@
 Genius - To Do
 ---------------------
 
-- L'istanza va usata coome classe standard, non statica, questo potrebbe facilitare i test e 
+- L'istanza va usata come classe standard, non statica, questo potrebbe facilitare i test e 
   permettere una maggiore flessibilità in futuro 
   (= potrei partizionare un VRP in tanti TSP e passarli come istanze a genius)
 

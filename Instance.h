@@ -24,6 +24,7 @@ public:
 	void Add(pNode node);
 	pNode GetNode(int index);
 	pNode GetNodeById(int id);
+	int GetIndex(pNode node);
 
 	int Size();
 };

@@ -6,7 +6,6 @@ namespace Genius {
 pInstance geniusPaperInstance;
 pInstance tenNodesInstance;
 pInstance twentyNodesInstance;
-pInstance fourNodesInstance;
 
 pTour paper_tour;
 pTour ten_nodes_tour;
@@ -127,7 +126,6 @@ TEST_GROUP(Tour) {
 		SAFE_DELETE(geniusPaperInstance);
 		SAFE_DELETE(tenNodesInstance);
 		SAFE_DELETE(twentyNodesInstance);
-		SAFE_DELETE(fourNodesInstance);
 
 		SAFE_DELETE(paper_tour);
 		SAFE_DELETE(ten_nodes_tour);
@@ -223,11 +221,16 @@ TEST(Tour, GetIndexTest) {
 	reference = tenNodesInstance->GetNode(1);
 	CHECK(ten_nodes_tour->GetIndex(reference) ==  1);
 
-	reference = tenNodesInstance->GetNode(3);
+	reference = tenNodesInstance->GetNode(2);
 	CHECK(ten_nodes_tour->GetIndex(reference) ==  2);
 
-	reference = tenNodesInstance->GetNode(11); // probabile NULL!!!
-	CHECK(ten_nodes_tour->GetIndex(reference) == -1);
+	// elemento non esistente
+	try {
+		reference = tenNodesInstance->GetNode(11);
+		FAIL_TEST("Should have thrown exception!");
+	}catch(std::exception &e){
+		STRCMP_EQUAL("vector::_M_range_check", e.what());
+	}
 
 	reference = tenNodesInstance->GetNode(0);
 	CHECK(ten_nodes_tour->GetIndex(reference) ==  0);
@@ -235,7 +238,7 @@ TEST(Tour, GetIndexTest) {
 	reference = tenNodesInstance->GetNode(2);
 	CHECK(ten_nodes_tour->GetIndex(reference) ==  2);
 
-	reference = tenNodesInstance->GetNode(3);
+	reference = tenNodesInstance->GetNode(1);
 	CHECK(ten_nodes_tour->GetIndex(reference) ==  1);
 }
 
@@ -245,38 +248,121 @@ TEST(Tour, IsBetweenTest) {
 		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 1",
 		ten_nodes_tour->ToString().c_str());
 
-	from->Id = 2; x->Id = 3; to->Id = 4; // caso normale, nodi adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
-	from->Id = 10; x->Id = 1; to->Id = 2; // check testa, nodi adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
-	from->Id = 9; x->Id = 10; to->Id = 1; // check coda, nodi adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
-	from->Id = 2; x->Id = 4; to->Id = 7; // caso normale, nodi non adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
-	from->Id = 5; x->Id = 1; to->Id = 3; // check testa, nodi non adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
-	from->Id = 6; x->Id = 10; to->Id = 4; // check coda, nodi non adiacenti
+	// caso normale, nodi adiacenti
+	pNode from = tenNodesInstance->GetNode(1);
+	pNode x = tenNodesInstance->GetNode(2);
+	pNode to = tenNodesInstance->GetNode(3);
 	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
 
-	from->Id = 4; x->Id = 3; to->Id = 2; // caso normale, nodi adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
-	from->Id = 2; x->Id = 1; to->Id = 10; // check testa, nodi adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
-	from->Id = 1; x->Id = 10; to->Id = 9; // check coda, nodi adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
-	from->Id = 10; x->Id = 4; to->Id = 2; // caso normale, nodi non adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
-	from->Id = 3; x->Id = 1; to->Id = 5; // check testa, nodi non adiacenti
-	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
-	from->Id = 4; x->Id = 10; to->Id = 6; // check coda, nodi non adiacenti
+	// check testa, nodi adiacenti
+	from = tenNodesInstance->GetNode(9);
+	x = tenNodesInstance->GetNode(0);
+	to = tenNodesInstance->GetNode(1);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
+
+	// check coda, nodi adiacenti
+	from = tenNodesInstance->GetNode(8);
+	x = tenNodesInstance->GetNode(9);
+	to = tenNodesInstance->GetNode(0);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
+
+	// caso normale, nodi non adiacenti
+	from = tenNodesInstance->GetNode(1);
+	x = tenNodesInstance->GetNode(3);
+	to = tenNodesInstance->GetNode(6);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
+
+	// check testa, nodi non adiacenti
+	from = tenNodesInstance->GetNode(4);
+	x = tenNodesInstance->GetNode(0);
+	to = tenNodesInstance->GetNode(2);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
+
+	// check coda, nodi non adiacenti
+	from = tenNodesInstance->GetNode(5);
+	x = tenNodesInstance->GetNode(9);
+	to = tenNodesInstance->GetNode(3);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 1",
+		ten_nodes_tour->ToString().c_str());
+}
+
+TEST(Tour, IsNotBetweenTest) {
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 1",
+		ten_nodes_tour->ToString().c_str());
+
+	// caso normale, nodi adiacenti
+	pNode from = tenNodesInstance->GetNode(3);
+	pNode x = tenNodesInstance->GetNode(2);
+	pNode to = tenNodesInstance->GetNode(1);
 	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
 
-	from->Id = 3; x->Id = 3; to->Id = 6; // x e from collassati
+	// check testa, nodi adiacenti
+	from = tenNodesInstance->GetNode(1);
+	x = tenNodesInstance->GetNode(0);
+	to = tenNodesInstance->GetNode(9);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
+
+	// check coda, nodi adiacenti
+	from = tenNodesInstance->GetNode(0);
+	x = tenNodesInstance->GetNode(9);
+	to = tenNodesInstance->GetNode(8);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
+
+	// caso normale, nodi non adiacenti
+	from = tenNodesInstance->GetNode(9);
+	x = tenNodesInstance->GetNode(3);
+	to = tenNodesInstance->GetNode(1);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
+
+	// check testa, nodi non adiacenti
+	from = tenNodesInstance->GetNode(2);
+	x = tenNodesInstance->GetNode(0);
+	to = tenNodesInstance->GetNode(4);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
+
+	// check coda, nodi non adiacenti
+	from = tenNodesInstance->GetNode(3);
+	x = tenNodesInstance->GetNode(9);
+	to = tenNodesInstance->GetNode(5);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 1",
+		ten_nodes_tour->ToString().c_str());
+}
+
+TEST(Tour, IsBetweenWithCollapsedNodesTest) {
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 1",
+		ten_nodes_tour->ToString().c_str());
+
+	// x e from collassati
+	pNode from = tenNodesInstance->GetNode(2);
+	pNode x = tenNodesInstance->GetNode(2);
+	pNode to = tenNodesInstance->GetNode(5);
 	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
-	from->Id = 3; x->Id = 6; to->Id = 6; // x e to collassati
+
+	// x e to collassati
+	from = tenNodesInstance->GetNode(2);
+	x = tenNodesInstance->GetNode(5);
+	to = tenNodesInstance->GetNode(5);
 	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
-	from->Id = 3; x->Id = 3; to->Id = 3; // x, from e to collassati
+
+	// x, from e to collassati
+	from = tenNodesInstance->GetNode(2);
+	x = tenNodesInstance->GetNode(2);
+	to = tenNodesInstance->GetNode(2);
 	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 1",
+		ten_nodes_tour->ToString().c_str());
 }
 
 TEST(Tour, CalcSubtourDistanceTest) {
@@ -644,7 +730,7 @@ TEST(Tour, TotalDistanceTest) {
 }
 
 IGNORE_TEST(Tour, SortingByDistanceFromReferenceNode) {
-	fourNodesInstance = new Instance();
+	pInstance fourNodesInstance = new Instance();
 	fourNodesInstance->Add(new Node(1,  0, 0));
 	fourNodesInstance->Add(new Node(2,  0, 1));
 	fourNodesInstance->Add(new Node(3,  0, 2));
@@ -694,8 +780,6 @@ IGNORE_TEST(Tour, GetNeighborhoodTest) {
 	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(9));
 
 	pNode referenceNode = neigborhoodInstance->GetNode(10);
-
-	//neighborhood_test_tour->BuildNeighborhoods(p);
 	pNodeVector nodes = neighborhood_test_tour->GetNeighborhood(referenceNode);
 
 	CHECK(nodes->size() == 4);
@@ -708,8 +792,20 @@ IGNORE_TEST(Tour, GetNeighborhoodTest) {
 	SAFE_DELETE(neighborhood_test_tour);
 }
 
-TEST(Tour, PrintNeighborhoodsTest) {
+TEST(Tour, NeighborhoodsCoherenceTest) {
+	for (int n=0; n<paper_tour->Length(); n++) {
+		pNode node = paper_tour->Get(n);
+		pNodeVector neighbors = paper_tour->GetNeighborhood(node);
+		for (int nn=0; nn<(int)(neighbors->size()-1); nn++) {
+			double distanceFromNode1 = node->DistanceFrom(neighbors->at(nn));
+			double distanceFromNode2 = node->DistanceFrom(neighbors->at(nn+1));
+			CHECK(distanceFromNode1 <= distanceFromNode2);
+		}
+	}
+}
 
+TEST(Tour, PrintNeighborhoodsTest) {
+	paper_tour->PrintNeighborhoods();
 }
 
 } /* namespace Genius */

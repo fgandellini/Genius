@@ -42,6 +42,15 @@ pNode Instance::GetNodeById(int id) {
 	return NULL;
 }
 
+int Instance::GetIndex(pNode node) {
+	for (int n=0; n<(int)this->nodes->size(); n++) {
+		if (this->nodes->at(n)->Id == node->Id) {
+			return n;
+		}
+	}
+	return -1;
+}
+
 int Instance::Size() {
 	return (int)this->nodes->size();
 }
