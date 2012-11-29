@@ -14,9 +14,9 @@ public:
 	virtual ~Genius();
 
 
-	pNodeVector vNeighborhood;
-	pNodeVector viplus1Neighborhood;
-	pNodeVector vjplus1Neighborhood;
+	//pNodeVector vNeighborhood;
+	//pNodeVector viplus1Neighborhood;
+	//pNodeVector vjplus1Neighborhood;
 
 	InsertTypeIParams EvaluateBestInsertionPoint(pTour tour, pNode v);
 	InsertTypeIParams EvaluateBestInsertTypeIParams(pTour tour, pNode v);

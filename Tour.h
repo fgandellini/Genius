@@ -32,9 +32,9 @@ private:
 	int Id;
 	pInstance instance;
 
-	int NeighborhoodSize;
 	pNeighborhoods neighborhoods;
 	void InitNeighborhoods();
+	void ClearNeighborhoods();
 	void UpdateNeighborhoods();
 	void DeleteNeighborhoods();
 
@@ -85,10 +85,9 @@ public:
 
 	double TotalDistance();
 
-	//void SetMaxNeighborhoodSize(int size);
 	pNodeVector GetNeighborhood(pNode node);
-
 	void PrintNeighborhoods();
+
 	string ToString();
 	string TourToString(data::clist<pNode> &tourToPrint);
 };

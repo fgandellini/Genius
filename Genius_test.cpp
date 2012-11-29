@@ -105,23 +105,23 @@ TEST(Genius, SimulateConstructionOfPaperTour) {
 //	genius->Geni(paperTourStep1, paper_instance);
 }
 
-IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
+TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
 
 	pNode v = paperInstance->GetNode(3);
 	InsertTypeIParams params =
 		genius->EvaluateBestInsertTypeIParams(paperTourStep1, v);
 
 	CHECK(v->Id  == 4);
-	CHECK_EQUAL_C_REAL(146.7, params.distance, 0.1);
-	CHECK(params.vi->Id == 3);
-	CHECK(params.vj->Id == 1);
+	CHECK(params.vi->Id == 1);
+	CHECK(params.vj->Id == 3);
 	CHECK(params.vk->Id == 2);
-	CHECK(params.tourMustBeReversed == true);
+	CHECK(params.tourMustBeReversed == false);
+	CHECK_EQUAL_C_REAL(146.7, params.distance, 0.1);
 }
 
-IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep2) {
+TEST(Genius, EvaluateInsertionParamsForPaperTourStep2) {
 
-	pNode v = new Node(5, 21.0, 21.7);
+	pNode v = paperInstance->GetNode(4);
 	InsertTypeIParams params =
 		genius->EvaluateBestInsertTypeIParams(paperTourStep2, v);
 
@@ -129,36 +129,32 @@ IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep2) {
 	CHECK(params.vi->Id == 1);
 	CHECK(params.vj->Id == 2);
 	CHECK(params.vk->Id == 3);
-	CHECK(params.tourMustBeReversed == false);
+	CHECK(params.tourMustBeReversed == true);
 	CHECK_EQUAL_C_REAL(150.2, params.distance, 0.1);
-
-	SAFE_DELETE(v);
 }
 
-IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep3) {
+TEST(Genius, EvaluateInsertionParamsForPaperTourStep3) {
 
-	pNode v = new Node(6, 69.3,  1.3);
+	pNode v = paperInstance->GetNode(5);
 	InsertTypeIParams params =
 		genius->EvaluateBestInsertTypeIParams(paperTourStep3, v);
 
 	CHECK(v->Id  == 6);
-	CHECK(params.vi->Id == 1);
+	CHECK(params.vi->Id == 4);
 	CHECK(params.vj->Id == 2);
-	CHECK(params.vk->Id == 3);
+	CHECK(params.vk->Id == 5);
 	CHECK(params.tourMustBeReversed == false);
 
 	// dovrebbe essere così
 	CHECK_EQUAL_C_REAL(225.0, params.distance, 0.1);
 
 	// me è così
-	CHECK_EQUAL_C_REAL(217.7, params.distance, 0.1);
-
-	SAFE_DELETE(v);
+	//CHECK_EQUAL_C_REAL(217.7, params.distance, 0.1);
 }
 
 IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep4) {
 
-	pNode v = new Node(7, 40.8, 60.1);
+	pNode v = paperInstance->GetNode(6);
 	InsertTypeIIParams params =
 		genius->EvaluateBestInsertTypeIIParams(paperTourStep4, v);
 
@@ -169,8 +165,6 @@ IGNORE_TEST(Genius, EvaluateInsertionParamsForPaperTourStep4) {
 	CHECK(params.vl->Id == 2);
 	CHECK(params.tourMustBeReversed == false);
 	CHECK_EQUAL_C_REAL(238.6, params.distance, 0.1);
-
-	SAFE_DELETE(v);
 }
 
 IGNORE_TEST(Genius, AddNodeToPaperTour) {

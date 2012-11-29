@@ -729,7 +729,7 @@ TEST(Tour, TotalDistanceTest) {
 	SAFE_DELETE(small_tour);
 }
 
-IGNORE_TEST(Tour, SortingByDistanceFromReferenceNode) {
+TEST(Tour, SortingByDistanceFromReferenceNode) {
 	pInstance fourNodesInstance = new Instance();
 	fourNodesInstance->Add(new Node(1,  0, 0));
 	fourNodesInstance->Add(new Node(2,  0, 1));
@@ -742,7 +742,6 @@ IGNORE_TEST(Tour, SortingByDistanceFromReferenceNode) {
 	small_tour->Append(fourNodesInstance->GetNode(2));
 
 	pNode referenceNode = fourNodesInstance->GetNode(3);
-
 	pNodeVector nodes = small_tour->GetNeighborhood(referenceNode);
 
 	CHECK(nodes->at(0)->Id == 3);
@@ -753,7 +752,7 @@ IGNORE_TEST(Tour, SortingByDistanceFromReferenceNode) {
 	SAFE_DELETE(small_tour);
 }
 
-IGNORE_TEST(Tour, GetNeighborhoodTest) {
+TEST(Tour, GetNeighborhoodTest) {
 	pInstance neigborhoodInstance = new Instance();
 	neigborhoodInstance->Add(new Node(0,  0, 0));
 	neigborhoodInstance->Add(new Node(1,  0, 1));
@@ -782,11 +781,54 @@ IGNORE_TEST(Tour, GetNeighborhoodTest) {
 	pNode referenceNode = neigborhoodInstance->GetNode(10);
 	pNodeVector nodes = neighborhood_test_tour->GetNeighborhood(referenceNode);
 
-	CHECK(nodes->size() == 4);
+	CHECK(nodes->size() == 10);
 	CHECK(nodes->at(0)->Id == 6);
 	CHECK(nodes->at(1)->Id == 5);
 	CHECK(nodes->at(2)->Id == 7);
 	CHECK(nodes->at(3)->Id == 4);
+	CHECK(nodes->at(4)->Id == 8);
+	CHECK(nodes->at(5)->Id == 3);
+	CHECK(nodes->at(6)->Id == 9);
+	CHECK(nodes->at(7)->Id == 2);
+	CHECK(nodes->at(8)->Id == 1);
+	CHECK(nodes->at(9)->Id == 0);
+
+	SAFE_DELETE(neigborhoodInstance);
+	SAFE_DELETE(neighborhood_test_tour);
+}
+
+TEST(Tour, GetNeighborhoodNodesNotInTourTest) {
+	pInstance neigborhoodInstance = new Instance();
+	neigborhoodInstance->Add(new Node(0,  0, 0));
+	neigborhoodInstance->Add(new Node(1,  0, 1));
+	neigborhoodInstance->Add(new Node(2,  0, 2));
+	neigborhoodInstance->Add(new Node(3,  0, 3));
+	neigborhoodInstance->Add(new Node(4,  0, 4));
+	neigborhoodInstance->Add(new Node(5,  0, 5));
+	neigborhoodInstance->Add(new Node(6,  0, 6));
+	neigborhoodInstance->Add(new Node(7,  0, 7));
+	neigborhoodInstance->Add(new Node(8,  0, 8));
+	neigborhoodInstance->Add(new Node(9,  0, 9));
+	neigborhoodInstance->Add(new Node(10, 1, 6));
+
+	pTour neighborhood_test_tour = new Tour(neigborhoodInstance);
+	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(0));
+	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(1));
+	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(2));
+	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(3));
+	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(4));
+
+	pNode referenceNode = neigborhoodInstance->GetNode(10);
+	pNodeVector nodes = neighborhood_test_tour->GetNeighborhood(referenceNode);
+
+	CHECK(nodes->size() == 5);
+	CHECK(nodes->at(0)->Id == 4);
+	CHECK(nodes->at(1)->Id == 3);
+	CHECK(nodes->at(2)->Id == 2);
+	CHECK(nodes->at(3)->Id == 1);
+	CHECK(nodes->at(4)->Id == 0);
+
+	//neighborhood_test_tour->PrintNeighborhoods();
 
 	SAFE_DELETE(neigborhoodInstance);
 	SAFE_DELETE(neighborhood_test_tour);
@@ -804,8 +846,8 @@ TEST(Tour, NeighborhoodsCoherenceTest) {
 	}
 }
 
-TEST(Tour, PrintNeighborhoodsTest) {
-	paper_tour->PrintNeighborhoods();
-}
+//TEST(Tour, PrintNeighborhoodsTest) {
+//	paper_tour->PrintNeighborhoods();
+//}
 
 } /* namespace Genius */

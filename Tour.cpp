@@ -18,7 +18,6 @@ struct NodeSorterByDistanceFromReferenceNode {
 Tour::Tour(pInstance instance) : nodes() {
 	this->Id = 0;
 	this->instance = instance;
-	this->NeighborhoodSize = INF;
 
 	this->neighborhoods = new Neighborhoods();
 	this->InitNeighborhoods();
@@ -35,6 +34,7 @@ int Tour::Length() const {
 
 void Tour::Append(pNode node) {
 	this->nodes.add_element(node);
+	this->UpdateNeighborhoods();
 }
 
 void Tour::ResetIterator() {
@@ -473,10 +473,6 @@ double Tour::TotalDistance() {
 	return totalDistance;
 }
 
-void SetMaxNeighborhoodSize(int size) {
-
-}
-
 void Tour::InitNeighborhoods() {
 	int nodesCount = this->instance->Size();
 	for (int n=0; n<nodesCount; n++) {
@@ -484,18 +480,34 @@ void Tour::InitNeighborhoods() {
 		pNodeVector vector = this->neighborhoods->at(n);
 		for (int nn=0; nn<nodesCount; nn++) {
 			if (n != nn) {
-				pNode node = this->instance->GetNode(nn);
-				vector->push_back( node );
+				//pNode node = this->instance->GetNode(nn);
+				vector->push_back( NULL );
 			}
 		}
 	}
 }
 
+void Tour::ClearNeighborhoods() {
+	for (int n=0; n<this->instance->Size(); n++) {
+		pNode refNode = this->instance->GetNode(n);
+		pNodeVector vector = this->GetNeighborhood(refNode);
+		vector->clear();
+	}
+}
+
 void Tour::UpdateNeighborhoods() {
+	this->ClearNeighborhoods();
 	for (int n=0; n<this->instance->Size(); n++) {
 
 		referenceNode = this->instance->GetNode(n);
 		pNodeVector neighbors = this->neighborhoods->at(n);
+
+		for (int nn=0; nn<this->Length(); nn++) {
+			if (n != nn) {
+				pNode node = this->Get(nn);
+				neighbors->push_back( node );
+			}
+		}
 
 		sort(neighbors->begin(), neighbors->end(),
 			NodeSorterByDistanceFromReferenceNode());
@@ -510,7 +522,7 @@ pNodeVector Tour::GetNeighborhood(pNode node) {
 void Tour::PrintNeighborhoods() {
 	cout << endl;
 	cout << "Neighborhoods for tour " << this->Id
-		 << " (p=" << this->NeighborhoodSize << ")" << endl;
+		 << endl;
 
 	for (int n=0; n<this->instance->Size(); n++) {
 		pNode refNode = this->instance->GetNode(n);
@@ -524,6 +536,8 @@ void Tour::PrintNeighborhoods() {
 		cout << endl;
 	}
 }
+
+
 
 void Tour::DeleteNeighborhoods() {
 	for (int n=0; n<(int)this->neighborhoods->size(); n++) {
