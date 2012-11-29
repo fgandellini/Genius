@@ -503,8 +503,8 @@ void Tour::UpdateNeighborhoods() {
 		pNodeVector neighbors = this->neighborhoods->at(n);
 
 		for (int nn=0; nn<this->Length(); nn++) {
-			if (n != nn) {
-				pNode node = this->Get(nn);
+			pNode node = this->Get(nn);
+			if (referenceNode->Id != node->Id) {
 				neighbors->push_back( node );
 			}
 		}

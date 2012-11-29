@@ -7,6 +7,9 @@
 namespace Genius {
 
 class Genius {
+private:
+	InsertTypeIParams EvaluateBestInsertTypeIParamsWithOrientedTour(pTour tour, pNode v);
+	InsertTypeIIParams EvaluateBestInsertTypeIIParamsWithOrientedTour(pTour tour, pNode v);
 public:
 	int p;
 
