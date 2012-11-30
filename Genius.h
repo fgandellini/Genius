@@ -21,11 +21,14 @@ public:
 	//pNodeVector viplus1Neighborhood;
 	//pNodeVector vjplus1Neighborhood;
 
-	InsertTypeIParams EvaluateBestInsertionPoint(pTour tour, pNode v);
+	//InsertTypeIParams EvaluateBestInsertionPoint(pTour tour, pNode v);
+
 	InsertTypeIParams EvaluateBestInsertTypeIParams(pTour tour, pNode v);
 	InsertTypeIIParams EvaluateBestInsertTypeIIParams(pTour tour, pNode v);
 
 	void Geni(pTour initialTour, pInstance nodesToVisit);
+
+	void StringNodeInTour(pNode node, pTour tour);
 
 };
 typedef Genius* pGenius;

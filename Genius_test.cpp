@@ -109,11 +109,6 @@ TEST(Genius, PrintDistancesMatrix) {
 */
 }
 
-TEST(Genius, SimulateConstructionOfPaperTour) {
-
-//	genius->Geni(paperTourStep1, paper_instance);
-}
-
 TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
 
 	pNode v = paperInstance->GetNode(3);
@@ -184,6 +179,67 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep5) {
 	CHECK(params.vl->Id == 3);
 	CHECK(params.tourMustBeReversed == false);
 	CHECK_EQUAL_C_REAL(229.0, params.distance, 0.1);
+}
+
+TEST(Genius, BAAAAADErrorTest) {
+	pNode node = paperInstance->GetNode(5);
+	pTour tour = paperTourStep3;
+
+	CHECK(tour->Length() == 5);
+	STRCMP_EQUAL("5 => 2 => 3 => 4 => 1 => 5",
+		tour->ToString().c_str());
+
+	genius->StringNodeInTour(node, tour);
+
+	CHECK(tour->Length() == 6);
+	STRCMP_EQUAL("6 => 2 => 3 => 5 => 1 => 4 => 6",
+		tour->ToString().c_str());
+
+	CHECK_EQUAL_C_REAL(225.0, tour->TotalDistance(), 0.1);
+}
+
+TEST(Genius, PaperTourStringingTest) {
+	pNode node = NULL;
+	pTour tour = paperTourStep1;
+	CHECK(tour->Length() == 3);
+	STRCMP_EQUAL("1 => 2 => 3 => 1",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(137.6, tour->TotalDistance(), 0.1);
+
+	node = paperInstance->GetNode(3);
+	genius->StringNodeInTour(node, tour);
+	CHECK(tour->Length() == 4);
+	STRCMP_EQUAL("4 => 3 => 2 => 1 => 4",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(146.7, tour->TotalDistance(), 0.1);
+
+	node = paperInstance->GetNode(4);
+	genius->StringNodeInTour(node, tour);
+	CHECK(tour->Length() == 5);
+	STRCMP_EQUAL("5 => 2 => 3 => 4 => 1 => 5",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(150.2, tour->TotalDistance(), 0.1);
+
+	node = paperInstance->GetNode(5);
+	genius->StringNodeInTour(node, tour);
+	CHECK(tour->Length() == 6);
+	STRCMP_EQUAL("6 => 2 => 3 => 5 => 1 => 4 => 6",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(225.0, tour->TotalDistance(), 0.1);
+
+	node = paperInstance->GetNode(6);
+	genius->StringNodeInTour(node, tour);
+	CHECK(tour->Length() == 7);
+	STRCMP_EQUAL("7 => 2 => 6 => 3 => 5 => 4 => 1 => 7",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(238.6, tour->TotalDistance(), 0.1);
+
+	node = paperInstance->GetNode(7);
+	genius->StringNodeInTour(node, tour);
+	CHECK(tour->Length() == 8);
+	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
 }
 
 IGNORE_TEST(Genius, AddNodeToPaperTour) {

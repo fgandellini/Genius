@@ -9,7 +9,6 @@ Genius::Genius() {
 Genius::~Genius() {
 }
 
-
 InsertTypeIParams Genius::EvaluateBestInsertTypeIParams(pTour tour, pNode v) {
 	InsertTypeIParams bestParamsForward;
 	bestParamsForward.vi = NULL;
@@ -361,11 +360,42 @@ InsertTypeIIParams Genius::EvaluateBestInsertTypeIIParamsWithOrientedTour(pTour 
 //	return bestParams;
 //}
 
+void Genius::StringNodeInTour(pNode node, pTour tour) {
 
-InsertTypeIParams Genius::EvaluateBestInsertionPoint(pTour tour, pNode v) {
-	return this->EvaluateBestInsertTypeIParams(tour, v);
+	InsertTypeIParams bestParamsForTypeI;
+	bestParamsForTypeI.vi = NULL;
+	bestParamsForTypeI.vj = NULL;
+	bestParamsForTypeI.vk = NULL;
+	bestParamsForTypeI.distance = INF_DISTANCE;
+	bestParamsForTypeI.tourMustBeReversed = false;
+
+	InsertTypeIIParams bestParamsForTypeII;
+	bestParamsForTypeII.vi = NULL;
+	bestParamsForTypeII.vj = NULL;
+	bestParamsForTypeII.vk = NULL;
+	bestParamsForTypeII.vl = NULL;
+	bestParamsForTypeII.distance = INF_DISTANCE;
+	bestParamsForTypeII.tourMustBeReversed = true;
+
+	bestParamsForTypeI =
+		this->EvaluateBestInsertTypeIParams(tour, node);
+
+	bestParamsForTypeII =
+		this->EvaluateBestInsertTypeIIParams(tour, node);
+
+	if (bestParamsForTypeI.distance < bestParamsForTypeII.distance) {
+		tour->InsertTypeI(node,
+			bestParamsForTypeI.vi,
+			bestParamsForTypeI.vj,
+			bestParamsForTypeI.vk);
+	} else {
+		tour->InsertTypeII(node,
+			bestParamsForTypeII.vi,
+			bestParamsForTypeII.vj,
+			bestParamsForTypeII.vk,
+			bestParamsForTypeII.vl);
+	}
 }
-
 
 void Genius::Geni(pTour initialTour, pInstance nodesToVisit) {
 
