@@ -182,11 +182,14 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep5) {
 }
 
 TEST(Genius, BAAAAADErrorTest) {
-	pNode node = paperInstance->GetNode(5);
-	pTour tour = paperTourStep3;
+	pNode node = paperInstance->GetNode(4);
+	pTour tour = paperTourStep2;
 
+	genius->StringNodeInTour(node, tour);
+
+	node = paperInstance->GetNode(5);
 	CHECK(tour->Length() == 5);
-	STRCMP_EQUAL("5 => 2 => 3 => 4 => 1 => 5",
+	STRCMP_EQUAL("5 => 1 => 4 => 3 => 2 => 5",
 		tour->ToString().c_str());
 
 	genius->StringNodeInTour(node, tour);
@@ -230,7 +233,7 @@ TEST(Genius, PaperTourStringingTest) {
 	node = paperInstance->GetNode(6);
 	genius->StringNodeInTour(node, tour);
 	CHECK(tour->Length() == 7);
-	STRCMP_EQUAL("7 => 2 => 6 => 3 => 5 => 4 => 1 => 7",
+	STRCMP_EQUAL("7 => 1 => 4 => 5 => 3 => 6 => 2 => 7",
 		tour->ToString().c_str());
 	CHECK_EQUAL_C_REAL(238.6, tour->TotalDistance(), 0.1);
 
@@ -242,7 +245,7 @@ TEST(Genius, PaperTourStringingTest) {
 	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
 }
 
-IGNORE_TEST(Genius, AddNodeToPaperTour) {
+TEST(Genius, AddNodeToPaperTour) {
 
 }
 

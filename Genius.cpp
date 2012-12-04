@@ -375,7 +375,7 @@ void Genius::StringNodeInTour(pNode node, pTour tour) {
 	bestParamsForTypeII.vk = NULL;
 	bestParamsForTypeII.vl = NULL;
 	bestParamsForTypeII.distance = INF_DISTANCE;
-	bestParamsForTypeII.tourMustBeReversed = true;
+	bestParamsForTypeII.tourMustBeReversed = false;
 
 	bestParamsForTypeI =
 		this->EvaluateBestInsertTypeIParams(tour, node);
@@ -384,11 +384,17 @@ void Genius::StringNodeInTour(pNode node, pTour tour) {
 		this->EvaluateBestInsertTypeIIParams(tour, node);
 
 	if (bestParamsForTypeI.distance < bestParamsForTypeII.distance) {
+		if (bestParamsForTypeI.tourMustBeReversed) {
+			tour->Reverse();
+		}
 		tour->InsertTypeI(node,
 			bestParamsForTypeI.vi,
 			bestParamsForTypeI.vj,
 			bestParamsForTypeI.vk);
 	} else {
+		if (bestParamsForTypeII.tourMustBeReversed) {
+			tour->Reverse();
+		}
 		tour->InsertTypeII(node,
 			bestParamsForTypeII.vi,
 			bestParamsForTypeII.vj,

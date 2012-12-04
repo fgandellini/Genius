@@ -389,12 +389,10 @@ double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode v
 void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	data::clist<pNode> result;
 
+	assert(vi->Id != vj->Id);
 	assert(vk->Id != vi->Id);
 	assert(vk->Id != vj->Id);
-
-	if (!this->IsBetween(vk, vj, vi)) {
-		this->Reverse();
-	}
+	assert(this->IsBetween(vk, vj, vi));
 
 	pNode viplus1 = this->Next(vi);
 	pNode vjplus1 = this->Next(vj);
@@ -415,6 +413,8 @@ void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	this->AddSubtour(subtour_vkplus1_vi, result);
 
 	this->nodes = result;
+
+	UpdateNeighborhoods();
 }
 
 void Tour::InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl) {
@@ -429,11 +429,8 @@ void Tour::InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl) {
 	assert(vk->Id != vjplus1->Id);
 	assert(vl->Id != vi->Id);
 	assert(vl->Id != viplus1->Id);
-
-	if (!this->IsBetween(vk, vj, vi) ||
-		!this->IsBetween(vl, vi, vj)) {
-		this->nodes.reverse_order();
-	}
+	assert(this->IsBetween(vk, vj, vi) &&
+	       this->IsBetween(vl, vi, vj));
 
 	result.add_element(v);
 
@@ -454,6 +451,8 @@ void Tour::InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl) {
 	this->AddSubtour(subtour_vk_vi, result);
 
 	this->nodes = result;
+
+	UpdateNeighborhoods();
 }
 
 double Tour::TotalDistance() {
