@@ -167,68 +167,6 @@ void Tour::AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result) {
 	}
 }
 
-
-
-
-//double Tour::CalcSubtourDistance(pNode from, pNode to) {
-//	double subtourDistance = 0;
-//	double dist;
-//
-//	cout << "subtour ("<< from->Id << "=>" << to->Id << "): ";
-//
-//	if (from->Id != to->Id)
-//	{
-//		this->GoTo(from);
-//		pNode current = this->Current();
-//		this->Next();
-//		pNode next = this->Next();
-//
-//		while (next->Id != to->Id) {
-//			dist = current->DistanceFrom(next);
-//			subtourDistance += dist;
-//			cout << current->Id << " ==[" << dist << "]==> ";
-//			current = next;
-//			next = this->Next();
-//		}
-//		dist = current->DistanceFrom(next);
-//		subtourDistance += dist;
-//		cout << current->Id << " ==[" << dist << "]==> " << next->Id << " ";
-//		this->ResetIterator();
-//	}
-//
-//	cout << "= +" << subtourDistance << endl;
-//	return subtourDistance;
-//}
-//
-//double Tour::CalcReversedSubtourDistance(pNode from, pNode to) {
-//	double subtourDistance = 0;
-//	double dist;
-//
-//	cout << "rev subtour ("<< from->Id << "=>" << to->Id << "): ";
-//
-//	if (from->Id != to->Id)
-//	{
-//		this->GoTo(from);
-//		pNode current = this->Current();
-//		pNode previous = this->Previous();
-//
-//		while (previous->Id != to->Id) {
-//			dist = current->DistanceFrom(previous);
-//			subtourDistance += dist;
-//			cout << current->Id << " ==[" << dist << "]==> ";
-//			current = previous;
-//			previous = this->Previous();
-//		}
-//		dist = current->DistanceFrom(previous);
-//		subtourDistance += dist;
-//		cout << current->Id << " ==[" << dist << "]==> " << previous->Id << " ";
-//		this->ResetIterator();
-//	}
-//
-//	cout << "= +" << subtourDistance << endl;
-//	return subtourDistance;
-//}
-
 bool Tour::CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk) {
 	if ((vi->Id != vj->Id) &&
 		(vk->Id != vi->Id) &&
@@ -321,70 +259,6 @@ double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode v
 	}
 	return INF_DISTANCE;
 }
-
-
-
-//double Tour::EvaluateReversedInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
-//	double tourDistance = 0;
-//	double dist = 0;
-////	bool tourHasBeenReversed = false;
-//	cout << endl;
-//
-//	assert(vk->Id != vi->Id);
-//	assert(vk->Id != vj->Id);
-//
-//	if (!this->IsBetween(vk, vj, vi)) {
-//		//cout << "tour reversed!" << endl;
-//		//this->Reverse();
-//		//tourHasBeenReversed = true;
-//
-//		return INF_DISTANCE;
-//	}
-//
-//	pNode viplus1 = this->Next(vi);
-//	pNode vjplus1 = this->Next(vj);
-//	pNode vkplus1 = this->Next(vk);
-//
-//	dist = v->DistanceFrom(vj);
-//	tourDistance += dist;
-//	cout << v->Id << "->" << vj->Id << " = +" << dist << endl;
-//
-//	dist = this->CalcReversedSubtourDistance(vj, viplus1);
-//	tourDistance += dist;
-////	cout << vj->Id << "->...->" << viplus1->Id << " = +" << dist << endl;
-//
-//	dist = viplus1->DistanceFrom(vk);
-//	tourDistance += dist;
-//	cout << viplus1->Id << "->" << vk->Id << " = +" << dist << endl;
-//
-//	dist = this->CalcReversedSubtourDistance(vk, vjplus1);
-//	tourDistance += dist;
-////	cout << vk->Id << "->...->" << vjplus1->Id << " = +" << dist << endl;
-//
-//	dist = vjplus1->DistanceFrom(vkplus1);
-//	tourDistance += dist;
-//	cout << vjplus1->Id << "->" << vkplus1->Id << " = +" << dist << endl;
-//
-//	dist = this->CalcReversedSubtourDistance(vkplus1, vi);
-//	tourDistance += dist;
-////	cout << vkplus1->Id << "->...->" << vi->Id << " = +" << dist << endl;
-//
-//	dist = vi->DistanceFrom(v);
-//	tourDistance += dist;
-//	cout << vi->Id << "->" << v->Id << " = +" << dist << endl;
-//
-//	cout << "TOTAL = " << tourDistance << endl;
-//
-////	if (tourHasBeenReversed) {
-////		this->Reverse();
-////	}
-//	this->ResetIterator();
-//
-//	return tourDistance;
-//}
-
-
-//double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
 
 void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	data::clist<pNode> result;
@@ -535,8 +409,6 @@ void Tour::PrintNeighborhoods() {
 		cout << endl;
 	}
 }
-
-
 
 void Tour::DeleteNeighborhoods() {
 	for (int n=0; n<(int)this->neighborhoods->size(); n++) {
