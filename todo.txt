@@ -9,9 +9,19 @@ Genius - To Do
   I tour potrebbero così fare controlli di coerenza sull'aggiunta di un nodo 
   (che deve necessariamente appartenere all'istanza) e potrebbero inizializzare l'array delle neighborhood
 
-- Terminare la gestione delle neighborhood: il problema da gestire è che le neighborhood hanno 
+x Terminare la gestione delle neighborhood: il problema da gestire è che le neighborhood hanno 
   senso anche per nodi esterni al tour
 
-- Verificare che le funzioni di evaluate (dopo l'aggiunta delle neighborhood) 
+x Verificare che le funzioni di evaluate (dopo l'aggiunta delle neighborhood) 
   restituiscano il valore 225.0 come atteso dal paper
+  
+- Precalcolare la matrice distanze al caricamento dell'istanza, 
+  dovrebbe velocizzare anche tutte le funzioni che usano check su distanza e 
+  node->DistanceFrom
+  
+- Implementare il loader per istanze (vedere quanto codice vacchio si può tenere)
+
+- Implementare unstringing e US
+
+- Integrare US in Geni
 
