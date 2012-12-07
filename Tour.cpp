@@ -59,7 +59,7 @@ void Tour::GoTo(pNode node) {
 }
 
 bool Tour::Contains(pNode node) {
-	return ( this->nodes.f_find(node->Id, &CompareNodes) != NULL );
+	return ( this->nodes.f_find(node->Id, &CompareNodes) != -1 );
 }
 
 pNode Tour::Next(pNode node) {

@@ -2,37 +2,33 @@
 #define GENIUS_H_
 
 #include "CommonIncludes.h"
-#include "Tour.h"
+#include "TourFactory.h"
 
 namespace Genius {
 
 class Genius {
 private:
-	InsertTypeIParams EvaluateBestInsertTypeIParamsWithOrientedTour(pTour tour, pNode v);
-	InsertTypeIIParams EvaluateBestInsertTypeIIParamsWithOrientedTour(pTour tour, pNode v);
-public:
-	int p;
+	pTourFactory tourFactory;
 
+	InsertTypeIParams EvaluateBestInsertTypeIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);
+	InsertTypeIIParams EvaluateBestInsertTypeIIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);
+public:
 	Genius();
 	virtual ~Genius();
 
+	InsertTypeIParams EvaluateBestInsertTypeIParams(pTour tour, pNode v, int neighborhoodSize);
+	InsertTypeIIParams EvaluateBestInsertTypeIIParams(pTour tour, pNode v, int neighborhoodSize);
 
-	//pNodeVector vNeighborhood;
-	//pNodeVector viplus1Neighborhood;
-	//pNodeVector vjplus1Neighborhood;
+	void Geni();
 
-	//InsertTypeIParams EvaluateBestInsertionPoint(pTour tour, pNode v);
+	pTour ExecuteGeni(pInstance nodesToVisit, int neighborhoodSize);
+	void InitializeTourWithThreeNodes(pTour tour, pInstance nodesToVisit);
+	void StringNodeInTour(pNode node, pTour tour, int neighborhoodSize);
 
-	InsertTypeIParams EvaluateBestInsertTypeIParams(pTour tour, pNode v);
-	InsertTypeIIParams EvaluateBestInsertTypeIIParams(pTour tour, pNode v);
-
-	void Geni(pTour initialTour, pInstance nodesToVisit);
-
-	void StringNodeInTour(pNode node, pTour tour);
-
+	void ExecuteUs(pTour tour);
+	void UnstringNodeFromTour(pNode node, pTour tour);
 };
 typedef Genius* pGenius;
-
 
 } /* namespace Genius */
 #endif /* GENIUS_H_ */

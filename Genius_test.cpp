@@ -1,8 +1,8 @@
 #include "Genius.h"
+#include "TourFactory.h"
 #include <CppUTest/TestHarness.h>
 
 namespace Genius {
-
 
 pInstance paperInstance;
 
@@ -12,6 +12,8 @@ pTour paperTourStep2;
 pTour paperTourStep3;
 pTour paperTourStep4;
 pTour paperTourStep5;
+
+pTourFactory tf;
 
 TEST_GROUP(Genius) {
 	void setup() {
@@ -27,26 +29,27 @@ TEST_GROUP(Genius) {
 		paperInstance->Add(new Node(8, 27.8, 26.2));
 
 		genius = new Genius();
+		tf = new TourFactory(paperInstance);
 
-		paperTourStep1 = new Tour(paperInstance);
+		paperTourStep1 = tf->GetTour();
 		paperTourStep1->Append(paperInstance->GetNode(0));
 		paperTourStep1->Append(paperInstance->GetNode(1));
 		paperTourStep1->Append(paperInstance->GetNode(2));
 
-		paperTourStep2 = new Tour(paperInstance);
+		paperTourStep2 = tf->GetTour();
 		paperTourStep2->Append(paperInstance->GetNode(0));
 		paperTourStep2->Append(paperInstance->GetNode(1));
 		paperTourStep2->Append(paperInstance->GetNode(2));
 		paperTourStep2->Append(paperInstance->GetNode(3));
 
-		paperTourStep3 = new Tour(paperInstance);
+		paperTourStep3 = tf->GetTour();
 		paperTourStep3->Append(paperInstance->GetNode(4));
 		paperTourStep3->Append(paperInstance->GetNode(1));
 		paperTourStep3->Append(paperInstance->GetNode(2));
 		paperTourStep3->Append(paperInstance->GetNode(3));
 		paperTourStep3->Append(paperInstance->GetNode(0));
 
-		paperTourStep4 = new Tour(paperInstance);
+		paperTourStep4 = tf->GetTour();
 		paperTourStep4->Append(paperInstance->GetNode(5));
 		paperTourStep4->Append(paperInstance->GetNode(1));
 		paperTourStep4->Append(paperInstance->GetNode(2));
@@ -54,7 +57,7 @@ TEST_GROUP(Genius) {
 		paperTourStep4->Append(paperInstance->GetNode(0));
 		paperTourStep4->Append(paperInstance->GetNode(3));
 
-		paperTourStep5 = new Tour(paperInstance);
+		paperTourStep5 = tf->GetTour();
 		paperTourStep5->Append(paperInstance->GetNode(6));
 		paperTourStep5->Append(paperInstance->GetNode(1));
 		paperTourStep5->Append(paperInstance->GetNode(5));
@@ -74,6 +77,7 @@ TEST_GROUP(Genius) {
 		SAFE_DELETE(paperTourStep5);
 
 		SAFE_DELETE(genius);
+		SAFE_DELETE(tf);
 	}
 };
 
@@ -113,7 +117,7 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep1) {
 
 	pNode v = paperInstance->GetNode(3);
 	InsertTypeIParams params =
-		genius->EvaluateBestInsertTypeIParams(paperTourStep1, v);
+		genius->EvaluateBestInsertTypeIParams(paperTourStep1, v, 4);
 
 	CHECK(v->Id  == 4);
 	CHECK(params.vi->Id == 1);
@@ -127,7 +131,7 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep2) {
 
 	pNode v = paperInstance->GetNode(4);
 	InsertTypeIParams params =
-		genius->EvaluateBestInsertTypeIParams(paperTourStep2, v);
+		genius->EvaluateBestInsertTypeIParams(paperTourStep2, v, 4);
 
 	CHECK(v->Id  == 5);
 	CHECK(params.vi->Id == 2);
@@ -141,7 +145,7 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep3) {
 
 	pNode v = paperInstance->GetNode(5);
 	InsertTypeIParams params =
-		genius->EvaluateBestInsertTypeIParams(paperTourStep3, v);
+		genius->EvaluateBestInsertTypeIParams(paperTourStep3, v, 4);
 
 	CHECK(v->Id  == 6);
 	CHECK(params.vi->Id == 4);
@@ -155,7 +159,7 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep4) {
 
 	pNode v = paperInstance->GetNode(6);
 	InsertTypeIIParams params =
-		genius->EvaluateBestInsertTypeIIParams(paperTourStep4, v);
+		genius->EvaluateBestInsertTypeIIParams(paperTourStep4, v, 4);
 
 	CHECK(v->Id  == 7);
 	CHECK(params.vi->Id == 2);
@@ -170,7 +174,7 @@ TEST(Genius, EvaluateInsertionParamsForPaperTourStep5) {
 
 	pNode v = paperInstance->GetNode(7);
 	InsertTypeIIParams params =
-		genius->EvaluateBestInsertTypeIIParams(paperTourStep5, v);
+		genius->EvaluateBestInsertTypeIIParams(paperTourStep5, v, 4);
 
 	CHECK(v->Id == 8);
 	CHECK(params.vi->Id == 2);
@@ -185,14 +189,14 @@ TEST(Genius, BAAAAADErrorTest) {
 	pNode node = paperInstance->GetNode(4);
 	pTour tour = paperTourStep2;
 
-	genius->StringNodeInTour(node, tour);
+	genius->StringNodeInTour(node, tour, 4);
 
 	node = paperInstance->GetNode(5);
 	CHECK(tour->Length() == 5);
 	STRCMP_EQUAL("5 => 1 => 4 => 3 => 2 => 5",
 		tour->ToString().c_str());
 
-	genius->StringNodeInTour(node, tour);
+	genius->StringNodeInTour(node, tour, 4);
 
 	CHECK(tour->Length() == 6);
 	STRCMP_EQUAL("6 => 2 => 3 => 5 => 1 => 4 => 6",
@@ -210,43 +214,59 @@ TEST(Genius, PaperTourStringingTest) {
 	CHECK_EQUAL_C_REAL(137.6, tour->TotalDistance(), 0.1);
 
 	node = paperInstance->GetNode(3);
-	genius->StringNodeInTour(node, tour);
+	genius->StringNodeInTour(node, tour, 4);
 	CHECK(tour->Length() == 4);
 	STRCMP_EQUAL("4 => 3 => 2 => 1 => 4",
 		tour->ToString().c_str());
 	CHECK_EQUAL_C_REAL(146.7, tour->TotalDistance(), 0.1);
 
 	node = paperInstance->GetNode(4);
-	genius->StringNodeInTour(node, tour);
+	genius->StringNodeInTour(node, tour, 4);
 	CHECK(tour->Length() == 5);
 	STRCMP_EQUAL("5 => 2 => 3 => 4 => 1 => 5",
 		tour->ToString().c_str());
 	CHECK_EQUAL_C_REAL(150.2, tour->TotalDistance(), 0.1);
 
 	node = paperInstance->GetNode(5);
-	genius->StringNodeInTour(node, tour);
+	genius->StringNodeInTour(node, tour, 4);
 	CHECK(tour->Length() == 6);
 	STRCMP_EQUAL("6 => 2 => 3 => 5 => 1 => 4 => 6",
 		tour->ToString().c_str());
 	CHECK_EQUAL_C_REAL(225.0, tour->TotalDistance(), 0.1);
 
 	node = paperInstance->GetNode(6);
-	genius->StringNodeInTour(node, tour);
+	genius->StringNodeInTour(node, tour, 4);
 	CHECK(tour->Length() == 7);
 	STRCMP_EQUAL("7 => 1 => 4 => 5 => 3 => 6 => 2 => 7",
 		tour->ToString().c_str());
 	CHECK_EQUAL_C_REAL(238.6, tour->TotalDistance(), 0.1);
 
 	node = paperInstance->GetNode(7);
-	genius->StringNodeInTour(node, tour);
+	genius->StringNodeInTour(node, tour, 4);
 	CHECK(tour->Length() == 8);
 	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
 		tour->ToString().c_str());
 	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
 }
 
-TEST(Genius, AddNodeToPaperTour) {
+TEST(Genius, ApplyGeniToPaperTourWithP_4) {
+	pTour tour = genius->ExecuteGeni(paperInstance, 4);
 
+	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
+
+	SAFE_DELETE(tour);
+}
+
+TEST(Genius, ApplyGeniToPaperTourWithP_5) { // NO! Ma funziona con p=6 ...mah...
+	pTour tour = genius->ExecuteGeni(paperInstance, 6);
+
+	STRCMP_EQUAL("8 => 4 => 1 => 7 => 6 => 2 => 3 => 5 => 8",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(223.0, tour->TotalDistance(), 0.1);
+
+	SAFE_DELETE(tour);
 }
 
 } /* namespace Genius */
