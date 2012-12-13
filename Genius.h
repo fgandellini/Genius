@@ -19,6 +19,9 @@ public:
 	InsertTypeIParams EvaluateBestInsertTypeIParams(pTour tour, pNode v, int neighborhoodSize);
 	InsertTypeIIParams EvaluateBestInsertTypeIIParams(pTour tour, pNode v, int neighborhoodSize);
 
+	//RemoveTypeIParams EvaluateBestRemoveTypeIParams(pTour tour, pNode vi, int neighborhoodSize);
+	//RemoveTypeIIParams EvaluateBestRemoveTypeIIParams(pTour tour, pNode vi, int neighborhoodSize);
+
 	void Geni();
 
 	pTour ExecuteGeni(pInstance nodesToVisit, int neighborhoodSize);

@@ -264,4 +264,30 @@ void Genius::InitializeTourWithThreeNodes(pTour tour, pInstance nodesToVisit) {
 	tour->Append(nodesToVisit->GetNode(2));
 }
 
+void Genius::ExecuteUs(pTour tour) {
+	pTour bestTour = NULL;
+	double bestTourDistance = INF_DISTANCE;
+	int currentNodeOfTour = 0;
+
+	// per sempre for(;;)
+	{
+		// ottiene il nodo corrente del tour currentNodeOfTour (=vt)
+		// esegui unstringing di vt
+
+		// valuta stringing di vt (=z)
+
+		// se z < bestTourDistance
+			// currentNodeOfTour = 0
+			// bestTourDistance = z
+			// bestTour = tour ottenuto con l'insert
+
+		// altrimenti
+			// se ho nodi nel tour
+				// currentNodeOfTour++
+			// altrimenti
+				// fine
+	}
+
+}
+
 } /* namespace Genius */

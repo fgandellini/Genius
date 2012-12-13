@@ -70,8 +70,8 @@ public:
 
 	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
-	double EvaluateRemoveTypeI(pNode v, pNode vi, pNode vj, pNode vk);
-	double EvaluateRemoveTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+	double EvaluateRemoveTypeI(pNode vi, pNode vj, pNode vk);
+	double EvaluateRemoveTypeII(pNode vi, pNode vj, pNode vk, pNode vl);
 
 	data::clist<pNode> GetSubtour(pNode from, pNode to);
 	data::clist<pNode> GetReversedSubtour(pNode from, pNode to);
