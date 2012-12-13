@@ -65,16 +65,13 @@ public:
 
 	void Reverse();
 
-//	double CalcSubtourDistance(pNode from, pNode to);
-//	double CalcReversedSubtourDistance(pNode from, pNode to);
-
-	bool CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk);
-	bool CheckInsertTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl);
+//	bool CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk);
+//	bool CheckInsertTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl);
 
 	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
-//	double EvaluateReversedInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
-//	double EvaluateReversedInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+	double EvaluateRemoveTypeI(pNode v, pNode vi, pNode vj, pNode vk);
+	double EvaluateRemoveTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
 
 	data::clist<pNode> GetSubtour(pNode from, pNode to);
 	data::clist<pNode> GetReversedSubtour(pNode from, pNode to);
@@ -82,10 +79,13 @@ public:
 
 	void InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 	void InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
+	void RemoveTypeI(pNode vi, pNode vj, pNode vk);
+	void RemoveTypeII(pNode vi, pNode vj, pNode vk, pNode vl);
 
 	double TotalDistance();
 
 	pNodeVector GetNeighborhood(pNode node);
+	bool IsNodeInNeighborhood(pNode node, pNodeVector neighborhood);
 	void PrintNeighborhoods();
 
 	string ToString();

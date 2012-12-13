@@ -26,6 +26,7 @@
 									<listOptionValue builtIn="false" value="/home/fede/ae/cpputest/include"/>
 								</option>
 								<option id="gnu.c.compiler.option.misc.other.1949777641" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -ftest-coverage -fprofile-arcs" valueType="string"/>
+								<option id="gnu.c.compiler.option.debugging.other.1165308426" superClass="gnu.c.compiler.option.debugging.other" value="-rdynamic" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.721025758" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.946580830" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">

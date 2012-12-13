@@ -12,6 +12,9 @@ pTour ten_nodes_tour;
 pTour long_tour;
 pTour long_long_tour;
 
+pTour long_tour_for_remove;
+pTour long_long_tour_for_remove;
+
 TEST_GROUP(Tour) {
 	void setup() {
 		geniusPaperInstance = new Instance();
@@ -99,6 +102,25 @@ TEST_GROUP(Tour) {
 		long_tour->Append(twentyNodesInstance->GetNode(14));
 		long_tour->Append(twentyNodesInstance->GetNode(15));
 
+		long_tour_for_remove = new Tour(twentyNodesInstance);
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(20));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(5));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(4));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(3));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(2));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(1));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(10));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(9));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(8));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(7));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(6));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(11));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(12));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(13));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(14));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(15));
+		long_tour_for_remove->Append(twentyNodesInstance->GetNode(0));
+
 		long_long_tour = new Tour(twentyNodesInstance);
 		long_long_tour->Append(twentyNodesInstance->GetNode(0));
 		long_long_tour->Append(twentyNodesInstance->GetNode(1));
@@ -120,6 +142,29 @@ TEST_GROUP(Tour) {
 		long_long_tour->Append(twentyNodesInstance->GetNode(17));
 		long_long_tour->Append(twentyNodesInstance->GetNode(18));
 		long_long_tour->Append(twentyNodesInstance->GetNode(19));
+
+		long_long_tour_for_remove = new Tour(twentyNodesInstance);
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(20));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(9));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(8));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(7));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(6));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(5));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(10));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(11));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(12));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(13));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(14));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(15));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(4));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(3));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(2));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(1));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(16));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(17));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(18));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(19));
+		long_long_tour_for_remove->Append(twentyNodesInstance->GetNode(0));
 	}
 
 	void teardown() {
@@ -130,7 +175,9 @@ TEST_GROUP(Tour) {
 		SAFE_DELETE(paper_tour);
 		SAFE_DELETE(ten_nodes_tour);
 		SAFE_DELETE(long_tour);
+		SAFE_DELETE(long_tour_for_remove);
 		SAFE_DELETE(long_long_tour);
+		SAFE_DELETE(long_long_tour_for_remove);
 	}
 };
 
@@ -556,7 +603,6 @@ TEST(Tour, EvaluateInsertTypeIITest1) {
 	paperTour->Append(geniusPaperInstance->GetNode(0)); // nodo "1"
 	paperTour->Append(geniusPaperInstance->GetNode(3)); // nodo "4"
 
-
 	STRCMP_EQUAL("6 => 2 => 3 => 5 => 1 => 4 => 6",
 		paperTour->ToString().c_str());
 
@@ -844,6 +890,88 @@ TEST(Tour, NeighborhoodsCoherenceTest) {
 			CHECK(distanceFromNode1 <= distanceFromNode2);
 		}
 	}
+}
+
+TEST(Tour, RemoveTypeITest_LongTour) {
+	pNode vi, vj, vk;
+
+	STRCMP_EQUAL(
+		"100 => 6 => 5 => 4 => 3 => 2 => 11 => 10 => 9 => 8 => 7 => 12 => 13 => 14 => 15 => 16 => 1 => 100",
+		long_tour_for_remove->ToString().c_str());
+
+	vi = twentyNodesInstance->GetNode(20);
+	vj = twentyNodesInstance->GetNode(6); // nodo 7
+	vk = twentyNodesInstance->GetNode(1); // nodo 2
+	long_tour_for_remove->RemoveTypeI(vi, vj, vk);
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1",
+		long_tour_for_remove->ToString().c_str());
+}
+
+TEST(Tour, RemoveTypeIITest_LongTour) {
+	pNode vi, vj, vk, vl;
+
+	STRCMP_EQUAL("100 => 10 => 9 => 8 => 7 => 6 => 11 => 12 => 13 => 14 => 15 => 16 => 5 => 4 => 3 => 2 => 17 => 18 => 19 => 20 => 1 => 100",
+		long_long_tour_for_remove->ToString().c_str());
+
+	vi = twentyNodesInstance->GetNode(20);
+	vj = twentyNodesInstance->GetNode(10);
+	vk = twentyNodesInstance->GetNode(1);
+	vl = twentyNodesInstance->GetNode(15);
+	long_long_tour_for_remove->RemoveTypeII(vi, vj, vk, vl);
+
+	STRCMP_EQUAL("1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
+			long_long_tour_for_remove->ToString().c_str());
+}
+
+TEST(Tour, Insert_Remove_TypeI_Test) {
+	pNode v, vi, vj, vk;
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1",
+		long_tour->ToString().c_str());
+
+	// insert node 100
+	v = twentyNodesInstance->GetNode(20);
+	vi = twentyNodesInstance->GetNode(0);
+	vj = twentyNodesInstance->GetNode(5);
+	vk = twentyNodesInstance->GetNode(10);
+	long_tour->InsertTypeI(v, vi, vj, vk);
+
+	// remove node 100
+	vi = twentyNodesInstance->GetNode(20);
+	vj = twentyNodesInstance->GetNode(6); // nodo 7
+	vk = twentyNodesInstance->GetNode(1); // nodo 2
+	long_tour->RemoveTypeI(vi, vj, vk);
+
+	STRCMP_EQUAL(
+		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1",
+		long_tour->ToString().c_str());
+}
+
+TEST(Tour, Insert_Remove_TypeII_Test) {
+	pNode v, vi, vj, vk, vl;
+
+	STRCMP_EQUAL("1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
+		long_long_tour->ToString().c_str());
+
+	v = twentyNodesInstance->GetNode(20);
+	vi = twentyNodesInstance->GetNode(0);
+	vj = twentyNodesInstance->GetNode(9);
+	vk = twentyNodesInstance->GetNode(16);
+	vl = twentyNodesInstance->GetNode(5);
+	long_long_tour->InsertTypeII(v, vi, vj, vk, vl);
+
+	// remove node 100
+	vi = twentyNodesInstance->GetNode(20);
+	vj = twentyNodesInstance->GetNode(10);
+	vk = twentyNodesInstance->GetNode(1);
+	vl = twentyNodesInstance->GetNode(15);
+	long_long_tour->RemoveTypeII(vi, vj, vk, vl);
+
+	STRCMP_EQUAL("1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
+			long_long_tour->ToString().c_str());
 }
 
 //TEST(Tour, PrintNeighborhoodsTest) {
