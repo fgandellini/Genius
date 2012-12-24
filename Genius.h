@@ -12,6 +12,9 @@ private:
 
 	InsertTypeIParams EvaluateBestInsertTypeIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);
 	InsertTypeIIParams EvaluateBestInsertTypeIIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);
+
+	RemoveTypeIParams EvaluateBestRemoveTypeIParamsWithOrientedTour(pTour tour, pNode vi, int neighborhoodSize);
+	RemoveTypeIIParams EvaluateBestRemoveTypeIIParamsWithOrientedTour(pTour tour, pNode vi, int neighborhoodSize);
 public:
 	Genius();
 	virtual ~Genius();
@@ -19,8 +22,8 @@ public:
 	InsertTypeIParams EvaluateBestInsertTypeIParams(pTour tour, pNode v, int neighborhoodSize);
 	InsertTypeIIParams EvaluateBestInsertTypeIIParams(pTour tour, pNode v, int neighborhoodSize);
 
-	//RemoveTypeIParams EvaluateBestRemoveTypeIParams(pTour tour, pNode vi, int neighborhoodSize);
-	//RemoveTypeIIParams EvaluateBestRemoveTypeIIParams(pTour tour, pNode vi, int neighborhoodSize);
+	RemoveTypeIParams EvaluateBestRemoveTypeIParams(pTour tour, pNode vi, int neighborhoodSize);
+	RemoveTypeIIParams EvaluateBestRemoveTypeIIParams(pTour tour, pNode vi, int neighborhoodSize);
 
 	void Geni();
 
@@ -28,8 +31,8 @@ public:
 	void InitializeTourWithThreeNodes(pTour tour, pInstance nodesToVisit);
 	void StringNodeInTour(pNode node, pTour tour, int neighborhoodSize);
 
-	void ExecuteUs(pTour tour);
-	void UnstringNodeFromTour(pNode node, pTour tour);
+	pTour ExecuteUs(pTour tour,int neighborhoodSize);
+	void UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize);
 };
 typedef Genius* pGenius;
 

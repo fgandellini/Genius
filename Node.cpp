@@ -20,6 +20,10 @@ Node::~Node() {
 
 }
 
+//pNode Node::Clone() {
+//	return new Node(this->Id, this->X, this->Y);
+//}
+
 string Node::ToString() {
 	ostringstream convert;
 	convert << this->Id;

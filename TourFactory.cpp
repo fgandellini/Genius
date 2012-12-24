@@ -11,6 +11,7 @@ TourFactory::TourFactory() {
 }
 
 TourFactory::TourFactory(pInstance instance) {
+	this->instance = NULL;
 	this->SetInstance(instance);
 
 	// inizializza un set di tour disponibili da usare (?)
@@ -25,12 +26,12 @@ TourFactory::~TourFactory() {
 }
 
 pTourFactory TourFactory::SetInstance(pInstance instance) {
-	TourFactory::instance = instance;
+	this->instance = instance;
 	return this;
 }
 
 pTour TourFactory::GetTour() {
-	return new Tour(TourFactory::instance);
+	return new Tour(this->instance);
 
 	// ritorna il primo tour libero in lista o
 	// aggiunge il nuovo tour alla lista

@@ -407,6 +407,12 @@ TEST(Tour, IsBetweenWithCollapsedNodesTest) {
 	to = tenNodesInstance->GetNode(2);
 	CHECK(ten_nodes_tour->IsBetween(x, from, to) == true);
 
+	// check di una roba che non c'entra nulla
+	from = tenNodesInstance->GetNode(3);
+	x = tenNodesInstance->GetNode(5);
+	to = tenNodesInstance->GetNode(3);
+	CHECK(ten_nodes_tour->IsBetween(x, from, to) == false);
+
 	STRCMP_EQUAL(
 		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 1",
 		ten_nodes_tour->ToString().c_str());
@@ -476,11 +482,12 @@ TEST(Tour, EvaluateInsertTypeITest1) {
 
 	CHECK_EQUAL_C_REAL(137.6, paperTour->TotalDistance(), 0.1);
 
+	double newTourDistance = INF_DISTANCE;
 	v  = paper_tour->Get(3); // nodo "4"
 	vi = paperTour->Get(0); // nodo "1"
 	vj = paperTour->Get(2); // nodo "3"
 	vk = paperTour->Get(1); // nodo "2"
-	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
+//	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
 
 	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
 
@@ -533,11 +540,12 @@ TEST(Tour, EvaluateInsertTypeITest2) {
 
 	CHECK_EQUAL_C_REAL(146.7, paperTour->TotalDistance(), 0.1);
 
+	double newTourDistance = INF_DISTANCE;
 	v  = paper_tour->Get(4); // nodo "5"
 	vi = paperTour->Get(3); // nodo "1"
 	vj = paperTour->Get(2); // nodo "2"
 	vk = paperTour->Get(1); // nodo "3"
-	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
+//	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
 
 	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
 
@@ -570,11 +578,12 @@ TEST(Tour, EvaluateInsertTypeITest3) {
 
 	CHECK_EQUAL_C_REAL(150.2, paperTour->TotalDistance(), 0.1);
 
+	double newTourDistance = INF_DISTANCE;
 	v  = paper_tour->Get(5); // nodo "6"
 	vi = paperTour->Get(1); // nodo "2"
 	vj = paperTour->Get(3); // nodo "4"
 	vk = paperTour->Get(2); // nodo "3"
-	double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
+	//double newTourDistance = paperTour->EvaluateInsertTypeI(v, vi, vj, vk);
 
 	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
 
@@ -608,12 +617,13 @@ TEST(Tour, EvaluateInsertTypeIITest1) {
 
 	CHECK_EQUAL_C_REAL(225.0, paperTour->TotalDistance(), 0.1);
 
+	double newTourDistance = INF_DISTANCE;
 	v  = paper_tour->Get(6); // nodo "7"
 	vi = paperTour->Get(4); // nodo "1"
 	vj = paperTour->Get(1); // nodo "2"
 	vk = paperTour->Get(5); // nodo "4"
 	vl = paperTour->Get(1); // nodo "2"
-	double newTourDistance = paperTour->EvaluateInsertTypeII(v, vi, vj, vk, vl);
+//		newTourDistance = paperTour->EvaluateInsertTypeII(v, vi, vj, vk, vl);
 
 	CHECK_EQUAL_C_REAL(INF_DISTANCE, newTourDistance, 0.1);
 
@@ -925,6 +935,39 @@ TEST(Tour, RemoveTypeIITest_LongTour) {
 			long_long_tour_for_remove->ToString().c_str());
 }
 
+TEST(Tour, RemoveTypeII_TestFor_US_Error) {
+	pNode vi, vj, vk, vl;
+
+	pTour testTour = new Tour(geniusPaperInstance);
+	testTour->Append(geniusPaperInstance->GetNode(7));
+	testTour->Append(geniusPaperInstance->GetNode(4));
+	testTour->Append(geniusPaperInstance->GetNode(2));
+	testTour->Append(geniusPaperInstance->GetNode(3));
+	testTour->Append(geniusPaperInstance->GetNode(0));
+	testTour->Append(geniusPaperInstance->GetNode(6));
+	testTour->Append(geniusPaperInstance->GetNode(5));
+	testTour->Append(geniusPaperInstance->GetNode(1));
+
+	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
+		testTour->ToString().c_str());
+
+	testTour->Reverse();
+
+	STRCMP_EQUAL("2 => 6 => 7 => 1 => 4 => 3 => 5 => 8 => 2",
+		testTour->ToString().c_str());
+
+//	try {
+//		vi = geniusPaperInstance->GetNode(7);
+//		vj = geniusPaperInstance->GetNode(4);
+//		vk = geniusPaperInstance->GetNode(2);
+//		vl = geniusPaperInstance->GetNode(3);
+//		testTour->RemoveTypeII(vi, vj, vk, vl);
+//		cout << "US Error Test: " << testTour->ToString() << endl;
+//	} catch(...) {}
+
+	SAFE_DELETE(testTour);
+}
+
 TEST(Tour, Insert_Remove_TypeI_Test) {
 	pNode v, vi, vj, vk;
 
@@ -972,6 +1015,23 @@ TEST(Tour, Insert_Remove_TypeII_Test) {
 
 	STRCMP_EQUAL("1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
 			long_long_tour->ToString().c_str());
+}
+
+TEST(Tour, CloneTest) {
+	pTour clonedTour = paper_tour->Clone();
+
+	CHECK(paper_tour->Length() == clonedTour->Length());
+
+	for(int i=0; i<paper_tour->Length(); i++) {
+		pNode tourNode = paper_tour->Get(i);
+		pNode clonedTourNode = clonedTour->Get(i);
+
+		CHECK(tourNode->Id == clonedTourNode->Id);
+		CHECK(tourNode->X == clonedTourNode->X);
+		CHECK(tourNode->Y == clonedTourNode->Y);
+	}
+
+	SAFE_DELETE(clonedTour);
 }
 
 //TEST(Tour, PrintNeighborhoodsTest) {

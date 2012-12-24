@@ -18,6 +18,8 @@ public:
 	Node(int id, double x, double y);
 	virtual ~Node();
 
+    //Node* Clone();
+
 	string ToString();
 
 	//operator int();

@@ -28,6 +28,16 @@ Tour::~Tour() {
 	this->DeleteNeighborhoods();
 }
 
+pTour Tour::Clone() {
+	pTour clonedTour = new Tour(this->instance);
+
+	for(int i=0; i<this->Length(); i++) {
+		clonedTour->Append(this->Get(i));
+	}
+
+	return clonedTour;
+}
+
 int Tour::Length() const {
 	return (int)this->nodes.size();
 }
@@ -194,15 +204,114 @@ void Tour::AddSubtour(data::clist<pNode> subtour, data::clist<pNode> &result) {
 //	return false;
 //}
 
+bool Tour::CheckInsertTypeIConditions(pNode v, pNode vi, pNode vj, pNode vk, bool useAssert) {
+	if (useAssert) {
+		assert(vi->Id != vj->Id);
+		assert(vk->Id != vi->Id);
+		assert(vk->Id != vj->Id);
+		assert(this->IsBetween(vk, vj, vi));
+	} else {
+		return ((vi->Id != vj->Id) &&
+				 (vk->Id != vi->Id) &&
+				 (vk->Id != vj->Id) &&
+				 this->IsBetween(vk, vj, vi));
+	}
+	return true;
+}
+
+bool Tour::CheckInsertTypeIIConditions(pNode v, pNode vi, pNode vj, pNode vk, pNode vl, bool useAssert) {
+	pNode viplus1 = this->Next(vi);
+	pNode vjplus1 = this->Next(vj);
+
+	if (useAssert) {
+		assert(vk->Id != vj->Id);
+		assert(vk->Id != vjplus1->Id);
+		assert(vl->Id != vi->Id);
+		assert(vl->Id != viplus1->Id);
+		assert(this->IsBetween(vk, vj, vi) &&
+			   this->IsBetween(vl, vi, vj) );
+	} else {
+		return ((vk->Id != vj->Id) &&
+				 (vk->Id != vjplus1->Id) &&
+				 (vl->Id != vi->Id) &&
+				 (vl->Id != viplus1->Id) &&
+				 this->IsBetween(vk, vj, vi) &&
+				 this->IsBetween(vl, vi, vj) );
+	}
+	return true;
+}
+
+bool Tour::CheckRemoveTypeIConditions(pNode vi, pNode vj, pNode vk, bool useAssert) {
+	pNode viplus1 = this->Next(vi);
+	pNode vjminus1 = this->Previous(vj);
+	pNode vjplus1 = this->Next(vj);
+	pNode vkplus1 = this->Next(vk);
+
+	if (useAssert) {
+		assert(vi->Id != vj->Id);
+		assert(vi->Id != vk->Id);
+		assert(vi->Id != vkplus1->Id);
+		assert(vi->Id != vjplus1->Id);
+		assert(vj->Id != vk->Id);
+		assert(this->IsBetween(vk, viplus1, vjminus1));
+	} else {
+		return ((vi->Id != vj->Id) &&
+				 (vi->Id != vk->Id) &&
+				 (vi->Id != vkplus1->Id) &&
+				 (vi->Id != vjplus1->Id) &&
+				 (vj->Id != vk->Id) &&
+				 this->IsBetween(vk, viplus1, vjminus1) );
+	}
+	return true;
+}
+
+bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, bool useAssert) {
+	pNode viminus1 = this->Previous(vi);
+	pNode viminus2 = this->Previous(viminus1);
+	pNode viplus1 = this->Next(vi);
+	pNode vjminus1 = this->Previous(vj);
+	//pNode vjplus1 = this->Next(vj);
+	pNode vkminus1 = this->Previous(vk);
+	pNode vkplus1 = this->Next(vk);
+	pNode vlplus1 = this->Next(vl);
+
+	if (useAssert) {
+		assert(vi->Id != vj->Id);
+		assert(vi->Id != vk->Id);
+		assert(vi->Id != vl->Id);
+		assert(vi->Id != vjminus1->Id);
+		assert(vi->Id != vkplus1->Id);
+		assert(vi->Id != vlplus1->Id);
+		assert(vj->Id != vk->Id);
+		assert(vj->Id != vl->Id);
+		assert(vk->Id != vl->Id);
+		assert(vk->Id != vjminus1->Id);
+		assert(this->IsBetween(vk, viplus1, viminus2) &&
+			   this->IsBetween(vl, vj, vkminus1)	   );
+	} else {
+		return ((vi->Id != vj->Id) &&
+				 (vi->Id != vk->Id) &&
+				 (vi->Id != vl->Id) &&
+				 (vi->Id != vjminus1->Id) &&
+				 (vi->Id != vkplus1->Id) &&
+				 (vi->Id != vlplus1->Id) &&
+				 (vj->Id != vk->Id) &&
+				 (vj->Id != vl->Id) &&
+				 (vk->Id != vl->Id) &&
+				 (vk->Id != vjminus1->Id) &&
+				 this->IsBetween(vk, viplus1, viminus2) &&
+				 this->IsBetween(vl, vj, vkminus1));
+	}
+	return true;
+}
+
+
 double Tour::EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	pNode viplus1 = this->Next(vi);
 	pNode vjplus1 = this->Next(vj);
 	pNode vkplus1 = this->Next(vk);
 
-	assert(vi->Id != vj->Id);
-	assert(vk->Id != vi->Id);
-	assert(vk->Id != vj->Id);
-	if (this->IsBetween(vk, vj, vi)) {
+	if (this->CheckInsertTypeIConditions(v, vi, vj, vk, true)) {
 
 		// Il costo di inserimento è
 		// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
@@ -230,12 +339,7 @@ double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode v
 	pNode vkminus1 = this->Previous(vk);
 	pNode vlminus1 = this->Previous(vl);
 
-	assert(vk->Id != vj->Id);
-	assert(vk->Id != vjplus1->Id);
-	assert(vl->Id != vi->Id);
-	assert(vl->Id != viplus1->Id);
-	if (this->IsBetween(vk, vj, vi) &&
-		this->IsBetween(vl, vi, vj)) {
+	if (this->CheckInsertTypeIIConditions(v, vi, vj, vk, vl, true)) {
 
 		// Il costo di inserimento è
 		// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
@@ -259,6 +363,74 @@ double Tour::EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode v
 	return INF_DISTANCE;
 }
 
+double Tour::EvaluateRemoveTypeI(pNode vi, pNode vj, pNode vk) {
+	pNode viminus1 = this->Previous(vi);
+	pNode viplus1 = this->Next(vi);
+	pNode vjminus1 = this->Previous(vj);
+	pNode vjplus1 = this->Next(vj);
+	pNode vkplus1 = this->Next(vk);
+
+	if (this->CheckRemoveTypeIConditions(vi, vj, vk, true)) {
+
+		// Il costo di inserimento è
+		// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
+		double tourDistance = this->TotalDistance();
+
+		// costo degli archi da rimuovere
+		tourDistance -= viminus1->DistanceFrom(vi);
+		tourDistance -= vi->DistanceFrom(viplus1);
+		tourDistance -= vk->DistanceFrom(vkplus1);
+		tourDistance -= vj->DistanceFrom(vjplus1);
+
+		// costo degli archi da aggiungere
+		tourDistance += viminus1->DistanceFrom(vk);
+		tourDistance += viplus1->DistanceFrom(vj);
+		tourDistance += vkplus1->DistanceFrom(vjplus1);
+
+		return tourDistance;
+	}
+	return INF_DISTANCE;
+}
+
+double Tour::EvaluateRemoveTypeII(pNode vi, pNode vj, pNode vk, pNode vl) {
+	pNode viminus1 = this->Previous(vi);
+	pNode viminus2 = this->Previous(viminus1);
+	pNode viplus1 = this->Next(vi);
+	pNode vjminus1 = this->Previous(vj);
+	//pNode vjplus1 = this->Next(vj);
+	pNode vkminus1 = this->Previous(vk);
+	pNode vkplus1 = this->Next(vk);
+	pNode vlplus1 = this->Next(vl);
+
+//	assert(vk->Id != vj->Id);
+//	assert(vk->Id != vjplus1->Id);
+//	assert(vl->Id != vi->Id);
+//	assert(vl->Id != viplus1->Id);
+
+	if (this->CheckRemoveTypeIIConditions(vi, vj, vk, vl, true)) {
+
+		// Il costo di inserimento è
+		// il costo del vecchio tour + gli archi da inserire - gli archi da rimuovere
+		double tourDistance = this->TotalDistance();
+
+		// costo degli archi da rimuovere
+		tourDistance -= viminus1->DistanceFrom(vi);
+		tourDistance -= vi->DistanceFrom(viplus1);
+		tourDistance -= vjminus1->DistanceFrom(vj);
+		tourDistance -= vk->DistanceFrom(vkplus1);
+		tourDistance -= vl->DistanceFrom(vlplus1);
+
+		// costo degli archi da aggiungere
+		tourDistance += viminus1->DistanceFrom(vk);
+		tourDistance += vlplus1->DistanceFrom(vjminus1);
+		tourDistance += viplus1->DistanceFrom(vj);
+		tourDistance += vl->DistanceFrom(vkplus1);
+
+		return tourDistance;
+	}
+	return INF_DISTANCE;
+}
+
 void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	data::clist<pNode> result;
 
@@ -267,10 +439,7 @@ void Tour::InsertTypeI(pNode v, pNode vi, pNode vj, pNode vk) {
 	pNode vkplus1 = this->Next(vk);
 
 	// Consistency check
-	assert(vi->Id != vj->Id);
-	assert(vk->Id != vi->Id);
-	assert(vk->Id != vj->Id);
-	assert(this->IsBetween(vk, vj, vi));
+	this->CheckInsertTypeIConditions(v, vi, vj, vk, true);
 
 	result.add_element(v);
 
@@ -300,12 +469,7 @@ void Tour::InsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl) {
 	pNode vlminus1 = this->Previous(vl);
 
 	// Consistency check
-	assert(vk->Id != vj->Id);
-	assert(vk->Id != vjplus1->Id);
-	assert(vl->Id != vi->Id);
-	assert(vl->Id != viplus1->Id);
-	assert(this->IsBetween(vk, vj, vi) &&
-	       this->IsBetween(vl, vi, vj));
+	this->CheckInsertTypeIIConditions(v, vi, vj, vk, vl, true);
 
 	result.add_element(v);
 
@@ -339,10 +503,7 @@ void Tour::RemoveTypeI(pNode vi, pNode vj, pNode vk) {
 	pNode vjplus1 = this->Next(vj);
 	pNode vkplus1 = this->Next(vk);
 
-	assert(vi->Id != vj->Id);
-	assert(vk->Id != vi->Id);
-	assert(vk->Id != vj->Id);
-	assert(this->IsBetween(vk, viplus1, vjminus1));
+	this->CheckRemoveTypeIConditions(vi, vj, vk, true);
 
 	result.add_element(viminus1);
 
@@ -376,30 +537,48 @@ void Tour::RemoveTypeII(pNode vi, pNode vj, pNode vk, pNode vl) {
 	pNode vkplus1 = this->Next(vk);
 	pNode vlplus1 = this->Next(vl);
 
-	assert(vk->Id != vj->Id);
-	assert(vk->Id != vjplus1->Id);
-	assert(vl->Id != vi->Id);
-	assert(vl->Id != viplus1->Id);
-	assert(this->IsBetween(vk, viplus1, viminus2));
-	assert(this->IsBetween(vl, vj, vkminus1));
+	this->CheckRemoveTypeIIConditions(vi, vj, vk, vl, true);
 
+	cout << ">> RemoveII:"
+		 << " vj=" << vj->Id
+		 << " vk=" << vk->Id
+		 << " vl=" << vl->Id
+		 << " viminus1=" << viminus1->Id
+		 << " viminus2=" << viminus2->Id
+		 << " viplus1=" << viplus1->Id
+		 << " vjminus1=" << vjminus1->Id
+		 << " vjplus1=" << vjplus1->Id
+		 << " vkminus1=" << vkminus1->Id
+		 << " vkplus1=" << vkplus1->Id
+		 << " vlplus1=" << vlplus1->Id
+		 << endl;
 	result.add_element(viminus1);
+
+	cout << "added viminus1 = " << viminus1->Id << endl;
 
 	data::clist<pNode> subtour_vlplus1_vk =
 		this->GetReversedSubtour(vlplus1, vk);
 	this->AddSubtour(subtour_vlplus1_vk, result);
 
+	cout << "added REV subtour_vlplus1_vk = " << this->TourToString(subtour_vlplus1_vk) << endl;
+
 	data::clist<pNode> subtour_viplus1_vjminus1 =
 		this->GetReversedSubtour(viplus1, vjminus1);
 	this->AddSubtour(subtour_viplus1_vjminus1, result);
+
+	cout << "added REV subtour_viplus1_vjminus1 = " << this->TourToString(subtour_viplus1_vjminus1) << endl;
 
 	data::clist<pNode> subtour_vj_vl =
 		this->GetSubtour(vj, vl);
 	this->AddSubtour(subtour_vj_vl, result);
 
+	cout << "added FWD subtour_vj_vl = " << this->TourToString(subtour_vj_vl) << endl;
+
 	data::clist<pNode> subtour_vkplus1_viminus2 =
 		this->GetSubtour(vkplus1, viminus2);
 	this->AddSubtour(subtour_vkplus1_viminus2, result);
+
+	cout << "added FWD subtour_vkplus1_viminus2 = " << this->TourToString(subtour_vkplus1_viminus2) << endl;
 
 	this->nodes = result;
 

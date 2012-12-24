@@ -24,6 +24,21 @@ typedef struct {
 	double distance;
 } InsertTypeIIParams;
 
+typedef struct {
+	pNode vj;
+	pNode vk;
+	bool tourMustBeReversed;
+	double distance;
+} RemoveTypeIParams;
+
+typedef struct {
+	pNode vj;
+	pNode vk;
+	pNode vl;
+	bool tourMustBeReversed;
+	double distance;
+} RemoveTypeIIParams;
+
 typedef vector<pNodeVector> Neighborhoods;
 typedef Neighborhoods* pNeighborhoods;
 
@@ -43,6 +58,7 @@ public:
 
 	Tour(pInstance instance);
 	virtual ~Tour();
+	Tour* Clone();
 
 	int Length() const;
 
@@ -65,8 +81,10 @@ public:
 
 	void Reverse();
 
-//	bool CheckInsertTypeIConditions(pNode vi, pNode vj, pNode vk);
-//	bool CheckInsertTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl);
+	bool CheckInsertTypeIConditions(pNode v, pNode vi, pNode vj, pNode vk, bool useAssert);
+	bool CheckInsertTypeIIConditions(pNode v, pNode vi, pNode vj, pNode vk, pNode vl, bool useAssert);
+	bool CheckRemoveTypeIConditions(pNode vi, pNode vj, pNode vk, bool useAssert);
+	bool CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, bool useAssert);
 
 	double EvaluateInsertTypeI(pNode v, pNode vi, pNode vj, pNode vk);
 	double EvaluateInsertTypeII(pNode v, pNode vi, pNode vj, pNode vk, pNode vl);
