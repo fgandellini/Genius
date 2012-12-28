@@ -425,7 +425,7 @@ void Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) 
 		 << bestParamsForTypeII.distance
 		 << endl;
 
-	if (bestParamsForTypeI.distance < bestParamsForTypeII.distance) {
+	if (bestParamsForTypeI.distance <= bestParamsForTypeII.distance) {
 		if (bestParamsForTypeI.tourMustBeReversed) {
 			tour->Reverse();
 		}
@@ -488,7 +488,6 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 	int currentNodeOfTour = 0;
 
 	pTour currentTour = tour->Clone();
-	bestTour = currentTour;
 
 	cout << endl;
 
@@ -517,6 +516,7 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 		if (newDistance < bestTourDistance) {
 			currentNodeOfTour = 0;
 			bestTourDistance = newDistance;
+			SAFE_DELETE(bestTour);
 			bestTour = currentTour->Clone();
 		} else {
 			if ( currentNodeOfTour < (currentTour->Length()-1) ) {
@@ -527,6 +527,7 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 		}
 		it++;
 	}
+	SAFE_DELETE(currentTour);
 	return bestTour;
 }
 

@@ -915,7 +915,7 @@ TEST(Tour, RemoveTypeITest_LongTour) {
 	long_tour_for_remove->RemoveTypeI(vi, vj, vk);
 
 	STRCMP_EQUAL(
-		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1",
+		"2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1 => 2",
 		long_tour_for_remove->ToString().c_str());
 }
 
@@ -931,7 +931,7 @@ TEST(Tour, RemoveTypeIITest_LongTour) {
 	vl = twentyNodesInstance->GetNode(15);
 	long_long_tour_for_remove->RemoveTypeII(vi, vj, vk, vl);
 
-	STRCMP_EQUAL("1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
+	STRCMP_EQUAL("2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1 => 2",
 			long_long_tour_for_remove->ToString().c_str());
 }
 
@@ -989,7 +989,7 @@ TEST(Tour, Insert_Remove_TypeI_Test) {
 	long_tour->RemoveTypeI(vi, vj, vk);
 
 	STRCMP_EQUAL(
-		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1",
+		"2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1 => 2",
 		long_tour->ToString().c_str());
 }
 
@@ -1013,7 +1013,7 @@ TEST(Tour, Insert_Remove_TypeII_Test) {
 	vl = twentyNodesInstance->GetNode(15);
 	long_long_tour->RemoveTypeII(vi, vj, vk, vl);
 
-	STRCMP_EQUAL("1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1",
+	STRCMP_EQUAL("2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 17 => 18 => 19 => 20 => 1 => 2",
 			long_long_tour->ToString().c_str());
 }
 

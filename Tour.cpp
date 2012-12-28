@@ -505,20 +505,26 @@ void Tour::RemoveTypeI(pNode vi, pNode vj, pNode vk) {
 
 	this->CheckRemoveTypeIConditions(vi, vj, vk, true);
 
-	result.add_element(viminus1);
+	//result.add_element(viminus1);
+	//cout << ">> added viminus1: " << viminus1->Id << endl;
 
 	data::clist<pNode> subtour_viplus1_vk =
 		this->GetReversedSubtour(viplus1, vk);
 	this->AddSubtour(subtour_viplus1_vk, result);
 
+	cout << ">> added subtour_viplus1_vk: " << this->TourToString(subtour_viplus1_vk) << endl;
+
 	data::clist<pNode> subtour_vkplus1_vj =
 		this->GetReversedSubtour(vkplus1, vj);
 	this->AddSubtour(subtour_vkplus1_vj, result);
 
-	pNode viminus2 = this->Previous(viminus1);
-	data::clist<pNode> subtour_vjplus1_viminus2 =
-		this->GetSubtour(vjplus1, viminus2);
-	this->AddSubtour(subtour_vjplus1_viminus2, result);
+	cout << ">> added subtour_vkplus1_vj: " << this->TourToString(subtour_vkplus1_vj) << endl;
+
+	data::clist<pNode> subtour_vjplus1_viminus1 =
+		this->GetSubtour(vjplus1, viminus1);
+	this->AddSubtour(subtour_vjplus1_viminus1, result);
+
+	cout << ">> added subtour_vjplus1_viminus1: " << this->TourToString(subtour_vjplus1_viminus1) << endl;
 
 	this->nodes = result;
 
@@ -529,56 +535,69 @@ void Tour::RemoveTypeII(pNode vi, pNode vj, pNode vk, pNode vl) {
 	data::clist<pNode> result;
 
 	pNode viminus1 = this->Previous(vi);
-	pNode viminus2 = this->Previous(viminus1);
 	pNode viplus1 = this->Next(vi);
 	pNode vjminus1 = this->Previous(vj);
-	pNode vjplus1 = this->Next(vj);
-	pNode vkminus1 = this->Previous(vk);
 	pNode vkplus1 = this->Next(vk);
 	pNode vlplus1 = this->Next(vl);
 
 	this->CheckRemoveTypeIIConditions(vi, vj, vk, vl, true);
 
-	cout << ">> RemoveII:"
-		 << " vj=" << vj->Id
-		 << " vk=" << vk->Id
-		 << " vl=" << vl->Id
-		 << " viminus1=" << viminus1->Id
-		 << " viminus2=" << viminus2->Id
-		 << " viplus1=" << viplus1->Id
-		 << " vjminus1=" << vjminus1->Id
-		 << " vjplus1=" << vjplus1->Id
-		 << " vkminus1=" << vkminus1->Id
-		 << " vkplus1=" << vkplus1->Id
-		 << " vlplus1=" << vlplus1->Id
-		 << endl;
-	result.add_element(viminus1);
-
-	cout << "added viminus1 = " << viminus1->Id << endl;
-
 	data::clist<pNode> subtour_vlplus1_vk =
 		this->GetReversedSubtour(vlplus1, vk);
 	this->AddSubtour(subtour_vlplus1_vk, result);
-
-	cout << "added REV subtour_vlplus1_vk = " << this->TourToString(subtour_vlplus1_vk) << endl;
 
 	data::clist<pNode> subtour_viplus1_vjminus1 =
 		this->GetReversedSubtour(viplus1, vjminus1);
 	this->AddSubtour(subtour_viplus1_vjminus1, result);
 
-	cout << "added REV subtour_viplus1_vjminus1 = " << this->TourToString(subtour_viplus1_vjminus1) << endl;
-
 	data::clist<pNode> subtour_vj_vl =
 		this->GetSubtour(vj, vl);
 	this->AddSubtour(subtour_vj_vl, result);
 
-	cout << "added FWD subtour_vj_vl = " << this->TourToString(subtour_vj_vl) << endl;
+	data::clist<pNode> subtour_vkplus1_viminus1 =
+		this->GetSubtour(vkplus1, viminus1);
+	this->AddSubtour(subtour_vkplus1_viminus1, result);
 
-	data::clist<pNode> subtour_vkplus1_viminus2 =
-		this->GetSubtour(vkplus1, viminus2);
-	this->AddSubtour(subtour_vkplus1_viminus2, result);
-
-	cout << "added FWD subtour_vkplus1_viminus2 = " << this->TourToString(subtour_vkplus1_viminus2) << endl;
+////	cout << ">> RemoveII:"
+////		 << " vj=" << vj->Id
+////		 << " vk=" << vk->Id
+////		 << " vl=" << vl->Id
+////		 << " viminus1=" << viminus1->Id
+////		 << " viminus2=" << viminus2->Id
+////		 << " viplus1=" << viplus1->Id
+////		 << " vjminus1=" << vjminus1->Id
+////		 << " vjplus1=" << vjplus1->Id
+////		 << " vkminus1=" << vkminus1->Id
+////		 << " vkplus1=" << vkplus1->Id
+////		 << " vlplus1=" << vlplus1->Id
+////		 << endl;
+//	result.add_element(viminus1);
+//
+////	cout << "added viminus1 = " << viminus1->Id << endl;
+//
+//	data::clist<pNode> subtour_vlplus1_vk =
+//		this->GetReversedSubtour(vlplus1, vk);
+//	this->AddSubtour(subtour_vlplus1_vk, result);
+//
+////	cout << "added REV subtour_vlplus1_vk = " << this->TourToString(subtour_vlplus1_vk) << endl;
+//
+//	data::clist<pNode> subtour_viplus1_vjminus1 =
+//		this->GetReversedSubtour(viplus1, vjminus1);
+//	this->AddSubtour(subtour_viplus1_vjminus1, result);
+//
+////	cout << "added REV subtour_viplus1_vjminus1 = " << this->TourToString(subtour_viplus1_vjminus1) << endl;
+//
+//	data::clist<pNode> subtour_vj_vl =
+//		this->GetSubtour(vj, vl);
+//	this->AddSubtour(subtour_vj_vl, result);
+//
+////	cout << "added FWD subtour_vj_vl = " << this->TourToString(subtour_vj_vl) << endl;
+//
+//	data::clist<pNode> subtour_vkplus1_viminus2 =
+//		this->GetSubtour(vkplus1, viminus2);
+//	this->AddSubtour(subtour_vkplus1_viminus2, result);
+//
+////	cout << "added FWD subtour_vkplus1_viminus2 = " << this->TourToString(subtour_vkplus1_viminus2) << endl;
 
 	this->nodes = result;
 

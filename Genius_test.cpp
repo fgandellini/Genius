@@ -277,7 +277,11 @@ TEST(Genius, PaperTourUnstringingTest) {
 	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
 
 	pTour t = genius->ExecuteUs(tour, 4);
-	cout << t->ToString().c_str();
+	cout << "Final Tour after US Optimization: " << t->ToString().c_str() << endl;
+
+	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
+		tour->ToString().c_str());
+	CHECK_EQUAL_C_REAL(223.0, t->TotalDistance(), 0.1);
 
 	SAFE_DELETE(t);
 	SAFE_DELETE(tour);
