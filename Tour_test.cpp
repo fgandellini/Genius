@@ -1034,6 +1034,41 @@ TEST(Tour, CloneTest) {
 	SAFE_DELETE(clonedTour);
 }
 
+TEST(Tour, IsEqualToTest) {
+	pTour clonedTour = paper_tour->Clone();
+
+	pTour other_tour = new Tour(geniusPaperInstance);
+	other_tour->Append(geniusPaperInstance->GetNode(1));
+	other_tour->Append(geniusPaperInstance->GetNode(2));
+	other_tour->Append(geniusPaperInstance->GetNode(3));
+	other_tour->Append(geniusPaperInstance->GetNode(4));
+	other_tour->Append(geniusPaperInstance->GetNode(5));
+	other_tour->Append(geniusPaperInstance->GetNode(6));
+	other_tour->Append(geniusPaperInstance->GetNode(7));
+	other_tour->Append(geniusPaperInstance->GetNode(0));
+
+	pTour notequal_tour = new Tour(geniusPaperInstance);
+	notequal_tour->Append(geniusPaperInstance->GetNode(0));
+	notequal_tour->Append(geniusPaperInstance->GetNode(1));
+	notequal_tour->Append(geniusPaperInstance->GetNode(2));
+	notequal_tour->Append(geniusPaperInstance->GetNode(4));
+	notequal_tour->Append(geniusPaperInstance->GetNode(3));
+	notequal_tour->Append(geniusPaperInstance->GetNode(5));
+	notequal_tour->Append(geniusPaperInstance->GetNode(6));
+	notequal_tour->Append(geniusPaperInstance->GetNode(7));
+
+	CHECK(clonedTour->IsEqualTo(paper_tour));
+	CHECK(paper_tour->IsEqualTo(clonedTour));
+
+	CHECK(paper_tour->IsEqualTo(other_tour));
+	CHECK(!paper_tour->IsEqualTo(notequal_tour));
+
+
+	SAFE_DELETE(clonedTour);
+	SAFE_DELETE(other_tour);
+	SAFE_DELETE(notequal_tour)
+}
+
 //TEST(Tour, PrintNeighborhoodsTest) {
 //	paper_tour->PrintNeighborhoods();
 //}

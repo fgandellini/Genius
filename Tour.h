@@ -108,6 +108,8 @@ public:
 
 	string ToString();
 	string TourToString(data::clist<pNode> &tourToPrint);
+
+	bool IsEqualTo(Tour* tourToCompare);
 };
 typedef Tour* pTour;
 

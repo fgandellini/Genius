@@ -249,7 +249,7 @@ TEST(Genius, PaperTourStringingTest) {
 	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
 }
 
-TEST(Genius, ApplyGeniToPaperTourWithP_4) {
+IGNORE_TEST(Genius, ApplyGeniToPaperTourWithP_4) {
 	pTour tour = genius->ExecuteGeni(paperInstance, 4);
 
 	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
@@ -259,7 +259,7 @@ TEST(Genius, ApplyGeniToPaperTourWithP_4) {
 	SAFE_DELETE(tour);
 }
 
-TEST(Genius, ApplyGeniToPaperTourWithP_5) { // NO! Ma funziona con p=6 ...mah...
+IGNORE_TEST(Genius, ApplyGeniToPaperTourWithP_5) { // NO! Ma funziona con p=6 ...mah...
 	pTour tour = genius->ExecuteGeni(paperInstance, 6);
 
 	STRCMP_EQUAL("8 => 4 => 1 => 7 => 6 => 2 => 3 => 5 => 8",
@@ -269,7 +269,7 @@ TEST(Genius, ApplyGeniToPaperTourWithP_5) { // NO! Ma funziona con p=6 ...mah...
 	SAFE_DELETE(tour);
 }
 
-TEST(Genius, PaperTourUnstringingTest) {
+IGNORE_TEST(Genius, PaperTourUnstringingTest) {
 	pTour tour = genius->ExecuteGeni(paperInstance, 4);
 
 	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",

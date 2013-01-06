@@ -270,7 +270,7 @@ bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, b
 	pNode viminus2 = this->Previous(viminus1);
 	pNode viplus1 = this->Next(vi);
 	pNode vjminus1 = this->Previous(vj);
-	//pNode vjplus1 = this->Next(vj);
+	pNode vjplus1 = this->Next(vj);
 	pNode vkminus1 = this->Previous(vk);
 	pNode vkplus1 = this->Next(vk);
 	pNode vlplus1 = this->Next(vl);
@@ -286,6 +286,8 @@ bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, b
 		assert(vj->Id != vl->Id);
 		assert(vk->Id != vl->Id);
 		assert(vk->Id != vjminus1->Id);
+		assert(vk->Id != viplus1->Id);
+		assert(vl->Id != vjplus1->Id);
 		assert(this->IsBetween(vk, viplus1, viminus2) &&
 			   this->IsBetween(vl, vj, vkminus1)	   );
 	} else {
@@ -299,6 +301,8 @@ bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, b
 				 (vj->Id != vl->Id) &&
 				 (vk->Id != vl->Id) &&
 				 (vk->Id != vjminus1->Id) &&
+				 (vk->Id != viplus1->Id) &&
+				 (vl->Id != vjplus1->Id) &&
 				 this->IsBetween(vk, viplus1, viminus2) &&
 				 this->IsBetween(vl, vj, vkminus1));
 	}
@@ -726,6 +730,24 @@ string Tour::TourToString(data::clist<pNode> &tourToPrint) {
 		result.append(tourToPrint[0]->ToString());
 	}
 	return result;
+}
+
+
+bool Tour::IsEqualTo(pTour tourToCompare) {
+	pNode secondTourStartNode = tourToCompare->Get(0);
+
+	this->GoTo(secondTourStartNode);
+	do {
+		pNode n1 = this->Current();
+		pNode n2 = tourToCompare->Current();
+		if (n1->Id != n2->Id) {
+			return false;
+		}
+		this->Next();
+		tourToCompare->Next();
+	} while(tourToCompare->Current()->Id != secondTourStartNode->Id);
+
+	return true;
 }
 
 } /* namespace Genius */
