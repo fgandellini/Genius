@@ -15,6 +15,9 @@ public:
 	double X;
 	double Y;
 
+	double drawableX;
+	double drawableY;
+
 	Node(int id, double x, double y);
 	virtual ~Node();
 

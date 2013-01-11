@@ -53,6 +53,7 @@ int main(int argc, char** argv) {
 #else // -- Test Main ---------------------------------------------------------
 
 #include <CppUTest/CommandLineTestRunner.h>
+
 int main(int argc, char** argv) {
 	return CommandLineTestRunner::RunAllTests(argc, argv);
 }

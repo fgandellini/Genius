@@ -3,12 +3,15 @@
 
 #include "CommonIncludes.h"
 #include "TourFactory.h"
+#include "Drawer.h";
 
 namespace Genius {
 
 class Genius {
 private:
 	pTourFactory tourFactory;
+
+	pDrawer drawer;
 
 	InsertTypeIParams EvaluateBestInsertTypeIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);
 	InsertTypeIIParams EvaluateBestInsertTypeIIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);

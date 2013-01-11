@@ -4,10 +4,12 @@ namespace Genius {
 
 Genius::Genius() {
 	this->tourFactory = new TourFactory();
+	this->drawer = new Drawer();
 }
 
 Genius::~Genius() {
 	SAFE_DELETE(this->tourFactory);
+	SAFE_DELETE(this->drawer);
 }
 
 InsertTypeIParams Genius::EvaluateBestInsertTypeIParams(pTour tour, pNode v, int neighborhoodSize) {
@@ -463,12 +465,16 @@ pTour Genius::ExecuteGeni(pInstance nodesToVisit, int neighborhoodSize) {
 	pTour tour = tourFactory->SetInstance(nodesToVisit)->GetTour();
 
 	this->InitializeTourWithThreeNodes(tour, nodesToVisit);
+	this->drawer->Draw(tour, "geni_0");
 
+	int step = 1;
 	for (int n=0; n<(int)nodesToVisit->Size(); n++) {
 		pNode nodeToInsert = nodesToVisit->GetNode(n);
 
 		if (!tour->Contains(nodeToInsert)) {
 			this->StringNodeInTour(nodeToInsert, tour, neighborhoodSize);
+			this->drawer->Draw(tour, "geni_" + Utils::ToString(step, true));
+			step++;
 		}
 	}
 
@@ -512,6 +518,8 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 
 		cout << "currentTour after string: " << currentTour->ToString() << endl;
 		cout << "currentTour distance after string: " << currentTour->TotalDistance() << endl;
+
+		this->drawer->Draw(currentTour, "us_" + Utils::ToString(it, true), currentNode);
 
 		if (newDistance < bestTourDistance) {
 			currentNodeOfTour = 0;

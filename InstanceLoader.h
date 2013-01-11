@@ -7,6 +7,8 @@
 namespace Genius {
 
 class InstanceLoader {
+private:
+	static string GetFilename(string absolutePath);
 public:
 	InstanceLoader();
 	virtual ~InstanceLoader();

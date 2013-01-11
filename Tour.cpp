@@ -38,6 +38,10 @@ pTour Tour::Clone() {
 	return clonedTour;
 }
 
+pInstance Tour::GetInstance() {
+	return this->instance;
+}
+
 int Tour::Length() const {
 	return (int)this->nodes.size();
 }
@@ -287,7 +291,9 @@ bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, b
 		assert(vk->Id != vl->Id);
 		assert(vk->Id != vjminus1->Id);
 		assert(vk->Id != viplus1->Id);
+		assert(vk->Id != vlplus1->Id);
 		assert(vl->Id != vjplus1->Id);
+		assert(vjminus1->Id != vkplus1->Id);
 		assert(this->IsBetween(vk, viplus1, viminus2) &&
 			   this->IsBetween(vl, vj, vkminus1)	   );
 	} else {
@@ -302,7 +308,9 @@ bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, b
 				 (vk->Id != vl->Id) &&
 				 (vk->Id != vjminus1->Id) &&
 				 (vk->Id != viplus1->Id) &&
+				 (vk->Id != vlplus1->Id) &&
 				 (vl->Id != vjplus1->Id) &&
+				 (vjminus1->Id != vkplus1->Id) &&
 				 this->IsBetween(vk, viplus1, viminus2) &&
 				 this->IsBetween(vl, vj, vkminus1));
 	}

@@ -26,6 +26,8 @@ public:
 	pNode GetNodeById(int id);
 	int GetIndex(pNode node);
 
+	string Name;
+
 	int Size();
 };
 typedef Instance* pInstance;

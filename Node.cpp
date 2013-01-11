@@ -14,6 +14,8 @@ Node::Node(int id, double x, double y) {
 	this->Id = id;
 	this->X = x;
 	this->Y = y;
+	this->drawableX = x * 10.0;
+	this->drawableY = y * 10.0;
 }
 
 Node::~Node() {

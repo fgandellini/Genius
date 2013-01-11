@@ -9,13 +9,11 @@
 
 namespace Genius {
 
-//string Instance::Name = "Unknown Genius Instance";
-//string Instance::File = "path/of/instance/file";
-
 //int Instance::NodesCount = 0;
 
 Instance::Instance() {
 	this->nodes = new NodeVector();
+	this->Name = "Unknown";
 }
 
 Instance::~Instance() {

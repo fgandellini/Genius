@@ -11,6 +11,9 @@ InstanceLoader::~InstanceLoader() {
 pInstance InstanceLoader::LoadFromFile(string file) {
 
 	pInstance instance = new Instance();
+
+	instance->Name = InstanceLoader::GetFilename(file);
+
 	int n;
 
 	char buf[3000];
@@ -35,6 +38,17 @@ pInstance InstanceLoader::LoadFromFile(string file) {
     	}
     }
 	return instance;
+}
+
+string InstanceLoader::GetFilename(string absolutePath) {
+	string filename;
+	size_t pos = absolutePath.find_last_of("/");
+	if(pos != std::string::npos) {
+		filename.assign(absolutePath.begin() + pos + 1, absolutePath.end());
+	} else {
+		filename = absolutePath;
+	}
+	return filename;
 }
 
 } /* namespace Genius */

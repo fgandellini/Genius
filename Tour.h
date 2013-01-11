@@ -60,6 +60,8 @@ public:
 	virtual ~Tour();
 	Tour* Clone();
 
+	pInstance GetInstance();
+
 	int Length() const;
 
 	void Append(pNode node);
