@@ -6,42 +6,28 @@
 namespace Genius {
 
 pInstance ulysses16;
-pTourFactory ulysses16TourFactory;
 pTour ulysses16OptimalTour;
 pGenius ulysses16Genius;
 
+pDrawer drawer;
+
 TEST_GROUP(InstanceLoader) {
 	void setup() {
+		drawer = new Drawer();
+
 		ulysses16 = InstanceLoader::LoadFromFile("/home/fede/workspace/tsp_instances/with_sol/ulysses16/ulysses16.tsp");
-		ulysses16TourFactory = new TourFactory(ulysses16);
-
-		ulysses16OptimalTour = ulysses16TourFactory->GetTour();
-
-		ulysses16OptimalTour->Append(ulysses16->GetNode(0));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(13));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(12));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(11));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(6));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(5));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(14));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(4));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(10));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(8));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(9));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(15));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(2));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(1));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(3));
-		ulysses16OptimalTour->Append(ulysses16->GetNode(7));
+		ulysses16OptimalTour = InstanceLoader::LoadOptTourFromFile(ulysses16,
+			"/home/fede/workspace/tsp_instances/with_sol/ulysses16/ulysses16.opt.tour");
 
 		ulysses16Genius = new Genius();
 	}
 	void teardown() {
 		SAFE_DELETE(ulysses16);
-		SAFE_DELETE(ulysses16TourFactory);
 		SAFE_DELETE(ulysses16OptimalTour);
 
 		SAFE_DELETE(ulysses16Genius);
+
+		SAFE_DELETE(drawer);
 	}
 };
 
@@ -103,64 +89,106 @@ TEST(InstanceLoader, LoadInstanceFromFileTest) {
 
 TEST(InstanceLoader, SolveInstanceFromFileTest) {
 
-	cout << endl
-		 << "ulysses16 Optimal Tour: " << ulysses16OptimalTour->ToString()
-		 << " (" << ulysses16OptimalTour->TotalDistance() << ")" << endl;
+//	cout << endl
+//		 << "ulysses16 Optimal Tour: " << ulysses16OptimalTour->ToString()
+//		 << " (" << ulysses16OptimalTour->TotalDistance() << ")" << endl;
 
-	pTour geniTour = ulysses16Genius->ExecuteGeni(ulysses16, 6); // CON 4 VA!!!!!!!
-	cout << "ulysses16 GENI tour: " << geniTour->ToString()
-		 << " (" << geniTour->TotalDistance() << ")" << endl;
+	pTour geniTour = ulysses16Genius->ExecuteGeni(ulysses16, 4);
+//	cout << "ulysses16 GENI tour: " << geniTour->ToString()
+//		 << " (" << geniTour->TotalDistance() << ")" << endl;
 
-	pTour solution = ulysses16Genius->ExecuteUs(geniTour, 6); // CON 4 VA!!!!!!!
-	cout << "ulysses16 solution: " << solution->ToString()
-		 << " (" << solution->TotalDistance() << ")" << endl;
+	pTour solution = ulysses16Genius->ExecuteUs(geniTour, 4);
+//	cout << "ulysses16 solution: " << solution->ToString()
+//		 << " (" << solution->TotalDistance() << ")" << endl;
 
-	//CHECK(solution->Length() == ulysses16OptimalTour->Length());
+	INFO << "!!] Optimal tour                    ("
+		 << ulysses16OptimalTour->TotalDistance() << ") "
+		 << ulysses16OptimalTour->ToString() << flush << endl;
+
+	CHECK(solution->Length() == ulysses16OptimalTour->Length());
 	//CHECK(solution->TotalDistance() >= ulysses16OptimalTour->TotalDistance());
+
 	//CHECK(solution->IsEqualTo(ulysses16OptimalTour));
 
-	pDrawer d = new Drawer();
-	d->Draw(ulysses16, "instance");
-	d->Draw(ulysses16OptimalTour, "optimalTour");
-	d->Draw(solution, "solution");
-
-	SAFE_DELETE(d);
+	drawer->Draw(ulysses16, "instance");
+	drawer->Draw(ulysses16OptimalTour, "optimalTour");
+	drawer->Draw(solution, "solution");
 
 	SAFE_DELETE(geniTour);
 	SAFE_DELETE(solution);
 }
 
-IGNORE_TEST(InstanceLoader, ulysses16UnstringErrorTest) {
+TEST(InstanceLoader, SolveInstancesTest) {
 
-	pTour startTour = ulysses16TourFactory->GetTour();
+//	int p = 4;
+//
+//	pInstance instance1 = InstanceLoader::LoadFromFile("/home/fede/workspace/tsp_instances/with_sol/att48/att48.tsp");
+//	CHECK(instance1->Size() > 0);
+//	pTour optTour1 = InstanceLoader::LoadOptTourFromFile(instance1,
+//		"/home/fede/workspace/tsp_instances/with_sol/att48/att48.opt.tour");
+//	CHECK(instance1->Size() == optTour1->Length());
+//
+//	pTour geniSol1 = genius->ExecuteGeni(instance1, p);
+//	pTour solution1 = genius->ExecuteUs(geniSol1, p);
+//
+//	CHECK(solution1->Length() == optTour1->Length());
+//	CHECK(solution1->TotalDistance() >= optTour1->TotalDistance());
+//	//CHECK(solution->IsEqualTo(ulysses16OptimalTour));
+//
+//	drawer->Draw(instance1, "instance");
+//	drawer->Draw(optTour1, "optTour");
+//	drawer->Draw(solution1, "solution");
+//
+//	SAFE_DELETE(geniSol1);
+//	SAFE_DELETE(solution1);
+//	SAFE_DELETE(optTour1);
+//	SAFE_DELETE(instance1);
 
-	startTour->Append(ulysses16->GetNode(2));
-	startTour->Append(ulysses16->GetNode(1));
-	startTour->Append(ulysses16->GetNode(3));
-	startTour->Append(ulysses16->GetNode(7));
-	startTour->Append(ulysses16->GetNode(5));
-	startTour->Append(ulysses16->GetNode(6));
-	startTour->Append(ulysses16->GetNode(9));
-	startTour->Append(ulysses16->GetNode(8));
-	startTour->Append(ulysses16->GetNode(10));
-	startTour->Append(ulysses16->GetNode(4));
-	startTour->Append(ulysses16->GetNode(14));
-	startTour->Append(ulysses16->GetNode(13));
-	startTour->Append(ulysses16->GetNode(12));
-	startTour->Append(ulysses16->GetNode(11));
-	startTour->Append(ulysses16->GetNode(15));
-	startTour->Append(ulysses16->GetNode(0));
+	pGenius genius = new Genius();
 
-	STRCMP_EQUAL(
-		"3 => 2 => 4 => 8 => 6 => 7 => 10 => 9 => 11 => 5 => 15 => 14 => 13 => 12 => 16 => 1 => 3",
-		startTour->ToString().c_str());
+	genius->ExecuteGenius(
+		"/home/fede/workspace/tsp_instances/with_sol/att48/att48.tsp",
+		"/home/fede/workspace/tsp_instances/with_sol/att48/att48.opt.tour", 4);
 
-	pNode n = ulysses16->GetNode(3);
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/st70/st70.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/st70/st70.opt.tour", 4);
 
-	ulysses16Genius->UnstringNodeFromTour(n, startTour, 4);
-	cout << "final tour: " << startTour->ToString();
-
-	SAFE_DELETE(startTour);
+	SAFE_DELETE(genius);
 }
+
+
+//IGNORE_TEST(InstanceLoader, ulysses16UnstringErrorTest) {
+//
+//	pTour startTour = ulysses16TourFactory->GetTour();
+//
+//	startTour->Append(ulysses16->GetNode(2));
+//	startTour->Append(ulysses16->GetNode(1));
+//	startTour->Append(ulysses16->GetNode(3));
+//	startTour->Append(ulysses16->GetNode(7));
+//	startTour->Append(ulysses16->GetNode(5));
+//	startTour->Append(ulysses16->GetNode(6));
+//	startTour->Append(ulysses16->GetNode(9));
+//	startTour->Append(ulysses16->GetNode(8));
+//	startTour->Append(ulysses16->GetNode(10));
+//	startTour->Append(ulysses16->GetNode(4));
+//	startTour->Append(ulysses16->GetNode(14));
+//	startTour->Append(ulysses16->GetNode(13));
+//	startTour->Append(ulysses16->GetNode(12));
+//	startTour->Append(ulysses16->GetNode(11));
+//	startTour->Append(ulysses16->GetNode(15));
+//	startTour->Append(ulysses16->GetNode(0));
+//
+//	STRCMP_EQUAL(
+//		"3 => 2 => 4 => 8 => 6 => 7 => 10 => 9 => 11 => 5 => 15 => 14 => 13 => 12 => 16 => 1 => 3",
+//		startTour->ToString().c_str());
+//
+//	pNode n = ulysses16->GetNode(3);
+//
+//	ulysses16Genius->UnstringNodeFromTour(n, startTour, 4);
+//	cout << "final tour: " << startTour->ToString();
+//
+//	SAFE_DELETE(startTour);
+//}
 
 } /* namespace Genius */

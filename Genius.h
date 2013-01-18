@@ -3,7 +3,8 @@
 
 #include "CommonIncludes.h"
 #include "TourFactory.h"
-#include "Drawer.h";
+#include "Drawer.h"
+#include "InstanceLoader.h"
 
 namespace Genius {
 
@@ -36,6 +37,8 @@ public:
 
 	pTour ExecuteUs(pTour tour,int neighborhoodSize);
 	void UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize);
+
+	void ExecuteGenius(string instanceFile, string optTourFile, int p);
 };
 typedef Genius* pGenius;
 

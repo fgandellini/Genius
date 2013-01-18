@@ -87,7 +87,8 @@ void Drawer::SaveDocument(Document document) {
 }
 
 Polyline Drawer::DrawTour(pTour tour) {
-	Polyline t(Stroke(.5, svg::Color::Black));
+	Polyline t(Stroke(0.5, svg::Color::Black));
+//	Polyline t(Stroke(5, svg::Color::Black));
 
 	for (int n=0; n<tour->Length(); n++) {
 		t << Point(tour->Get(n)->drawableX, tour->Get(n)->drawableY);
@@ -107,6 +108,7 @@ double Drawer::GetImageHeight(pInstance instance) {
 
 Rectangle Drawer::DrawNode(pNode node, Color color) {
 	double size = 2.0;
+//	double size = 20.0;
 	return Rectangle(
 		Point(node->drawableX - (size/2.0), node->drawableY - (size/2.0)),
 		size, size,
@@ -115,8 +117,9 @@ Rectangle Drawer::DrawNode(pNode node, Color color) {
 
 Text Drawer::DrawNodeId(pNode node, Color color) {
 	double size = 2.0;
+//	double size = 20.0;
 	return Text(Point(node->drawableX - (size/2.0), node->drawableY),
-			Utils::ToString(node->Id), color, Font(1, "Verdana"));
+			Utils::ToString(node->Id), color, Font((size/2.0), "Verdana"));
 }
 
 void Drawer::DrawNodes(pInstance instance, Document* doc) {

@@ -249,7 +249,7 @@ TEST(Genius, PaperTourStringingTest) {
 	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
 }
 
-IGNORE_TEST(Genius, ApplyGeniToPaperTourWithP_4) {
+TEST(Genius, ApplyGeniToPaperTourWithP_4) {
 	pTour tour = genius->ExecuteGeni(paperInstance, 4);
 
 	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
@@ -259,7 +259,7 @@ IGNORE_TEST(Genius, ApplyGeniToPaperTourWithP_4) {
 	SAFE_DELETE(tour);
 }
 
-IGNORE_TEST(Genius, ApplyGeniToPaperTourWithP_5) { // NO! Ma funziona con p=6 ...mah...
+TEST(Genius, ApplyGeniToPaperTourWithP_5) { // NO! Ma funziona con p=6 ...mah...
 	pTour tour = genius->ExecuteGeni(paperInstance, 6);
 
 	STRCMP_EQUAL("8 => 4 => 1 => 7 => 6 => 2 => 3 => 5 => 8",
@@ -269,7 +269,7 @@ IGNORE_TEST(Genius, ApplyGeniToPaperTourWithP_5) { // NO! Ma funziona con p=6 ..
 	SAFE_DELETE(tour);
 }
 
-IGNORE_TEST(Genius, PaperTourUnstringingTest) {
+TEST(Genius, PaperTourUnstringingTest) {
 	pTour tour = genius->ExecuteGeni(paperInstance, 4);
 
 	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
@@ -277,7 +277,7 @@ IGNORE_TEST(Genius, PaperTourUnstringingTest) {
 	CHECK_EQUAL_C_REAL(229.0, tour->TotalDistance(), 0.1);
 
 	pTour t = genius->ExecuteUs(tour, 4);
-	cout << "Final Tour after US Optimization: " << t->ToString().c_str() << endl;
+//	cout << "Final Tour after US Optimization: " << t->ToString().c_str() << endl;
 
 	STRCMP_EQUAL("8 => 5 => 3 => 4 => 1 => 7 => 6 => 2 => 8",
 		tour->ToString().c_str());

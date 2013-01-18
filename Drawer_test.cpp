@@ -8,5 +8,4 @@ TEST_GROUP(Drawer) {
 	void teardown() {}
 };
 
-
 } /* namespace Genius */

@@ -3,6 +3,7 @@
 
 #include "CommonIncludes.h"
 #include "Instance.h"
+#include "Tour.h"
 
 namespace Genius {
 
@@ -14,6 +15,7 @@ public:
 	virtual ~InstanceLoader();
 
 	static pInstance LoadFromFile(string file);
+	static pTour LoadOptTourFromFile(pInstance instance, string file);
 };
 //typedef InstanceLoader* pInstanceLoader;
 

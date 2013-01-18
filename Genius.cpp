@@ -384,14 +384,29 @@ void Genius::StringNodeInTour(pNode node, pTour tour, int neighborhoodSize) {
 		if (bestParamsForTypeI.tourMustBeReversed) {
 			tour->Reverse();
 		}
+		DBG  << "SI  <"
+			 << "vi=" << Utils::ToString(bestParamsForTypeI.vi->Id, true) << " "
+			 << "vj=" << Utils::ToString(bestParamsForTypeI.vj->Id, true) << " "
+			 << "vk=" << Utils::ToString(bestParamsForTypeI.vk->Id, true) << " "
+			 << "      "
+			 << (bestParamsForTypeI.tourMustBeReversed ? "R" : "F")
+			 << ">";
 		tour->InsertTypeI(node,
 			bestParamsForTypeI.vi,
 			bestParamsForTypeI.vj,
 			bestParamsForTypeI.vk);
+
 	} else {
 		if (bestParamsForTypeII.tourMustBeReversed) {
 			tour->Reverse();
 		}
+		DBG  << "SII <"
+			 << "vi=" << Utils::ToString(bestParamsForTypeII.vi->Id, true) << " "
+			 << "vj=" << Utils::ToString(bestParamsForTypeII.vj->Id, true) << " "
+			 << "vk=" << Utils::ToString(bestParamsForTypeII.vk->Id, true) << " "
+			 << "vl=" << Utils::ToString(bestParamsForTypeII.vl->Id, true) << " "
+			 << (bestParamsForTypeII.tourMustBeReversed ? "R" : "F")
+			 << ">";
 		tour->InsertTypeII(node,
 			bestParamsForTypeII.vi,
 			bestParamsForTypeII.vj,
@@ -421,39 +436,37 @@ void Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) 
 	bestParamsForTypeII =
 		this->EvaluateBestRemoveTypeIIParams(tour, node, neighborhoodSize);
 
-	cout << "> bestParamsForTypeI.distance="
-		 << bestParamsForTypeI.distance
-		 << " bestParamsForTypeII.distance="
-		 << bestParamsForTypeII.distance
-		 << endl;
+//	cout << "> bestParamsForTypeI.distance="
+//		 << bestParamsForTypeI.distance
+//		 << " bestParamsForTypeII.distance="
+//		 << bestParamsForTypeII.distance
+//		 << endl;
 
 	if (bestParamsForTypeI.distance <= bestParamsForTypeII.distance) {
 		if (bestParamsForTypeI.tourMustBeReversed) {
 			tour->Reverse();
 		}
-		cout << "> Performing Remove TypeI of " << node->Id
-			 << " (vj="
-			 << bestParamsForTypeI.vj->Id << ", "
-			 << " vk="
-			 << bestParamsForTypeI.vk->Id << ") "
-			 << "tour is " << (bestParamsForTypeI.tourMustBeReversed ? "reversed" : "forward")
-			 << endl;
+		DBG  << "UI  <"
+			 << "vj=" << Utils::ToString(bestParamsForTypeI.vj->Id, true) << " "
+			 << "vk=" << Utils::ToString(bestParamsForTypeI.vk->Id, true) << " "
+			 << "            "
+			 << (bestParamsForTypeI.tourMustBeReversed ? "R" : "F")
+			 << ">" << flush;
 		tour->RemoveTypeI(node,
 			bestParamsForTypeI.vj,
 			bestParamsForTypeI.vk);
+
 	} else {
 		if (bestParamsForTypeII.tourMustBeReversed) {
 			tour->Reverse();
 		}
-		cout << "> Performing Remove TypeII of " << node->Id
-			 << " (vj="
-			 << bestParamsForTypeII.vj->Id << ", "
-			 << " vk="
-			 << bestParamsForTypeII.vk->Id << ", "
-			 << " vl="
-			 << bestParamsForTypeII.vl->Id << ") "
-			 << "tour is " << (bestParamsForTypeII.tourMustBeReversed ? "reversed" : "forward")
-			 << endl;
+		DBG  << "UII <"
+			 << "vj=" << Utils::ToString(bestParamsForTypeII.vj->Id, true) << " "
+			 << "vk=" << Utils::ToString(bestParamsForTypeII.vk->Id, true) << " "
+			 << "vl=" << Utils::ToString(bestParamsForTypeII.vl->Id, true) << " "
+			 << "      "
+			 << (bestParamsForTypeII.tourMustBeReversed ? "R" : "F")
+			 << ">" << flush;
 		tour->RemoveTypeII(node,
 			bestParamsForTypeII.vj,
 			bestParamsForTypeII.vk,
@@ -462,21 +475,42 @@ void Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) 
 }
 
 pTour Genius::ExecuteGeni(pInstance nodesToVisit, int neighborhoodSize) {
+
+	WARN << endl
+		 << "Instance " << nodesToVisit->Name << endl
+		 << "----------------------------------------" << endl
+		 << "Execution of Geni" << endl;
+
 	pTour tour = tourFactory->SetInstance(nodesToVisit)->GetTour();
 
 	this->InitializeTourWithThreeNodes(tour, nodesToVisit);
 	this->drawer->Draw(tour, "geni_0");
+
+	INFO << "00]                                 ("
+		 << tour->TotalDistance() << ") "
+		 << tour->ToString() << flush << endl;
 
 	int step = 1;
 	for (int n=0; n<(int)nodesToVisit->Size(); n++) {
 		pNode nodeToInsert = nodesToVisit->GetNode(n);
 
 		if (!tour->Contains(nodeToInsert)) {
+
+			INFO << Utils::ToString(step, true) << "] ";
+
 			this->StringNodeInTour(nodeToInsert, tour, neighborhoodSize);
 			this->drawer->Draw(tour, "geni_" + Utils::ToString(step, true));
+
+			INFO << " (" << tour->TotalDistance() << ") "
+			     << tour->ToString() << flush << endl;
+
 			step++;
 		}
 	}
+
+	WARN << "GENI] Heuristic solution            ("
+		 << tour->TotalDistance() << ") "
+		 << tour->ToString() << flush << endl;
 
 	return tour;
 }
@@ -495,29 +529,30 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 
 	pTour currentTour = tour->Clone();
 
-	cout << endl;
+	WARN << "Execution of Us" << endl;
 
 	int it = 0;
 	for(;;)
 	{
-		cout << "---- it " << it << " -----------------" << endl;
-
 		pNode currentNode = currentTour->Get(currentNodeOfTour);
-		cout << "currentNode " << currentNode->Id << endl;
 
-		cout << "currentTour before unstring: " << currentTour->ToString() << endl;
-		cout << "currentTour distance before unstring: " << currentTour->TotalDistance() << endl;
+		INFO << Utils::ToString(it, true) << "] Unstring of "
+			 << Utils::ToString(currentNode->Id, true) << " from             (" << currentTour->TotalDistance() << ") " << currentTour->ToString() << endl;
+		DBG << Utils::ToString(it, true) << "] ";
 
 		this->UnstringNodeFromTour(currentNode, currentTour, neighborhoodSize);
+		DBG << " (" << currentTour->TotalDistance() << ") "
+			 << currentTour->ToString() << endl;
 
-		cout << "currentTour after unstring: " << currentTour->ToString() << endl;
-		cout << "currentTour distance after unstring: " << currentTour->TotalDistance() << endl;
+		INFO << Utils::ToString(it, true) << "] String of "
+			 << Utils::ToString(currentNode->Id, true) << " in                 (" << currentTour->TotalDistance() << ") " << currentTour->ToString() << endl;
+		DBG << Utils::ToString(it, true) << "] ";
 
 		this->StringNodeInTour(currentNode, currentTour, neighborhoodSize);
 		double newDistance = currentTour->TotalDistance();
 
-		cout << "currentTour after string: " << currentTour->ToString() << endl;
-		cout << "currentTour distance after string: " << currentTour->TotalDistance() << endl;
+		DBG << " (" << currentTour->TotalDistance() << ") "
+			 << currentTour->ToString() << flush << endl;
 
 		this->drawer->Draw(currentTour, "us_" + Utils::ToString(it, true), currentNode);
 
@@ -526,8 +561,11 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 			bestTourDistance = newDistance;
 			SAFE_DELETE(bestTour);
 			bestTour = currentTour->Clone();
+			INFO << Utils::ToString(it, true) << "] Best tour updated               ("
+				 << bestTour->TotalDistance() << ") "
+				 << bestTour->ToString() << flush << endl;
 		} else {
-			if ( currentNodeOfTour < (currentTour->Length()-1) ) {
+			if ( currentNodeOfTour < (tour->Length()-1) ) {
 				currentNodeOfTour++;
 			} else {
 				break;
@@ -536,7 +574,40 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 		it++;
 	}
 	SAFE_DELETE(currentTour);
+
+	WARN << "US] Best tour found by US            ("
+		 << bestTour->TotalDistance() << ") "
+		 << bestTour->ToString() << flush << endl;
+
 	return bestTour;
+}
+
+void Genius::ExecuteGenius(string instanceFile, string optTourFile, int p) {
+	pInstance instance = InstanceLoader::LoadFromFile(instanceFile);
+	assert(instance->Size() > 0);
+	drawer->Draw(instance, "instance");
+
+	pTour optTour = InstanceLoader::LoadOptTourFromFile(instance, optTourFile);
+	assert(optTour->Length() == instance->Size());
+	drawer->Draw(optTour, "optTour");
+
+	pTour geniSol = this->ExecuteGeni(instance, p);
+	drawer->Draw(geniSol, "geniSol");
+
+	pTour solution = this->ExecuteUs(geniSol, p);
+	drawer->Draw(solution, "solution");
+
+	WARN << "!!] Optimal tour                     ("
+		 << optTour->TotalDistance() << ") "
+		 << optTour->ToString() << flush << endl;
+
+	assert(solution->Length() == instance->Size());
+	assert(solution->TotalDistance() >= optTour->TotalDistance());
+
+	SAFE_DELETE(optTour);
+	SAFE_DELETE(solution);
+	SAFE_DELETE(geniSol);
+	SAFE_DELETE(instance);
 }
 
 } /* namespace Genius */

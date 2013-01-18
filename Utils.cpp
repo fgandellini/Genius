@@ -23,4 +23,10 @@ string Utils::ToString(double d) {
 	return convert.str();
 }
 
+std::ostream& Utils::Log(int level) {
+	static std::ostream rc(std::cout.rdbuf());
+	rc.rdbuf(level <= VERBOSITY ? std::cout.rdbuf() : NULL);
+	return rc;
+}
+
 } /* namespace Genius */

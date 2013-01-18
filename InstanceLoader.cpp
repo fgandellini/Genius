@@ -40,6 +40,33 @@ pInstance InstanceLoader::LoadFromFile(string file) {
 	return instance;
 }
 
+pTour InstanceLoader::LoadOptTourFromFile(pInstance instance, string file) {
+	pTour optTour = new Tour(instance);
+
+	int n;
+
+	char buf[3000];
+	FILE* tsp_file = fopen(file.c_str(), "r");
+	assert(tsp_file != NULL);
+
+    fscanf(tsp_file,"%s", buf);
+    while ( strcmp("TOUR_SECTION", buf) != 0 ) {
+    	if ( strcmp("DIMENSION", buf) == 0 ) { fscanf(tsp_file, "%d", &n); }
+    	else if ( strcmp("DIMENSION:", buf) == 0 ) { fscanf(tsp_file, "%d", &n); }
+    	buf[0]=0;
+    	fscanf(tsp_file,"%s", buf);
+    }
+
+    if( strcmp("TOUR_SECTION", buf) == 0 ) {
+    	int id;
+    	for (int i = 0 ; i < n ; i++ ) {
+    		fscanf(tsp_file, "%d", &id);
+    		optTour->Append(instance->GetNodeById(id));
+    	}
+    }
+    return optTour;
+}
+
 string InstanceLoader::GetFilename(string absolutePath) {
 	string filename;
 	size_t pos = absolutePath.find_last_of("/");
