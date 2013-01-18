@@ -7,7 +7,7 @@
 #define V_INFO 5
 #define V_DEBUG 9
 
-#define VERBOSITY V_NONE
+#define VERBOSITY V_DEBUG
 
 #include <string>
 #include <sstream>

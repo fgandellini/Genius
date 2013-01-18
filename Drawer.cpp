@@ -54,6 +54,10 @@ void Drawer::Draw(pTour tour, string name, pNode nodeToHighlight) {
 	this->SaveDocument(doc);
 }
 
+double Drawer::Scale(double d) {
+	return d * 10.0;
+}
+
 Point Drawer::GetOrigin(pInstance instance) {
 	return Point(
 		this->GetMinX(instance) - (border/2.0),
@@ -91,9 +95,9 @@ Polyline Drawer::DrawTour(pTour tour) {
 //	Polyline t(Stroke(5, svg::Color::Black));
 
 	for (int n=0; n<tour->Length(); n++) {
-		t << Point(tour->Get(n)->drawableX, tour->Get(n)->drawableY);
+		t << Point(Scale(tour->Get(n)->X), Scale(tour->Get(n)->Y));
 	}
-	t << Point(tour->Get(0)->drawableX, tour->Get(0)->drawableY);
+	t << Point(Scale(tour->Get(0)->X), Scale(tour->Get(0)->Y));
 
 	return t;
 }
@@ -110,7 +114,7 @@ Rectangle Drawer::DrawNode(pNode node, Color color) {
 	double size = 2.0;
 //	double size = 20.0;
 	return Rectangle(
-		Point(node->drawableX - (size/2.0), node->drawableY - (size/2.0)),
+		Point(Scale(node->X) - (size/2.0), Scale(node->Y) - (size/2.0)),
 		size, size,
 		color);
 }
@@ -118,7 +122,7 @@ Rectangle Drawer::DrawNode(pNode node, Color color) {
 Text Drawer::DrawNodeId(pNode node, Color color) {
 	double size = 2.0;
 //	double size = 20.0;
-	return Text(Point(node->drawableX - (size/2.0), node->drawableY),
+	return Text(Point(Scale(node->X) - (size/2.0), Scale(node->Y)),
 			Utils::ToString(node->Id), color, Font((size/2.0), "Verdana"));
 }
 
@@ -134,7 +138,7 @@ double Drawer::GetMaxX(pInstance instance) {
 	double maxX = numeric_limits<double>::min();
 	int size = instance->Size();
 	for (int n=0; n<size; n++) {
-		maxX = max(instance->GetNode(n)->drawableX, maxX);
+		maxX = max(Scale(instance->GetNode(n)->X), maxX);
 	}
 	return maxX;
 }
@@ -143,7 +147,7 @@ double Drawer::GetMaxY(pInstance instance) {
 	double maxY = numeric_limits<double>::min();
 	int size = instance->Size();
 	for (int n=0; n<size; n++) {
-		maxY = max(instance->GetNode(n)->drawableY, maxY);
+		maxY = max(Scale(instance->GetNode(n)->Y), maxY);
 	}
 	return maxY;
 }
@@ -152,7 +156,7 @@ double Drawer::GetMinX(pInstance instance) {
 	double minX = numeric_limits<double>::max();
 	int size = instance->Size();
 	for (int n=0; n<size; n++) {
-		minX = min(instance->GetNode(n)->drawableX, minX);
+		minX = min(Scale(instance->GetNode(n)->X), minX);
 	}
 	return minX;
 }
@@ -161,7 +165,7 @@ double Drawer::GetMinY(pInstance instance) {
 	double minY = numeric_limits<double>::max();
 	int size = instance->Size();
 	for (int n=0; n<size; n++) {
-		minY = min(instance->GetNode(n)->drawableY, minY);
+		minY = min(Scale(instance->GetNode(n)->Y), minY);
 	}
 	return minY;
 }

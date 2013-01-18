@@ -12,6 +12,8 @@ private:
 	string ImagesDirPath;
 	double border;
 
+	double Scale(double d);
+
 	Point GetOrigin(pInstance instance);
 
 	double GetMaxX(pInstance instance);
@@ -28,7 +30,6 @@ private:
 
 	Document CreateDocument(pInstance instance, string name);
 	void SaveDocument(Document document);
-
 
 public:
 	Drawer();

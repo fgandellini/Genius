@@ -63,13 +63,11 @@ InsertTypeIIParams Genius::EvaluateBestInsertTypeIIParams(pTour tour, pNode v, i
 	bestParamsBackward.distance = INF_DISTANCE;
 	bestParamsBackward.tourMustBeReversed = true;
 
-	//	cout << "FORWARD" << endl;
 	bestParamsForward =
 		this->EvaluateBestInsertTypeIIParamsWithOrientedTour(tour, v, neighborhoodSize);
 
 	tour->Reverse();
 
-	//	cout << "BACKWARD" << endl;
 	bestParamsBackward =
 		this->EvaluateBestInsertTypeIIParamsWithOrientedTour(tour, v, neighborhoodSize);
 
@@ -131,13 +129,11 @@ RemoveTypeIIParams Genius::EvaluateBestRemoveTypeIIParams(pTour tour, pNode vi, 
 	bestParamsBackward.distance = INF_DISTANCE;
 	bestParamsBackward.tourMustBeReversed = true;
 
-	//	cout << "FORWARD" << endl;
 	bestParamsForward =
 		this->EvaluateBestRemoveTypeIIParamsWithOrientedTour(tour, vi, neighborhoodSize);
 
 	tour->Reverse();
 
-	//	cout << "BACKWARD" << endl;
 	bestParamsBackward =
 		this->EvaluateBestRemoveTypeIIParamsWithOrientedTour(tour, vi, neighborhoodSize);
 
@@ -436,11 +432,13 @@ void Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) 
 	bestParamsForTypeII =
 		this->EvaluateBestRemoveTypeIIParams(tour, node, neighborhoodSize);
 
-//	cout << "> bestParamsForTypeI.distance="
-//		 << bestParamsForTypeI.distance
-//		 << " bestParamsForTypeII.distance="
-//		 << bestParamsForTypeII.distance
-//		 << endl;
+//	if (bestParamsForTypeI.distance == bestParamsForTypeII.distance) {
+//		ERR << endl << "bestParamsForTypeI.distance="
+//			<< bestParamsForTypeI.distance
+//			<< " bestParamsForTypeII.distance="
+//			<< bestParamsForTypeII.distance
+//			<< flush;
+//	}
 
 	if (bestParamsForTypeI.distance <= bestParamsForTypeII.distance) {
 		if (bestParamsForTypeI.tourMustBeReversed) {

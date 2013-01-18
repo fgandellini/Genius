@@ -2,31 +2,15 @@
 
 namespace Genius {
 
-//bool operator==(const Node &first, const Node &second) {
-//	return first.Id == second.Id;
-//}
-//
-//bool operator!=(const Node &first, const Node &second) {
-//	return first.Id != second.Id;
-//}
-
 Node::Node(int id, double x, double y) {
 	this->Id = id;
 	this->X = x;
 	this->Y = y;
-	this->drawableX = x * 10.0;
-	this->drawableY = y * 10.0;
-//	this->drawableX = x * 1.0;
-//	this->drawableY = y * 1.0;
 }
 
 Node::~Node() {
 
 }
-
-//pNode Node::Clone() {
-//	return new Node(this->Id, this->X, this->Y);
-//}
 
 string Node::ToString() {
 	ostringstream convert;

@@ -154,6 +154,10 @@ TEST(InstanceLoader, SolveInstancesTest) {
 //		"/home/fede/workspace/tsp_instances/with_sol/st70/st70.tsp",
 //		"/home/fede/workspace/tsp_instances/with_sol/st70/st70.opt.tour", 4);
 
+	genius->ExecuteGenius(
+		"/home/fede/workspace/tsp_instances/with_sol/berlin52/berlin52.tsp",
+		"/home/fede/workspace/tsp_instances/with_sol/berlin52/berlin52.opt.tour", 4);
+
 	SAFE_DELETE(genius);
 }
 

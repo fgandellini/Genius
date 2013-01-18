@@ -7,25 +7,15 @@ namespace Genius {
 
 class Node {
 
-//	friend bool operator==(const Node &first, const Node &second);
-//	friend bool operator!=(const Node &first, const Node &second);
-
 public:
 	int Id;
 	double X;
 	double Y;
 
-	double drawableX;
-	double drawableY;
-
 	Node(int id, double x, double y);
 	virtual ~Node();
 
-    //Node* Clone();
-
 	string ToString();
-
-	//operator int();
 
 	int Compare(Node* node) const;
 	double DistanceFrom(Node* node);
