@@ -261,14 +261,16 @@ bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, b
 		assert(vi->Id != vlplus1->Id);
 		assert(vj->Id != vk->Id);
 		assert(vj->Id != vl->Id);
+		assert(vj->Id != viminus1->Id);
 		assert(vk->Id != vl->Id);
 		assert(vk->Id != vjminus1->Id);
 		assert(vk->Id != viplus1->Id);
 		assert(vk->Id != vlplus1->Id);
 		assert(vl->Id != vjplus1->Id);
+		assert(viminus1->Id != vlplus1->Id);
 		assert(vkminus1->Id != vlplus1->Id);
 		assert(vjminus1->Id != vkplus1->Id);
-		assert(this->IsBetween(vk, viplus1, viminus2) &&
+		assert(this->IsBetween(vk, vjplus1, viminus2) &&
 			   this->IsBetween(vl, vj, vkminus1)	   );
 	} else {
 		return ((vi->Id != vj->Id) &&
@@ -279,14 +281,16 @@ bool Tour::CheckRemoveTypeIIConditions(pNode vi, pNode vj, pNode vk, pNode vl, b
 				 (vi->Id != vlplus1->Id) &&
 				 (vj->Id != vk->Id) &&
 				 (vj->Id != vl->Id) &&
+				 (vj->Id != viminus1->Id) &&
 				 (vk->Id != vl->Id) &&
 				 (vk->Id != vjminus1->Id) &&
 				 (vk->Id != viplus1->Id) &&
 				 (vk->Id != vlplus1->Id) &&
 				 (vl->Id != vjplus1->Id) &&
+				 (viminus1->Id != vlplus1->Id) &&
 				 (vkminus1->Id != vlplus1->Id) &&
 				 (vjminus1->Id != vkplus1->Id) &&
-				 this->IsBetween(vk, viplus1, viminus2) &&
+				 this->IsBetween(vk, vjplus1, viminus2) &&
 				 this->IsBetween(vl, vj, vkminus1));
 	}
 	return true;
@@ -528,6 +532,13 @@ void Tour::RemoveTypeII(pNode vi, pNode vj, pNode vk, pNode vl) {
 	pNode vlplus1 = this->Next(vl);
 
 	this->CheckRemoveTypeIIConditions(vi, vj, vk, vl, true);
+
+	DBG << endl
+		<< "     viminus1=" << Utils::ToString(viminus1->Id, true) << endl
+		<< "     viplus1=" << Utils::ToString(viplus1->Id, true) << endl
+		<< "     vjminus1=" << Utils::ToString(vjminus1 ->Id, true) << endl
+		<< "     vkplus1=" << Utils::ToString(vkplus1->Id, true) << endl
+		<< "     vlplus1="  << Utils::ToString(vlplus1->Id, true) << endl;
 
 	data::clist<pNode> subtour_vlplus1_vk =
 		this->GetReversedSubtour(vlplus1, vk);

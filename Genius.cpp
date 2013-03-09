@@ -411,7 +411,7 @@ void Genius::StringNodeInTour(pNode node, pTour tour, int neighborhoodSize) {
 	}
 }
 
-void Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) {
+bool Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) {
 
 	RemoveTypeIParams bestParamsForTypeI;
 	bestParamsForTypeI.vj = NULL;
@@ -439,6 +439,15 @@ void Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) 
 //			<< bestParamsForTypeII.distance
 //			<< flush;
 //	}
+
+	if (bestParamsForTypeI.distance == INF_DISTANCE &&
+		bestParamsForTypeII.distance == INF_DISTANCE) {
+		ERR << endl << "Unstringing node " << node->Id << " from tour"
+			<< endl << "(" << tour->TotalDistance() << ") " << tour->ToString()
+			<< endl << "No suitable param-set found! Skipping to next node!"
+			<< flush << endl;
+		return false;
+	}
 
 	if (bestParamsForTypeI.distance <= bestParamsForTypeII.distance) {
 		if (bestParamsForTypeI.tourMustBeReversed) {
@@ -470,6 +479,7 @@ void Genius::UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize) 
 			bestParamsForTypeII.vk,
 			bestParamsForTypeII.vl);
 	}
+	return true;
 }
 
 pTour Genius::ExecuteGeni(pInstance nodesToVisit, int neighborhoodSize) {
@@ -482,7 +492,9 @@ pTour Genius::ExecuteGeni(pInstance nodesToVisit, int neighborhoodSize) {
 	pTour tour = tourFactory->SetInstance(nodesToVisit)->GetTour();
 
 	this->InitializeTourWithThreeNodes(tour, nodesToVisit);
-	this->drawer->Draw(tour, "geni_0");
+	if (ENABLE_DRAWER) {
+		this->drawer->Draw(tour, "geni_0");
+	}
 
 	INFO << "00]                                 ("
 		 << tour->TotalDistance() << ") "
@@ -497,7 +509,9 @@ pTour Genius::ExecuteGeni(pInstance nodesToVisit, int neighborhoodSize) {
 			INFO << Utils::ToString(step, true) << "] ";
 
 			this->StringNodeInTour(nodeToInsert, tour, neighborhoodSize);
-			this->drawer->Draw(tour, "geni_" + Utils::ToString(step, true));
+			if (ENABLE_DRAWER) {
+				this->drawer->Draw(tour, "geni_" + Utils::ToString(step, true));
+			}
 
 			INFO << " (" << tour->TotalDistance() << ") "
 			     << tour->ToString() << flush << endl;
@@ -523,7 +537,7 @@ void Genius::InitializeTourWithThreeNodes(pTour tour, pInstance nodesToVisit) {
 pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 	pTour bestTour = NULL;
 	double bestTourDistance = INF_DISTANCE;
-	int currentNodeOfTour = 0;
+	int currentNodeIdx = 0;
 
 	pTour currentTour = tour->Clone();
 
@@ -532,43 +546,68 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 	int it = 0;
 	for(;;)
 	{
-		pNode currentNode = currentTour->Get(currentNodeOfTour);
+		pNode currentNode = currentTour->Get(currentNodeIdx);
 
 		INFO << Utils::ToString(it, true) << "] Unstring of "
-			 << Utils::ToString(currentNode->Id, true) << " from             (" << currentTour->TotalDistance() << ") " << currentTour->ToString() << endl;
-		DBG << Utils::ToString(it, true) << "] ";
-
-		this->UnstringNodeFromTour(currentNode, currentTour, neighborhoodSize);
-		DBG << " (" << currentTour->TotalDistance() << ") "
+			 << Utils::ToString(currentNode->Id, true) << " from             ("
+			 << currentTour->TotalDistance() << ") "
 			 << currentTour->ToString() << endl;
-
-		INFO << Utils::ToString(it, true) << "] String of "
-			 << Utils::ToString(currentNode->Id, true) << " in                 (" << currentTour->TotalDistance() << ") " << currentTour->ToString() << endl;
 		DBG << Utils::ToString(it, true) << "] ";
 
-		this->StringNodeInTour(currentNode, currentTour, neighborhoodSize);
 		double newDistance = currentTour->TotalDistance();
 
-		DBG << " (" << currentTour->TotalDistance() << ") "
-			 << currentTour->ToString() << flush << endl;
+		if (this->UnstringNodeFromTour(currentNode, currentTour, neighborhoodSize)) {
+			DBG << " (" << currentTour->TotalDistance() << ") "
+				 << currentTour->ToString() << endl;
 
-		this->drawer->Draw(currentTour, "us_" + Utils::ToString(it, true), currentNode);
+			INFO << Utils::ToString(it, true) << "] String of "
+				 << Utils::ToString(currentNode->Id, true) << " in                 ("
+				 << currentTour->TotalDistance() << ") "
+				 << currentTour->ToString() << endl;
+			DBG << Utils::ToString(it, true) << "] ";
 
-		if (newDistance < bestTourDistance) {
-			currentNodeOfTour = 0;
-			bestTourDistance = newDistance;
-			SAFE_DELETE(bestTour);
-			bestTour = currentTour->Clone();
-			INFO << Utils::ToString(it, true) << "] Best tour updated               ("
-				 << bestTour->TotalDistance() << ") "
-				 << bestTour->ToString() << flush << endl;
-		} else {
-			if ( currentNodeOfTour < (tour->Length()-1) ) {
-				currentNodeOfTour++;
+			this->StringNodeInTour(currentNode, currentTour, neighborhoodSize);
+			newDistance = currentTour->TotalDistance();
+
+			DBG << " (" << currentTour->TotalDistance() << ") "
+				 << currentTour->ToString() << flush << endl;
+
+			if (newDistance < bestTourDistance) {
+				currentNodeIdx = 0;
+				bestTourDistance = newDistance;
+				SAFE_DELETE(bestTour);
+				bestTour = currentTour->Clone();
+				INFO << Utils::ToString(it, true) << "] Best tour updated               ("
+					 << bestTour->TotalDistance() << ") "
+					 << bestTour->ToString() << flush << endl;
+			} else {
+				if ( currentNodeIdx < (tour->Length()-1) ) {
+					currentNodeIdx++;
+				} else {
+					break;
+				}
+			}
+
+		} else { // no param-set found;
+			if ( currentNodeIdx < (tour->Length()-1) ) {
+				ERR << "skipping node " << currentTour->Get(currentNodeIdx)->Id << endl;
+				currentNodeIdx++;
+				ERR << "continuing with " << currentTour->Get(currentNodeIdx)->Id << endl;
 			} else {
 				break;
 			}
 		}
+
+		if (ENABLE_DRAWER) {
+			this->drawer->Draw(currentTour, "us_" + Utils::ToString(it, true), currentNode);
+		}
+
+		// Security check!
+		if (currentTour->Length() != tour->Length()) {
+			ERR << endl << "TOUR LENGHT CHECK FAILED!" << endl << endl;
+			break;
+		}
+
 		it++;
 	}
 	SAFE_DELETE(currentTour);
@@ -583,17 +622,25 @@ pTour Genius::ExecuteUs(pTour tour, int neighborhoodSize) {
 void Genius::ExecuteGenius(string instanceFile, string optTourFile, int p) {
 	pInstance instance = InstanceLoader::LoadFromFile(instanceFile);
 	assert(instance->Size() > 0);
-	drawer->Draw(instance, "instance");
+	if (ENABLE_DRAWER) {
+		drawer->Draw(instance, "instance");
+	}
 
 	pTour optTour = InstanceLoader::LoadOptTourFromFile(instance, optTourFile);
 	assert(optTour->Length() == instance->Size());
-	drawer->Draw(optTour, "optTour");
+	if (ENABLE_DRAWER) {
+		drawer->Draw(optTour, "optTour");
+	}
 
 	pTour geniSol = this->ExecuteGeni(instance, p);
-	drawer->Draw(geniSol, "geniSol");
+	if (ENABLE_DRAWER) {
+		drawer->Draw(geniSol, "geniSol");
+	}
 
 	pTour solution = this->ExecuteUs(geniSol, p);
-	drawer->Draw(solution, "solution");
+	if (ENABLE_DRAWER) {
+		drawer->Draw(solution, "solution");
+	}
 
 	WARN << "!!] Optimal tour                     ("
 		 << optTour->TotalDistance() << ") "
@@ -606,6 +653,26 @@ void Genius::ExecuteGenius(string instanceFile, string optTourFile, int p) {
 	SAFE_DELETE(solution);
 	SAFE_DELETE(geniSol);
 	SAFE_DELETE(instance);
+}
+
+void Genius::ExecuteGeniusWithTimeTrace(string instanceFile, string optTourFile, int p)
+{
+	//timeval stop, start;
+	//gettimeofday(&start, NULL);
+
+    clock_t start, stop;
+    int i;
+    start = clock();
+
+	this->ExecuteGenius(instanceFile, optTourFile, p);
+
+	stop = clock();
+	double elapsed = (double)(stop - start) / CLOCKS_PER_SEC;
+
+	//gettimeofday(&stop, NULL);
+	//long elapsed = stop.tv_usec - start.tv_usec;
+
+	cout << endl << instanceFile << " solution time: " << elapsed << " s" << endl;
 }
 
 } /* namespace Genius */

@@ -14,6 +14,8 @@ private:
 
 	pDrawer drawer;
 
+	void PrintDbgVars(pNode vi, pNode vj, pNode vk, pNode vl);
+
 	InsertTypeIParams EvaluateBestInsertTypeIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);
 	InsertTypeIIParams EvaluateBestInsertTypeIIParamsWithOrientedTour(pTour tour, pNode v, int neighborhoodSize);
 
@@ -36,9 +38,11 @@ public:
 	void StringNodeInTour(pNode node, pTour tour, int neighborhoodSize);
 
 	pTour ExecuteUs(pTour tour,int neighborhoodSize);
-	void UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize);
+	bool UnstringNodeFromTour(pNode node, pTour tour, int neighborhoodSize);
 
 	void ExecuteGenius(string instanceFile, string optTourFile, int p);
+	void ExecuteGeniusWithTimeTrace(string instanceFile, string optTourFile, int p);
+
 };
 typedef Genius* pGenius;
 

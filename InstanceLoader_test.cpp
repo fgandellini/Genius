@@ -146,17 +146,77 @@ TEST(InstanceLoader, SolveInstancesTest) {
 
 	pGenius genius = new Genius();
 
-	genius->ExecuteGenius(
-		"/home/fede/workspace/tsp_instances/with_sol/att48/att48.tsp",
-		"/home/fede/workspace/tsp_instances/with_sol/att48/att48.opt.tour", 4);
-
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/att48/att48.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/att48/att48.opt.tour", 4);
+//
 //	genius->ExecuteGenius(
 //		"/home/fede/workspace/tsp_instances/with_sol/st70/st70.tsp",
 //		"/home/fede/workspace/tsp_instances/with_sol/st70/st70.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/berlin52/berlin52.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/berlin52/berlin52.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/pr76/pr76.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/pr76/pr76.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/gr96/gr96.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/gr96/gr96.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/eil76/eil76.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/eil76/eil76.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/eil51/eil51.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/eil51/eil51.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/ulysses22/ulysses22.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/ulysses22/ulysses22.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/kroA100/kroA100.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/kroA100/kroA100.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/kroC100/kroC100.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/kroC100/kroC100.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/kroD100/kroD100.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/kroD100/kroD100.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/eil101/eil101.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/eil101/eil101.opt.tour", 4);
 
-	genius->ExecuteGenius(
-		"/home/fede/workspace/tsp_instances/with_sol/berlin52/berlin52.tsp",
-		"/home/fede/workspace/tsp_instances/with_sol/berlin52/berlin52.opt.tour", 4);
+	genius->ExecuteGeniusWithTimeTrace(
+		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.tsp",
+		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.opt.tour", 4);
+
+	genius->ExecuteGeniusWithTimeTrace(
+		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.tsp",
+		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.opt.tour", 4);
+
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/ch150/ch150.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/ch150/ch150.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/lin105/lin105.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/lin105/lin105.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/a280/a280.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/a280/a280.opt.tour", 4);
+//
+//	genius->ExecuteGenius(
+//		"/home/fede/workspace/tsp_instances/with_sol/pcb442/pcb442.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/pcb442/pcb442.opt.tour", 4);
 
 	SAFE_DELETE(genius);
 }
