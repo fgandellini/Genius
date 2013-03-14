@@ -1,13 +1,16 @@
 #define RUN_TESTS
 
 #ifndef RUN_TESTS // -- Production Main ---------------------------------------
-
 #include "CommonIncludes.h"
-#include "Tour.h"
+#include "Utils.h"
+#include "InstanceLoader.h"
+#include "Instance.h"
+#include "Genius.h"
 
 using namespace Genius;
 
 int main(int argc, char** argv) {
+/*
 	pNode v  = new Node(0, 0, 0);
 	pNode vi = new Node(0, 0, 0);
 	pNode vj = new Node(0, 0, 0);
@@ -46,6 +49,15 @@ int main(int argc, char** argv) {
 	SAFE_DELETE(vj);
 	SAFE_DELETE(vk);
 	SAFE_DELETE(long_tour);
+*/
+
+	pGenius genius = new Genius::Genius();
+
+	genius->ExecuteGeniusWithTimeTrace(
+		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.tsp",
+		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.opt.tour", 4);
+
+	SAFE_DELETE(genius);
 
 	return EXIT_SUCCESS;
 }
@@ -57,4 +69,5 @@ int main(int argc, char** argv) {
 int main(int argc, char** argv) {
 	return CommandLineTestRunner::RunAllTests(argc, argv);
 }
+
 #endif

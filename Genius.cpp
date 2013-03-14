@@ -661,7 +661,6 @@ void Genius::ExecuteGeniusWithTimeTrace(string instanceFile, string optTourFile,
 	//gettimeofday(&start, NULL);
 
     clock_t start, stop;
-    int i;
     start = clock();
 
 	this->ExecuteGenius(instanceFile, optTourFile, p);

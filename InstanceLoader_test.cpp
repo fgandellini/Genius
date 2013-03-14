@@ -198,10 +198,6 @@ TEST(InstanceLoader, SolveInstancesTest) {
 		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.tsp",
 		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.opt.tour", 4);
 
-	genius->ExecuteGeniusWithTimeTrace(
-		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.tsp",
-		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.opt.tour", 4);
-
 //	genius->ExecuteGenius(
 //		"/home/fede/workspace/tsp_instances/with_sol/ch150/ch150.tsp",
 //		"/home/fede/workspace/tsp_instances/with_sol/ch150/ch150.opt.tour", 4);
