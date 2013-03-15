@@ -12,6 +12,8 @@ public:
 	double X;
 	double Y;
 
+	int Priority;
+
 	Node(int id, double x, double y);
 	virtual ~Node();
 

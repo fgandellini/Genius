@@ -646,13 +646,18 @@ void Genius::ExecuteGenius(string instanceFile, string optTourFile, int p) {
 		 << optTour->TotalDistance() << ") "
 		 << optTour->ToString() << flush << endl;
 
-	assert(solution->Length() == instance->Size());
-	assert(solution->TotalDistance() >= optTour->TotalDistance());
+	this->AssertIsFeasibleSolution(instance, solution, optTour);
 
 	SAFE_DELETE(optTour);
 	SAFE_DELETE(solution);
 	SAFE_DELETE(geniSol);
 	SAFE_DELETE(instance);
+}
+
+void Genius::AssertIsFeasibleSolution(pInstance instance, pTour solution, pTour optimalTour)
+{
+	assert(solution->Length() == instance->Size());
+	assert(solution->TotalDistance() >= optimalTour->TotalDistance());
 }
 
 void Genius::ExecuteGeniusWithTimeTrace(string instanceFile, string optTourFile, int p)

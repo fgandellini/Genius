@@ -21,6 +21,9 @@ private:
 
 	RemoveTypeIParams EvaluateBestRemoveTypeIParamsWithOrientedTour(pTour tour, pNode vi, int neighborhoodSize);
 	RemoveTypeIIParams EvaluateBestRemoveTypeIIParamsWithOrientedTour(pTour tour, pNode vi, int neighborhoodSize);
+
+	void AssertIsFeasibleSolution(pInstance instance, pTour solution, pTour optimalTour);
+
 public:
 	Genius();
 	virtual ~Genius();

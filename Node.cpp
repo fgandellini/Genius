@@ -6,6 +6,7 @@ Node::Node(int id, double x, double y) {
 	this->Id = id;
 	this->X = x;
 	this->Y = y;
+	this->Priority = (rand() % PRIORITY_LEVELS) + 1;
 }
 
 Node::~Node() {

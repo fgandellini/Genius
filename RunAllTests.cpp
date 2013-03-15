@@ -51,6 +51,7 @@ int main(int argc, char** argv) {
 	SAFE_DELETE(long_tour);
 */
 
+	srand(time(NULL));
 	pGenius genius = new Genius::Genius();
 
 	genius->ExecuteGeniusWithTimeTrace(
@@ -67,6 +68,7 @@ int main(int argc, char** argv) {
 #include <CppUTest/CommandLineTestRunner.h>
 
 int main(int argc, char** argv) {
+	srand(time(NULL));
 	return CommandLineTestRunner::RunAllTests(argc, argv);
 }
 

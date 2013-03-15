@@ -11,6 +11,8 @@
 
 #define ENABLE_DRAWER false
 
+#define PRIORITY_LEVELS 5
+
 #include <string>
 #include <sstream>
 #include <iostream>
