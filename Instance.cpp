@@ -14,6 +14,9 @@ namespace Genius {
 Instance::Instance() {
 	this->nodes = new NodeVector();
 	this->Name = "Unknown";
+	this->Type = UNKNOWN;
+	this->P = 0;
+	this->k = 0;
 }
 
 Instance::~Instance() {

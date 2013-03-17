@@ -194,9 +194,9 @@ TEST(InstanceLoader, SolveInstancesTest) {
 //		"/home/fede/workspace/tsp_instances/with_sol/eil101/eil101.tsp",
 //		"/home/fede/workspace/tsp_instances/with_sol/eil101/eil101.opt.tour", 4);
 
-	genius->ExecuteGeniusWithTimeTrace(
-		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.tsp",
-		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.opt.tour", 4);
+//	genius->ExecuteGeniusWithTimeTrace(
+//		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.tsp",
+//		"/home/fede/workspace/tsp_instances/with_sol/ch130/ch130.opt.tour", 4);
 
 //	genius->ExecuteGenius(
 //		"/home/fede/workspace/tsp_instances/with_sol/ch150/ch150.tsp",
@@ -217,6 +217,67 @@ TEST(InstanceLoader, SolveInstancesTest) {
 	SAFE_DELETE(genius);
 }
 
+TEST(InstanceLoader, LoadHtspInstance) {
+	pHtspNodeParser parser = new HtspNodeParser();
+	pInstance ulysses16Htsp = InstanceLoader::LoadFromFile("/home/fede/workspace/tsp_instances/htsp/ulysses16.htsp", parser);
+
+	CHECK(ulysses16Htsp->Type == HTSP);
+	CHECK(ulysses16Htsp->P == 5);
+	CHECK(ulysses16Htsp->k == 2);
+
+	CHECK(ulysses16Htsp->GetNode(0)->Priority == 1);
+	CHECK(ulysses16Htsp->GetNode(1)->Priority == 1);
+	CHECK(ulysses16Htsp->GetNode(2)->Priority == 1);
+	CHECK(ulysses16Htsp->GetNode(3)->Priority == 1);
+	CHECK(ulysses16Htsp->GetNode(4)->Priority == 2);
+	CHECK(ulysses16Htsp->GetNode(5)->Priority == 2);
+	CHECK(ulysses16Htsp->GetNode(6)->Priority == 2);
+	CHECK(ulysses16Htsp->GetNode(7)->Priority == 3);
+	CHECK(ulysses16Htsp->GetNode(8)->Priority == 3);
+	CHECK(ulysses16Htsp->GetNode(9)->Priority == 3);
+	CHECK(ulysses16Htsp->GetNode(10)->Priority == 4);
+	CHECK(ulysses16Htsp->GetNode(11)->Priority == 4);
+	CHECK(ulysses16Htsp->GetNode(12)->Priority == 5);
+	CHECK(ulysses16Htsp->GetNode(13)->Priority == 5);
+	CHECK(ulysses16Htsp->GetNode(14)->Priority == 5);
+	CHECK(ulysses16Htsp->GetNode(15)->Priority == 5);
+
+	SAFE_DELETE(ulysses16Htsp);
+	SAFE_DELETE(parser);
+}
+
+TEST(InstanceLoader, PrintHtspInstance) {
+	pHtspNodeParser parser = new HtspNodeParser();
+	pInstance ulysses16Htsp = InstanceLoader::LoadFromFile("/home/fede/workspace/tsp_instances/htsp/ulysses16.htsp", parser);
+
+	pTourFactory ulysses16HtspTourFactory = new TourFactory(ulysses16Htsp);
+	pTour ulysses16HtspTour = ulysses16HtspTourFactory->GetTour();
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(0));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(1));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(2));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(3));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(4));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(5));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(6));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(7));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(8));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(9));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(10));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(11));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(12));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(13));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(14));
+	ulysses16HtspTour->Append(ulysses16Htsp->GetNode(15));
+
+	STRCMP_EQUAL(
+		"1p1 => 2p1 => 3p1 => 4p1 => 5p2 => 6p2 => 7p2 => 8p3 => 9p3 => 10p3 => 11p4 => 12p4 => 13p5 => 14p5 => 15p5 => 16p5 => 1p1",
+		ulysses16HtspTour->ToString().c_str());
+
+	SAFE_DELETE(ulysses16Htsp);
+	SAFE_DELETE(parser);
+	SAFE_DELETE(ulysses16HtspTour);
+	SAFE_DELETE(ulysses16HtspTourFactory);
+}
 
 //IGNORE_TEST(InstanceLoader, ulysses16UnstringErrorTest) {
 //

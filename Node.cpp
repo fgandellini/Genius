@@ -6,7 +6,14 @@ Node::Node(int id, double x, double y) {
 	this->Id = id;
 	this->X = x;
 	this->Y = y;
-	this->Priority = (rand() % PRIORITY_LEVELS) + 1;
+	this->Priority = 0;
+}
+
+Node::Node(int id, double x, double y, int priority) {
+	this->Id = id;
+	this->X = x;
+	this->Y = y;
+	this->Priority = priority;
 }
 
 Node::~Node() {
@@ -16,6 +23,11 @@ Node::~Node() {
 string Node::ToString() {
 	ostringstream convert;
 	convert << this->Id;
+
+	if (this->Priority != 0) {
+		convert << "p" << this->Priority;
+	}
+
 	return convert.str();
 }
 

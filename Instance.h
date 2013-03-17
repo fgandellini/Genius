@@ -14,19 +14,15 @@ public:
 	Instance();
 	virtual ~Instance();
 
-	//static string Name;
-	//static string File;
-
-	//static int NodesCount;
-
-	//static void Load(pNodeVector nodes);
-
 	void Add(pNode node);
 	pNode GetNode(int index);
 	pNode GetNodeById(int id);
 	int GetIndex(pNode node);
 
 	string Name;
+	int Type;
+	int P; // Numero di livelli di priorità
+	int k; // Parametro per rilassare il vincolo sulla priorità
 
 	int Size();
 };

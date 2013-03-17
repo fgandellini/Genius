@@ -4,6 +4,7 @@
 #include "CommonIncludes.h"
 #include "Instance.h"
 #include "Tour.h"
+#include "NodeParser.h"
 
 namespace Genius {
 
@@ -15,7 +16,11 @@ public:
 	virtual ~InstanceLoader();
 
 	static pInstance LoadFromFile(string file);
+	static pInstance LoadFromFile(string file, pNodeParser nodeParser);
+
 	static pTour LoadOptTourFromFile(pInstance instance, string file);
+
+	static pNode GetNodeToAddToInstance(FILE* fileStream);
 };
 //typedef InstanceLoader* pInstanceLoader;
 

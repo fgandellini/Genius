@@ -11,7 +11,7 @@ class HtspSolver {
 private:
 	int GetCountOfNodesByLevel(pInstance instance, int level);
 	int GetCountOfNodesByLevelInSubtour(pTour tour, int startingNodeIdx, int endingNodeIdx, int level);
-	void AssertIsFeasibleHtspSolution(pInstance instance, pTour solution, int k);
+	void AssertIsFeasibleHtspSolution(pInstance instance, pTour solution);
 
 public:
 	HtspSolver();

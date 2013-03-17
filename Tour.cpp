@@ -685,7 +685,6 @@ string Tour::TourToString(data::clist<pNode> &tourToPrint) {
 	return result;
 }
 
-
 bool Tour::IsEqualTo(pTour tourToCompare) {
 	pNode secondTourStartNode = tourToCompare->Get(0);
 

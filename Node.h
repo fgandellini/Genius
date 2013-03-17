@@ -15,6 +15,7 @@ public:
 	int Priority;
 
 	Node(int id, double x, double y);
+	Node(int id, double x, double y, int priority);
 	virtual ~Node();
 
 	string ToString();
