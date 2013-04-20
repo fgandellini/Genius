@@ -112,8 +112,12 @@ public:
 	string TourToString(data::clist<pNode> &tourToPrint);
 
 	bool IsEqualTo(Tour* tourToCompare);
+
+	bool ContainsArc(pNode from, pNode to);
 };
 typedef Tour* pTour;
+typedef vector<pTour> TourVector;
+typedef TourVector* pTourVector;
 
 } /* namespace Genius */
 #endif /* TOUR_H_ */

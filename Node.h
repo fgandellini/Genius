@@ -27,6 +27,11 @@ typedef Node* pNode;
 
 typedef vector<pNode> NodeVector;
 typedef NodeVector* pNodeVector;
+typedef struct _Arc {
+	pNode From;
+	pNode To;
+} Arc;
+typedef Arc* pArc;
 
 } /* namespace Genius */
 #endif /* NODE_H_ */

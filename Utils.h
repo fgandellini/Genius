@@ -9,7 +9,7 @@
 
 #define VERBOSITY V_NONE
 
-#define ENABLE_DRAWER false
+#define ENABLE_DRAWER true
 
 #define PRIORITY_LEVELS 5
 

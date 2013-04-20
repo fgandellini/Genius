@@ -1069,6 +1069,11 @@ TEST(Tour, IsEqualToTest) {
 	SAFE_DELETE(notequal_tour)
 }
 
+IGNORE_TEST(Tour, ContainsArcTest) {
+	// TODO
+}
+
+
 //TEST(Tour, PrintNeighborhoodsTest) {
 //	paper_tour->PrintNeighborhoods();
 //}

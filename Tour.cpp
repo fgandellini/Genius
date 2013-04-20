@@ -619,6 +619,8 @@ void Tour::UpdateNeighborhoods() {
 	}
 }
 
+
+
 pNodeVector Tour::GetNeighborhood(pNode node) {
 	int index = this->instance->GetIndex(node);
 	return this->neighborhoods->at(index);
@@ -700,6 +702,10 @@ bool Tour::IsEqualTo(pTour tourToCompare) {
 	} while(tourToCompare->Current()->Id != secondTourStartNode->Id);
 
 	return true;
+}
+
+bool Tour::ContainsArc(pNode from, pNode to) {
+	return this->Next(from)->Id == to->Id;
 }
 
 } /* namespace Genius */
