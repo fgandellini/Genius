@@ -27,6 +27,8 @@ public:
 	int Size();
 };
 typedef Instance* pInstance;
+typedef vector<pInstance> InstanceVector;
+typedef InstanceVector* pInstanceVector;
 
 } /* namespace Genius */
 #endif /* INSTANCE_H_ */

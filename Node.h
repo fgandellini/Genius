@@ -24,14 +24,22 @@ public:
 	double DistanceFrom(Node* node);
 };
 typedef Node* pNode;
-
 typedef vector<pNode> NodeVector;
 typedef NodeVector* pNodeVector;
-typedef struct _Arc {
+
+class Arc {
+public:
 	pNode From;
 	pNode To;
-} Arc;
+
+	Arc() {
+		this->From = NULL;
+		this->To = NULL;
+	}
+};
 typedef Arc* pArc;
+typedef vector<pArc> ArcVector;
+typedef ArcVector* pArcVector;
 
 } /* namespace Genius */
 #endif /* NODE_H_ */
