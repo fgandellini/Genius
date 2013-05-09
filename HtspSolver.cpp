@@ -25,6 +25,8 @@ HtspSolver::HtspSolver(pInstance instance) {
 
 	this->subinstances = new InstanceVector();
 
+
+
 //	this->NodesByPriorityLevel = new vector<pNodeVector>();
 //
 //	this->genius = new Genius();
@@ -50,6 +52,7 @@ HtspSolver::~HtspSolver() {
 	SAFE_DELETE(this->tourFactory);
 
 	for(int s=0; s<(int)subtours->size(); s++) {
+		SAFE_DELETE(subtours->at(s)->tour);
 		SAFE_DELETE(subtours->at(s));
 	}
 	SAFE_DELETE(subtours);
@@ -58,10 +61,6 @@ HtspSolver::~HtspSolver() {
 		SAFE_DELETE(partialMergedSubtours->at(s));
 	}
 	SAFE_DELETE(partialMergedSubtours);
-
-//	for(int s=1; s<(int)subinstances->size(); s++) {
-//		SAFE_DELETE(subinstances->at(s));
-//	}
 	SAFE_DELETE(subinstances);
 }
 
@@ -70,11 +69,6 @@ HtspSolver::~HtspSolver() {
 pTour HtspSolver::BuildSolution(pTour startingTour) {
 
 	pTour currentTour = startingTour;
-
-
-
-
-
 
 	for (int l=0; l<this->instance->P; l++) {
 		pNodeVector nodeSet = this->NodesByPriorityLevel->at(l);
@@ -274,13 +268,9 @@ pTour HtspSolver::SolveTypeII() {
 }
 
 void HtspSolver::ExtractSubinstances() {
-	pNode lastNode = NULL;
-	pSubtour lastSubtour = NULL;
-
 	for (int s=0; s<(int)this->subtours->size(); s++) {
 		this->subinstances->push_back(new Instance());
 	}
-
 	for (int n=0; n<this->instance->Size(); n++) {
 		pNode node = this->instance->GetNode(n);
 		int subtourIndex = this->GetSubtourIndexByPriority(node->Priority);
