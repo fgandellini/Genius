@@ -48,4 +48,8 @@ double Node::DistanceFrom(Node* node) {
 	return d;
 }
 
+Node* Node::Clone() {
+	return new Node(this->Id, this->X, this->Y, this->Priority);
+}
+
 } /* namespace Genius */

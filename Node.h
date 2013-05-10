@@ -22,6 +22,8 @@ public:
 
 	int Compare(Node* node) const;
 	double DistanceFrom(Node* node);
+
+	Node* Clone();
 };
 typedef Node* pNode;
 typedef vector<pNode> NodeVector;

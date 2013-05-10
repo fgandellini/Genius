@@ -7,7 +7,7 @@
 namespace Genius {
 
 class Instance {
-private:
+protected:
 	pNodeVector nodes;
 
 public:

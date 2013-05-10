@@ -1,15 +1,6 @@
-/*
- * Instance.cpp
- *
- *  Created on: 16/nov/2012
- *      Author: fede
- */
-
 #include "Instance.h"
 
 namespace Genius {
-
-//int Instance::NodesCount = 0;
 
 Instance::Instance() {
 	this->nodes = new NodeVector();
@@ -25,11 +16,6 @@ Instance::~Instance() {
 	}
 	SAFE_DELETE(this->nodes);
 }
-
-//void Instance::Load(pNodeVector nodes) {
-//	Instance::Nodes = nodes;
-//	Instance::NodesCount = (int)Instance::Nodes->size();
-//}
 
 void Instance::Add(pNode node) {
 	this->nodes->push_back(node);
