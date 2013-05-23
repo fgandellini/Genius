@@ -94,6 +94,65 @@ TEST(HtspSolverUtils, ExtractSubtoursTest) {
 	SAFE_DELETE(subtours);
 }
 
+TEST(HtspSolverUtils, ExtractSubtoursFromSmallInstanceTest) {
+	pHtspNodeParser parser = new HtspNodeParser();
+	pInstance small = InstanceLoader::LoadFromFile("/home/fede/workspace/tsp_instances/htsp/smallInstance.htsp", parser);
+
+	pHtspSolverUtils htspSolver = new HtspSolverUtils();
+	pTour geniusTour = htspSolver->ExecuteGenius(small);
+	pSubtourVector subtours = htspSolver->ExtractSubtours(small, geniusTour);
+
+	CHECK(subtours->size() == 3);
+
+	pSubtour firstSubtour = subtours->at(0);
+	CHECK(firstSubtour->tour->Length() == 3);
+
+	pSubtour secondSubtour = subtours->at(1);
+	CHECK(secondSubtour->tour->Length() == 3);
+
+	pSubtour thirdSubtour = subtours->at(2);
+	CHECK(thirdSubtour->tour->Length() == 3);
+
+	SAFE_DELETE(small);
+	SAFE_DELETE(parser);
+	SAFE_DELETE(htspSolver);
+	SAFE_DELETE(geniusTour);
+	for(int s=0; s<(int)subtours->size(); s++) {
+		SAFE_DELETE(subtours->at(s)->tour);
+		SAFE_DELETE(subtours->at(s));
+	}
+	SAFE_DELETE(subtours);
+}
+
+TEST(HtspSolverUtils, GetSubtourByPriorityOnSmallInstanceTest) {
+	pHtspNodeParser parser = new HtspNodeParser();
+	pInstance small = InstanceLoader::LoadFromFile("/home/fede/workspace/tsp_instances/htsp/smallInstance.htsp", parser);
+
+	pHtspSolverUtils htspSolver = new HtspSolverUtils();
+	pTour geniusTour = htspSolver->ExecuteGenius(small);
+	pSubtourVector subtours = htspSolver->ExtractSubtours(small, geniusTour);
+
+	CHECK(subtours->size() == 3);
+
+	pSubtour subtour1 = htspSolver->GetSubtourByPriority(small, subtours, 1);
+	pSubtour subtour2 = htspSolver->GetSubtourByPriority(small, subtours, 2);
+	pSubtour subtour3 = htspSolver->GetSubtourByPriority(small, subtours, 3);
+
+	CHECK(subtour1 != subtour2);
+	CHECK(subtour1 != subtour3);
+	CHECK(subtour2 != subtour3);
+
+	SAFE_DELETE(small);
+	SAFE_DELETE(parser);
+	SAFE_DELETE(htspSolver);
+	SAFE_DELETE(geniusTour);
+	for(int s=0; s<(int)subtours->size(); s++) {
+		SAFE_DELETE(subtours->at(s)->tour);
+		SAFE_DELETE(subtours->at(s));
+	}
+	SAFE_DELETE(subtours);
+}
+
 TEST(HtspSolverUtils, GetSubtourByPriorityTest) {
 	pHtspNodeParser parser = new HtspNodeParser();
 	pInstance ulysses16Htsp = InstanceLoader::LoadFromFile("/home/fede/workspace/tsp_instances/htsp/ulysses16.htsp", parser);

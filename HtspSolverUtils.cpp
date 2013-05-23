@@ -28,7 +28,7 @@ pSubtourVector HtspSolverUtils::InitSubtours(pInstance instance, bool initIntern
 	int k = instance->k;
 
 	int subtoursCount = this->GetSubtoursCount(instance);
-	int multiplier = this->GetNumberOfPrioritiesPerSubtour(instance);
+	int multiplier = this->GetMaximumNumberOfPrioritiesPerSubtour(instance);
 
 	for (int s=0; s<subtoursCount; s++) {
 		pSubtour subtour = new Subtour();
@@ -59,7 +59,7 @@ pInstanceVector HtspSolverUtils::InitSubinstances(pInstance instance) {
 }
 
 int HtspSolverUtils::GetSubtoursCount(pInstance instance) {
-	return (int)ceil( (double)(instance->P) / ((double)(instance->k) + 1) );
+	return (int)ceil( (double)(instance->P) / ((double)(instance->k) + 1.0) );
 }
 
 pSubtourVector HtspSolverUtils::ExtractSubtours(pInstance instance, pTour tour) {
@@ -130,17 +130,12 @@ pSubtour HtspSolverUtils::GetSubtourByPriority(pInstance instance, pSubtourVecto
 }
 
 int HtspSolverUtils::GetSubtourIndexByPriority(pInstance instance, int p) {
-	int prioritiesPerSubtour = this->GetNumberOfPrioritiesPerSubtour(instance);
-	int subtourIndex = (int)floor( (double)p / (double)(prioritiesPerSubtour + 1) );
-
-	if (0 <= subtourIndex && subtourIndex < this->GetSubtoursCount(instance)) {
-		return subtourIndex;
-	}
-	return -1;
+	int prioritiesPerSubtour = this->GetMaximumNumberOfPrioritiesPerSubtour(instance);
+	return (int)floor( (double)(p-1) / (double)prioritiesPerSubtour );
 }
 
-int HtspSolverUtils::GetNumberOfPrioritiesPerSubtour(pInstance instance) {
-	return (int)ceil( (double)(instance->P) / (double)(instance->k) );
+int HtspSolverUtils::GetMaximumNumberOfPrioritiesPerSubtour(pInstance instance) {
+	return (int)ceil( (double)(instance->P) / (double)this->GetSubtoursCount(instance) );
 }
 
 pArc HtspSolverUtils::GetFreeArc(pSubtour subtour) {

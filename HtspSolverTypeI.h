@@ -25,6 +25,7 @@ public:
 	virtual ~HtspSolverTypeI();
 
 	pTour Solve();
+	string GetSolutionSummary();
 };
 typedef HtspSolverTypeI* pHtspSolverTypeI;
 

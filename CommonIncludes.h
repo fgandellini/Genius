@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include "Utils.h"
+#include "RandomNumberGenerator.h"
 #include "clist/clist.hpp"
 #include "simple_svg_1.0.0.hpp"
 

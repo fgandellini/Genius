@@ -31,6 +31,7 @@ pInstance InstanceLoader::LoadFromFile(string file, pNodeParser nodeParser) {
     while ( strcmp("NODE_COORD_SECTION", buf) != 0 ) {
     	if ( strcmp("DIMENSION", buf) == 0 ) { fscanf(tsp_file, "%d", &n); }
     	else if ( strcmp("DIMENSION:", buf) == 0 ) { fscanf(tsp_file, "%d", &n); }
+    	else if ( strcmp("D:", buf) == 0 ) { fscanf(tsp_file, "%d", &n); }
     	else if ( (instance->Type == HTSP) && (strcmp("P:", buf) == 0) ) { fscanf(tsp_file, "%d", &P); }
     	else if ( (instance->Type == HTSP) && (strcmp("K:", buf) == 0) ) { fscanf(tsp_file, "%d", &k); }
     	buf[0]=0;
@@ -47,6 +48,7 @@ pInstance InstanceLoader::LoadFromFile(string file, pNodeParser nodeParser) {
     	instance->P = P;
     	instance->k = k;
     }
+    fclose(tsp_file);
 
 	return instance;
 }
@@ -75,6 +77,8 @@ pTour InstanceLoader::LoadOptTourFromFile(pInstance instance, string file) {
     		optTour->Append(instance->GetNodeById(id));
     	}
     }
+    fclose(tsp_file);
+
     return optTour;
 }
 

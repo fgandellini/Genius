@@ -6,6 +6,7 @@
  */
 
 #include "HtspSolverTypeII.h"
+#include "HtspInstanceGenerator.h"
 #include <CppUTest/TestHarness.h>
 
 namespace Genius {

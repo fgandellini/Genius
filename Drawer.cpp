@@ -113,16 +113,36 @@ double Drawer::GetImageHeight(pInstance instance) {
 Rectangle Drawer::DrawNode(pNode node, Color color) {
 	double size = 2.0;
 //	double size = 20.0;
+
+	Stroke stroke = Stroke();
+	Color strokeColor = svg::Color::Transparent;
+	switch (node->Priority)
+	{
+		default: strokeColor = svg::Color::Transparent; break;
+		case 1: strokeColor = svg::Color::Aqua; break;
+		case 2: strokeColor = svg::Color::Blue; break;
+		case 3: strokeColor = svg::Color::Brown; break;
+		case 4: strokeColor = svg::Color::Green; break;
+		case 5: strokeColor = svg::Color::Fuchsia; break;
+		case 6: strokeColor = svg::Color::Lime; break;
+		case 7: strokeColor = svg::Color::Magenta; break;
+		case 8: strokeColor = svg::Color::Orange; break;
+		case 9: strokeColor = svg::Color::Purple; break;
+		case 10: strokeColor = svg::Color::Red; break;
+		case 11: strokeColor = svg::Color::Yellow; break;
+	}
+	stroke = Stroke(0.3, strokeColor);
+
 	return Rectangle(
 		Point(Scale(node->X) - (size/2.0), Scale(node->Y) - (size/2.0)),
 		size, size,
-		color);
+		color, stroke);
 }
 
 Text Drawer::DrawNodeId(pNode node, Color color) {
 	double size = 2.0;
 //	double size = 20.0;
-	return Text(Point(Scale(node->X) - (size/2.0), Scale(node->Y)),
+	return Text(Point(Scale(node->X) - (size/2.0) + 0.2, Scale(node->Y)),
 			Utils::ToString(node->Id), color, Font((size/2.0), "Verdana"));
 }
 

@@ -32,20 +32,8 @@ HtspSolverTypeI::~HtspSolverTypeI() {
 
 
 pTour HtspSolverTypeI::Solve() {
-	cout << endl << endl
-		 << "HTSP SOLVER Type I "
-		 << "[" << this->instance->Name << "]"
-		 << endl << endl;
-
 	this->tspSolution = this->solverUtils->ExecuteGenius(this->instance);
-	cout << endl << "TSP Solution:" << endl;
-	cout << this->tspSolution->ToString() << " (" << this->tspSolution->TotalDistance() << ")" << endl;
-
 	this->subtours = this->solverUtils->ExtractSubtours(this->instance, this->tspSolution);
-	cout << endl << "Extracted Subtours:" << endl;
-	for (int s=0; s<(int)this->subtours->size(); s++) {
-		this->subtours->at(s)->Print();
-	}
 
 	this->partialMergedSubtours->push_back(this->subtours->at(0));
 	for(int s=0; s<(int)this->subtours->size()-1; s++) {
@@ -55,21 +43,37 @@ pTour HtspSolverTypeI::Solve() {
 		this->partialMergedSubtours->push_back(this->solverUtils->MergeSubtours(this->instance, first, second));
 	}
 
-	cout << endl << "Partial Merged Subtours:" << endl;
-	for (int s=0; s<(int)this->partialMergedSubtours->size(); s++) {
-		this->partialMergedSubtours->at(s)->Print();
-	}
-
 	int lastPartialSubtour = this->partialMergedSubtours->size()-1;
-
-	cout << endl << "HTSP Solution:" << endl
-		 << this->partialMergedSubtours->at(lastPartialSubtour)->tour->ToString()
-		 << " (" << this->partialMergedSubtours->at(lastPartialSubtour)->tour->TotalDistance() << ")"
-		 << endl << endl;
-
 	return this->partialMergedSubtours->at(lastPartialSubtour)->tour->Clone();
 }
 
+string HtspSolverTypeI::GetSolutionSummary() {
+//	cout << endl << endl
+//		 << "HTSP SOLVER Type I [" << this->instance->Name << "]"
+//		 << endl << endl;
+//
+//	cout << endl << "TSP Solution:" << endl;
+//	cout << this->tspSolution->ToString() << " (" << this->tspSolution->TotalDistance() << ")" << endl;
+//
+//	cout << endl << "Extracted Subtours:" << endl;
+//	for (int s=0; s<(int)this->subtours->size(); s++) {
+//		this->subtours->at(s)->Print();
+//	}
+
+	//	cout << endl << "Partial Merged Subtours:" << endl;
+	//	for (int s=0; s<(int)this->partialMergedSubtours->size(); s++) {
+	//		this->partialMergedSubtours->at(s)->Print();
+	//	}
+
+//	int lastPartialSubtour = this->partialMergedSubtours->size()-1;
+//	cout << endl << "HTSP Solution:" << endl
+//		 << this->partialMergedSubtours->at(lastPartialSubtour)->tour->ToString()
+//		 << " (" << this->partialMergedSubtours->at(lastPartialSubtour)->tour->TotalDistance() << ")"
+//		 << endl << endl;
+
+	int lastPartialSubtour = this->partialMergedSubtours->size()-1;
+	return Utils::ToString( this->tspSolution->TotalDistance() ) + " " + Utils::ToString( this->partialMergedSubtours->at(lastPartialSubtour)->tour->TotalDistance() );
+}
 
 
 

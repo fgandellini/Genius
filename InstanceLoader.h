@@ -22,7 +22,6 @@ public:
 
 	static pNode GetNodeToAddToInstance(FILE* fileStream);
 };
-//typedef InstanceLoader* pInstanceLoader;
 
 } /* namespace Genius */
 #endif /* INSTANCELOADER_H_ */

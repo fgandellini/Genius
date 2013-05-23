@@ -28,6 +28,7 @@ public:
 	pTour Solve();
 
 	void PrintSolution(string title);
+	string GetSolutionSummary();
 };
 typedef HtspSolverTypeII* pHtspSolverTypeII;
 

@@ -14,7 +14,7 @@ private:
 	pTourFactory tourFactory;
 
 	int GetSubtourIndexByPriority(pInstance instance, int p);
-	int GetNumberOfPrioritiesPerSubtour(pInstance instance);
+	int GetMaximumNumberOfPrioritiesPerSubtour(pInstance instance);
 
 	void AppendTour(pTour source, pNode startingNodeInSource, pTour destination);
 

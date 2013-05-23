@@ -9,11 +9,7 @@
 
 #define VERBOSITY V_NONE
 
-#define ENABLE_DRAWER true
-
-#define PRIORITY_LEVELS 5
-
-
+#define ENABLE_DRAWER false
 
 #include <string>
 #include <sstream>

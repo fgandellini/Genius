@@ -35,12 +35,12 @@ HtspSolverTypeII::~HtspSolverTypeII() {
 }
 
 pTour HtspSolverTypeII::Solve() {
-	cout << endl << endl
-		 << "HTSP SOLVER Type II "
-		 << "[" << this->instance->Name << "]"
-		 << endl << endl;
+//	cout << endl << endl
+//		 << "HTSP SOLVER Type II "
+//		 << "[" << this->instance->Name << "]"
+//		 << endl << endl;
 
-	this->PrintSubinstances();
+//	this->PrintSubinstances();
 
 	for (int s=0; s<(int)this->subtours->size(); s++) {
 		this->subtours->at(s)->tour =
@@ -64,7 +64,7 @@ pTour HtspSolverTypeII::Solve() {
 		nextArc->To = n;
 	}
 
-	this->solverUtils->PrintSubtours("TSP solutions for Subtours:", this->subtours);
+//	this->solverUtils->PrintSubtours("TSP solutions for Subtours:", this->subtours);
 
 	this->partialMergedSubtours->push_back(this->subtours->at(0));
 	for(int s=0; s<(int)this->subtours->size()-1; s++) {
@@ -74,9 +74,9 @@ pTour HtspSolverTypeII::Solve() {
 		this->partialMergedSubtours->push_back(this->solverUtils->MergeSubtours(this->instance, first, second));
 	}
 
-	this->solverUtils->PrintSubtours("Partial Merged Subtours:", this->partialMergedSubtours);
+//	this->solverUtils->PrintSubtours("Partial Merged Subtours:", this->partialMergedSubtours);
 
-	this->PrintSolution("HTSP Solver Type II Solution:");
+//	this->PrintSolution("HTSP Solver Type II Solution:");
 
 	return this->partialMergedSubtours->at(this->partialMergedSubtours->size()-1)->tour->Clone();
 }
@@ -98,6 +98,11 @@ void HtspSolverTypeII::PrintSolution(string title) {
 		 << this->partialMergedSubtours->at(lastPartialSubtour)->tour->ToString()
 		 << " (" << this->partialMergedSubtours->at(lastPartialSubtour)->tour->TotalDistance() << ")"
 		 << endl << endl;
+}
+
+string HtspSolverTypeII::GetSolutionSummary() {
+	int lastPartialSubtour = this->partialMergedSubtours->size()-1;
+	return Utils::ToString( this->partialMergedSubtours->at(lastPartialSubtour)->tour->TotalDistance() );
 }
 
 } /* namespace Genius */
