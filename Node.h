@@ -14,6 +14,8 @@ public:
 
 	int Priority;
 
+	void* Instance;
+
 	Node(int id, double x, double y);
 	Node(int id, double x, double y, int priority);
 	virtual ~Node();

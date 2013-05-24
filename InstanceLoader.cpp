@@ -44,6 +44,8 @@ pInstance InstanceLoader::LoadFromFile(string file, pNodeParser nodeParser) {
     	}
     }
 
+    instance->CalculateDistances();
+
     if (instance->Type == HTSP) {
     	instance->P = P;
     	instance->k = k;

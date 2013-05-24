@@ -11,6 +11,7 @@ namespace Genius {
 class InstanceLoader {
 private:
 	static string GetFilename(string absolutePath);
+
 public:
 	InstanceLoader();
 	virtual ~InstanceLoader();
@@ -21,6 +22,8 @@ public:
 	static pTour LoadOptTourFromFile(pInstance instance, string file);
 
 	static pNode GetNodeToAddToInstance(FILE* fileStream);
+
+
 };
 
 } /* namespace Genius */

@@ -25,8 +25,10 @@
 								<option id="gnu.c.compiler.option.include.paths.416827585" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/fede/ae/cpputest/include"/>
 								</option>
-								<option id="gnu.c.compiler.option.misc.other.1949777641" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -ftest-coverage -fprofile-arcs" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.other.1949777641" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -g" valueType="string"/>
 								<option id="gnu.c.compiler.option.debugging.other.1165308426" name="Other debugging flags" superClass="gnu.c.compiler.option.debugging.other" value="-rdynamic" valueType="string"/>
+								<option id="gnu.c.compiler.option.debugging.gprof.355879774" name="Generate gprof information (-pg)" superClass="gnu.c.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.debugging.prof.1044983994" name="Generate prof information (-p)" superClass="gnu.c.compiler.option.debugging.prof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.721025758" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.946580830" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
@@ -35,7 +37,9 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1335350295" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/fede/ae/cpputest/include"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1452230990" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -ftest-coverage -fprofile-arcs" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1452230990" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -g" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.debugging.gprof.1421636640" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.debugging.prof.1518876648" name="Generate prof information (-p)" superClass="gnu.cpp.compiler.option.debugging.prof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.120055134" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.438246407" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>
@@ -46,7 +50,9 @@
 								<option id="gnu.cpp.link.option.paths.1417855027" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/fede/ae/cpputest/lib"/>
 								</option>
-								<option id="gnu.cpp.link.option.flags.949667667" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-fprofile-arcs -ftest-coverage -std=c99" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.949667667" name="Linker flags" superClass="gnu.cpp.link.option.flags" value=" -std=c99" valueType="string"/>
+								<option id="gnu.cpp.link.option.debugging.gprof.1956343392" name="Generate gprof information (-pg)" superClass="gnu.cpp.link.option.debugging.gprof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.link.option.debugging.prof.1527556920" name="Generate prof information (-p)" superClass="gnu.cpp.link.option.debugging.prof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.609956325" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -86,6 +92,7 @@
 								<option id="gnu.c.compiler.option.include.paths.368287179" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/fede/ae/cpputest/include"/>
 								</option>
+								<option id="gnu.c.compiler.option.misc.other.1883470107" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -g" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.427989274" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.933656572" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
@@ -94,6 +101,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.549216625" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/fede/ae/cpputest/include"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.2093545923" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -g" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1431486877" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.1924734701" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>
@@ -104,6 +112,7 @@
 								<option id="gnu.cpp.link.option.paths.1454798880" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/fede/ae/cpputest/lib"/>
 								</option>
+								<option id="gnu.cpp.link.option.flags.386510446" superClass="gnu.cpp.link.option.flags" value=" -std=c99  -p -pg -g" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.247485333" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

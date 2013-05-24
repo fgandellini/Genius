@@ -27,6 +27,7 @@ TEST_GROUP(Genius) {
 		paperInstance->Add(new Node(6, 69.3,  1.3));
 		paperInstance->Add(new Node(7, 40.8, 60.1));
 		paperInstance->Add(new Node(8, 27.8, 26.2));
+		paperInstance->CalculateDistances();
 
 		genius = new Genius();
 		tf = new TourFactory(paperInstance);

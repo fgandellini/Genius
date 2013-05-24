@@ -10,9 +10,13 @@ class Instance {
 protected:
 	pNodeVector nodes;
 
+	double CalculateDistanceBetweenNodes(pNode node1, pNode node2);
+
 public:
 	Instance();
 	virtual ~Instance();
+
+	double** Distances;
 
 	void Add(pNode node);
 	pNode GetNode(int index);
@@ -25,6 +29,8 @@ public:
 	int k; // Parametro per rilassare il vincolo sulla priorità
 
 	int Size();
+
+	void CalculateDistances();
 };
 typedef Instance* pInstance;
 typedef vector<pInstance> InstanceVector;

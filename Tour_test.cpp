@@ -26,6 +26,7 @@ TEST_GROUP(Tour) {
 		geniusPaperInstance->Add(new Node(6, 69.3,  1.3));
 		geniusPaperInstance->Add(new Node(7, 40.8, 60.1));
 		geniusPaperInstance->Add(new Node(8, 27.8, 26.2));
+		geniusPaperInstance->CalculateDistances();
 
 		paper_tour = new Tour(geniusPaperInstance);
 		paper_tour->Append(geniusPaperInstance->GetNode(0));
@@ -48,6 +49,7 @@ TEST_GROUP(Tour) {
 		tenNodesInstance->Add(new Node(8,  1, 2));
 		tenNodesInstance->Add(new Node(9,  0, 2));
 		tenNodesInstance->Add(new Node(10, 0, 1));
+		tenNodesInstance->CalculateDistances();
 
 		ten_nodes_tour = new Tour(tenNodesInstance);
 		ten_nodes_tour->Append(tenNodesInstance->GetNode(0));
@@ -82,7 +84,8 @@ TEST_GROUP(Tour) {
 		twentyNodesInstance->Add(new Node(18, 0, 0));
 		twentyNodesInstance->Add(new Node(19, 0, 0));
 		twentyNodesInstance->Add(new Node(20, 0, 0));
-		twentyNodesInstance->Add(new Node(100, 0, 0));
+		twentyNodesInstance->Add(new Node(21, 0, 0));
+		twentyNodesInstance->CalculateDistances();
 
 		long_tour = new Tour(twentyNodesInstance);
 		long_tour->Append(twentyNodesInstance->GetNode(0));
@@ -687,7 +690,7 @@ TEST(Tour, InsertTypeITest_LongTour) {
 	long_tour->InsertTypeI(v, vi, vj, vk);
 
 	STRCMP_EQUAL(
-		"100 => 6 => 5 => 4 => 3 => 2 => 11 => 10 => 9 => 8 => 7 => 12 => 13 => 14 => 15 => 16 => 1 => 100",
+		"21 => 6 => 5 => 4 => 3 => 2 => 11 => 10 => 9 => 8 => 7 => 12 => 13 => 14 => 15 => 16 => 1 => 21",
 		long_tour->ToString().c_str());
 }
 
@@ -704,7 +707,7 @@ TEST(Tour, InsertTypeIITest_LongTour) {
 	vl = twentyNodesInstance->GetNode(5);
 	long_long_tour->InsertTypeII(v, vi, vj, vk, vl);
 
-	STRCMP_EQUAL("100 => 10 => 9 => 8 => 7 => 6 => 11 => 12 => 13 => 14 => 15 => 16 => 5 => 4 => 3 => 2 => 17 => 18 => 19 => 20 => 1 => 100",
+	STRCMP_EQUAL("21 => 10 => 9 => 8 => 7 => 6 => 11 => 12 => 13 => 14 => 15 => 16 => 5 => 4 => 3 => 2 => 17 => 18 => 19 => 20 => 1 => 21",
 		long_long_tour->ToString().c_str());
 }
 
@@ -791,6 +794,7 @@ TEST(Tour, SortingByDistanceFromReferenceNode) {
 	fourNodesInstance->Add(new Node(2,  0, 1));
 	fourNodesInstance->Add(new Node(3,  0, 2));
 	fourNodesInstance->Add(new Node(4,  1, 2));
+	fourNodesInstance->CalculateDistances();
 
 	pTour small_tour = new Tour(fourNodesInstance);
 	small_tour->Append(fourNodesInstance->GetNode(0));
@@ -810,17 +814,18 @@ TEST(Tour, SortingByDistanceFromReferenceNode) {
 
 TEST(Tour, GetNeighborhoodTest) {
 	pInstance neigborhoodInstance = new Instance();
-	neigborhoodInstance->Add(new Node(0,  0, 0));
-	neigborhoodInstance->Add(new Node(1,  0, 1));
-	neigborhoodInstance->Add(new Node(2,  0, 2));
-	neigborhoodInstance->Add(new Node(3,  0, 3));
-	neigborhoodInstance->Add(new Node(4,  0, 4));
-	neigborhoodInstance->Add(new Node(5,  0, 5));
-	neigborhoodInstance->Add(new Node(6,  0, 6));
-	neigborhoodInstance->Add(new Node(7,  0, 7));
-	neigborhoodInstance->Add(new Node(8,  0, 8));
-	neigborhoodInstance->Add(new Node(9,  0, 9));
-	neigborhoodInstance->Add(new Node(10, 1, 6));
+	neigborhoodInstance->Add(new Node(1,  0, 0));
+	neigborhoodInstance->Add(new Node(2,  0, 1));
+	neigborhoodInstance->Add(new Node(3,  0, 2));
+	neigborhoodInstance->Add(new Node(4,  0, 3));
+	neigborhoodInstance->Add(new Node(5,  0, 4));
+	neigborhoodInstance->Add(new Node(6,  0, 5));
+	neigborhoodInstance->Add(new Node(7,  0, 6));
+	neigborhoodInstance->Add(new Node(8,  0, 7));
+	neigborhoodInstance->Add(new Node(9,  0, 8));
+	neigborhoodInstance->Add(new Node(10,  0, 9));
+	neigborhoodInstance->Add(new Node(11, 1, 6));
+	neigborhoodInstance->CalculateDistances();
 
 	pTour neighborhood_test_tour = new Tour(neigborhoodInstance);
 	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(0));
@@ -838,16 +843,16 @@ TEST(Tour, GetNeighborhoodTest) {
 	pNodeVector nodes = neighborhood_test_tour->GetNeighborhood(referenceNode);
 
 	CHECK(nodes->size() == 10);
-	CHECK(nodes->at(0)->Id == 6);
-	CHECK(nodes->at(1)->Id == 5);
-	CHECK(nodes->at(2)->Id == 7);
-	CHECK(nodes->at(3)->Id == 4);
-	CHECK(nodes->at(4)->Id == 8);
-	CHECK(nodes->at(5)->Id == 3);
-	CHECK(nodes->at(6)->Id == 9);
-	CHECK(nodes->at(7)->Id == 2);
-	CHECK(nodes->at(8)->Id == 1);
-	CHECK(nodes->at(9)->Id == 0);
+	CHECK(nodes->at(0)->Id == 7);
+	CHECK(nodes->at(1)->Id == 6);
+	CHECK(nodes->at(2)->Id == 8);
+	CHECK(nodes->at(3)->Id == 5);
+	CHECK(nodes->at(4)->Id == 9);
+	CHECK(nodes->at(5)->Id == 4);
+	CHECK(nodes->at(6)->Id == 10);
+	CHECK(nodes->at(7)->Id == 3);
+	CHECK(nodes->at(8)->Id == 2);
+	CHECK(nodes->at(9)->Id == 1);
 
 	SAFE_DELETE(neigborhoodInstance);
 	SAFE_DELETE(neighborhood_test_tour);
@@ -855,17 +860,18 @@ TEST(Tour, GetNeighborhoodTest) {
 
 TEST(Tour, GetNeighborhoodNodesNotInTourTest) {
 	pInstance neigborhoodInstance = new Instance();
-	neigborhoodInstance->Add(new Node(0,  0, 0));
-	neigborhoodInstance->Add(new Node(1,  0, 1));
-	neigborhoodInstance->Add(new Node(2,  0, 2));
-	neigborhoodInstance->Add(new Node(3,  0, 3));
-	neigborhoodInstance->Add(new Node(4,  0, 4));
-	neigborhoodInstance->Add(new Node(5,  0, 5));
-	neigborhoodInstance->Add(new Node(6,  0, 6));
-	neigborhoodInstance->Add(new Node(7,  0, 7));
-	neigborhoodInstance->Add(new Node(8,  0, 8));
-	neigborhoodInstance->Add(new Node(9,  0, 9));
-	neigborhoodInstance->Add(new Node(10, 1, 6));
+	neigborhoodInstance->Add(new Node(1,  0, 0));
+	neigborhoodInstance->Add(new Node(2,  0, 1));
+	neigborhoodInstance->Add(new Node(3,  0, 2));
+	neigborhoodInstance->Add(new Node(4,  0, 3));
+	neigborhoodInstance->Add(new Node(5,  0, 4));
+	neigborhoodInstance->Add(new Node(6,  0, 5));
+	neigborhoodInstance->Add(new Node(7,  0, 6));
+	neigborhoodInstance->Add(new Node(8,  0, 7));
+	neigborhoodInstance->Add(new Node(9,  0, 8));
+	neigborhoodInstance->Add(new Node(10, 0, 9));
+	neigborhoodInstance->Add(new Node(11, 1, 6));
+	neigborhoodInstance->CalculateDistances();
 
 	pTour neighborhood_test_tour = new Tour(neigborhoodInstance);
 	neighborhood_test_tour->Append(neigborhoodInstance->GetNode(0));
@@ -878,11 +884,11 @@ TEST(Tour, GetNeighborhoodNodesNotInTourTest) {
 	pNodeVector nodes = neighborhood_test_tour->GetNeighborhood(referenceNode);
 
 	CHECK(nodes->size() == 5);
-	CHECK(nodes->at(0)->Id == 4);
-	CHECK(nodes->at(1)->Id == 3);
-	CHECK(nodes->at(2)->Id == 2);
-	CHECK(nodes->at(3)->Id == 1);
-	CHECK(nodes->at(4)->Id == 0);
+	CHECK(nodes->at(0)->Id == 5);
+	CHECK(nodes->at(1)->Id == 4);
+	CHECK(nodes->at(2)->Id == 3);
+	CHECK(nodes->at(3)->Id == 2);
+	CHECK(nodes->at(4)->Id == 1);
 
 	//neighborhood_test_tour->PrintNeighborhoods();
 
@@ -906,7 +912,7 @@ TEST(Tour, RemoveTypeITest_LongTour) {
 	pNode vi, vj, vk;
 
 	STRCMP_EQUAL(
-		"100 => 6 => 5 => 4 => 3 => 2 => 11 => 10 => 9 => 8 => 7 => 12 => 13 => 14 => 15 => 16 => 1 => 100",
+		"21 => 6 => 5 => 4 => 3 => 2 => 11 => 10 => 9 => 8 => 7 => 12 => 13 => 14 => 15 => 16 => 1 => 21",
 		long_tour_for_remove->ToString().c_str());
 
 	vi = twentyNodesInstance->GetNode(20);
@@ -922,7 +928,7 @@ TEST(Tour, RemoveTypeITest_LongTour) {
 TEST(Tour, RemoveTypeIITest_LongTour) {
 	pNode vi, vj, vk, vl;
 
-	STRCMP_EQUAL("100 => 10 => 9 => 8 => 7 => 6 => 11 => 12 => 13 => 14 => 15 => 16 => 5 => 4 => 3 => 2 => 17 => 18 => 19 => 20 => 1 => 100",
+	STRCMP_EQUAL("21 => 10 => 9 => 8 => 7 => 6 => 11 => 12 => 13 => 14 => 15 => 16 => 5 => 4 => 3 => 2 => 17 => 18 => 19 => 20 => 1 => 21",
 		long_long_tour_for_remove->ToString().c_str());
 
 	vi = twentyNodesInstance->GetNode(20);
@@ -975,14 +981,14 @@ TEST(Tour, Insert_Remove_TypeI_Test) {
 		"1 => 2 => 3 => 4 => 5 => 6 => 7 => 8 => 9 => 10 => 11 => 12 => 13 => 14 => 15 => 16 => 1",
 		long_tour->ToString().c_str());
 
-	// insert node 100
+	// insert node 21
 	v = twentyNodesInstance->GetNode(20);
 	vi = twentyNodesInstance->GetNode(0);
 	vj = twentyNodesInstance->GetNode(5);
 	vk = twentyNodesInstance->GetNode(10);
 	long_tour->InsertTypeI(v, vi, vj, vk);
 
-	// remove node 100
+	// remove node 21
 	vi = twentyNodesInstance->GetNode(20);
 	vj = twentyNodesInstance->GetNode(6); // nodo 7
 	vk = twentyNodesInstance->GetNode(1); // nodo 2
@@ -1006,7 +1012,7 @@ TEST(Tour, Insert_Remove_TypeII_Test) {
 	vl = twentyNodesInstance->GetNode(5);
 	long_long_tour->InsertTypeII(v, vi, vj, vk, vl);
 
-	// remove node 100
+	// remove node 21
 	vi = twentyNodesInstance->GetNode(20);
 	vj = twentyNodesInstance->GetNode(10);
 	vk = twentyNodesInstance->GetNode(1);

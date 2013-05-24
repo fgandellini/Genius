@@ -102,7 +102,7 @@ IGNORE_TEST(Benchmark, GenerateInstances) {
 	}
 }
 
-IGNORE_TEST(Benchmark, SolveBenchmarkInstances) {
+TEST(Benchmark, SolveBenchmarkInstances) {
 	int nodes[] = { 100, 200, 300, 400 };
 	int P[] = { 5, 10 };
 	int K[] = { 0, 1, 2, 3 };
@@ -142,6 +142,36 @@ IGNORE_TEST(Benchmark, SolveBenchmarkInstances) {
 			}
 		}
 	}
+}
+
+IGNORE_TEST(Benchmark, OptimizationSolverITest) {
+	string instance = "/home/fede/workspace/tsp_instances/htsp/benchmark_2013-05-23/200_5_0.htsp";
+
+	pHtspNodeParser parser = new HtspNodeParser();
+	pInstance testInstance = InstanceLoader::LoadFromFile(instance, parser);
+
+	pHtspSolverTypeI htspSolverI = new HtspSolverTypeI(testInstance);
+	b->StartTimer("SI");
+	pTour htspSolutionI = htspSolverI->Solve();
+	b->StopTimer("SI");
+
+	pHtspSolverTypeII htspSolverII = new HtspSolverTypeII(testInstance);
+	b->StartTimer("SII");
+	pTour htspSolutionII = htspSolverII->Solve();
+	b->StopTimer("SII");
+
+	cout << endl
+		 << "200 5 0 "
+		 << htspSolverI->GetSolutionSummary() << " " << htspSolverII->GetSolutionSummary() << " "
+		 << b->TimerElapsedToString("SI") << " " << b->TimerElapsedToString("SII")
+		 << endl;
+
+	SAFE_DELETE(testInstance);
+	SAFE_DELETE(parser);
+	SAFE_DELETE(htspSolverI);
+	SAFE_DELETE(htspSolutionI);
+	SAFE_DELETE(htspSolverII);
+	SAFE_DELETE(htspSolutionII);
 }
 
 } /* namespace Genius */
